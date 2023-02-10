@@ -1,0 +1,15 @@
+{
+    // created by vscode papyrus-lang papyrus.skyrimSpecialEdition.generateProject
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "pyro",
+            "projectFile": "skyrimle.ppj",
+            "gamePath": "E:\\Games\\The Elder Scrolls V",
+            "problemMatcher": [
+                "$PapyrusCompiler"
+            ],
+            "label": "pyro: Compile Project (skyrimle.ppj)"
+        }
+    ]
+}
