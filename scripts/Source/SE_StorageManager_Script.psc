@@ -143,6 +143,9 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
                     endIf
                     return true
                 endIf
+
+                ; Target synergy will be reset after gestation progress/end (even if 10x higher than last processed soul)
+                targetSynergy = 0
             elseif(dbg)
                 Debug.Notification("SEater: Gestation hold")
             endIf
