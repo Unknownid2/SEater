@@ -6,57 +6,98 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
     ;/// Settings ///;
 
     ; Stats
-    ;TODO: Absorb Stats and skills
+        ;TODO: Absorb Stats and skills (most read only)
+
+        GlobalVariable Property fSynergyLevel Auto ; Used to forge larger souls at gestation mode
+        {Increases over time. digesting souls or breaking filled soulgems accelerate charge}
+
+        GlobalVariable Property fMaxSynergy Auto
+        {Increase with SynergyLevel while and only in digest mode}
+
+        GlobalVariable Property iStorageMode Auto ;TODO: Change between modes
+        {What happening with unclaimed stored souls (1= Digest, 2= Gestation)}
+
+        GlobalVariable[] Property iNumberOfSouls Auto
+        {Total number of souls. Shorted by size (index 0-4 = petty-grand)}
+
+        GlobalVariable Property fMaxCapacity Auto
+        {The max amount of souls charge which can be hold inside caster belly}
 
     ; Storage
-    GlobalVariable Property bCapacityModifiers Auto
-    {Apply Buffs/Debuffs based on fulles stage}
+        ;TODO: Settings related to storage
 
-    GlobalVariable Property bCapacityEffects Auto
-    {Apply effects based on fulles stage}
+        GlobalVariable Property bCapacityModifiers Auto
+        {Apply Buffs/Debuffs based on fulles stage}
 
-    GlobalVariable Property fFirstStage Auto
-    {% of capacity usage considered small (0-100)}
+        GlobalVariable Property bCapacityEffects Auto
+        {Apply effects based on fulles stage}
 
-    GlobalVariable Property fSecondStage Auto
-    {% of capacity usage considered medium (0-100)}
+        GlobalVariable Property fFirstStage Auto
+        {% of capacity usage considered small (0-100)}
 
-    GlobalVariable Property fThirthStage Auto
-    {% of capacity usage considered high (0-100)}
+        GlobalVariable Property fSecondStage Auto
+        {% of capacity usage considered medium (0-100)}
 
-    GlobalVariable Property bAllowDangerousScale Auto
-    {Trespassing max capacity can kill}
+        GlobalVariable Property fThirthStage Auto
+        {% of capacity usage considered high (0-100)}
 
-    GlobalVariable Property fBurstScale Auto
-    {% above max capacity where burst chance reach 100% (0-100)}
+        GlobalVariable Property bAllowDangerousScale Auto
+        {Trespassing max capacity can kill}
 
-    GlobalVariable Property fStretch Auto
-    {If at ThirthStage, increase max capacity by this value over time (set 0 to disable)}
+        GlobalVariable Property fBurstScale Auto
+        {% above max capacity where burst chance reach 100% (0-100)}
+
+        GlobalVariable Property fStretch Auto
+        {If at ThirthStage, increase max capacity by this value over time (set 0 to disable)}
 
     ; Visual
-    ;TODO: Effects and scale proportions
-    GlobalVariable Property bSheLikesIt Auto
-    {Scaling triggers specials monologs and buffs}
+        ;TODO: Settings related to effects and scale proportions
 
-    GlobalVariable Property bSheLovesIt Auto
-    {Scaling triggers pleasure effects like arousal and moan sounds}
+        GlobalVariable Property bSheLikesIt Auto
+        {Scaling triggers specials monologs and buffs}
 
-    GlobalVariable Property bApplyAnimations Auto
-    {Include animations when applying effects or/and dialogues}
+        GlobalVariable Property bSheLovesIt Auto
+        {Scaling triggers pleasure effects like arousal and moan sounds}
+
+        GlobalVariable Property bApplyAnimations Auto
+        {Include animations when applying effects or/and dialogues}
 
     ; System
-    GlobalVariable Property bDbg Auto
-    GlobalVariable Property iInstalledVersion Auto
-    int Property Version = 17 AutoReadOnly ; <- Change before tests
+        ;TODO: Misc settings
+
+        GlobalVariable Property bDbg Auto
+        {Toggle debug notifications}
+
+        GlobalVariable Property iInstalledVersion Auto
+        {Used to track updates}
+
+        int Property Version = 17 AutoReadOnly ;TODO: <- Change before tests
+        {Mod version}
 
     ;/// Variables ///;
+    bool enableCapacityModifiers ;Unused
+    bool enableCapacityEffects ;Unused
+    bool allowDangerousScale ;Unused
+    bool sheLikesIt ;Unused
+    bool sheLovesIt ;Unused
+    bool applyAnimations ;Unused
     bool dbg
+    float synergyLevel ;TODO: Missing setting
+    float maxSynergy ;TODO: Missing setting
+    float maxCapacity ;Unused
+    float firstStageScale ;Unused
+    float secondStageScale ;Unused
+    float thirthStageScale ;Unused
+    float burstScale ;Unused
+    float stretch ;Unused
+    int[] numberOfSouls ;TODO: Missing setting
+    int storageMode ;TODO: Missing setting
 
     ;/// Functions ///;
 
     ; Returns mod version string
     string Function GetVersionString()
-        return "0.1.17" ; <- Change before tests
+        return "0.1.17" ;TODO: <- Change before tests
     EndFunction
 
     int Function GetVersion()
