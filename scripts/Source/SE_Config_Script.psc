@@ -75,23 +75,23 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
         {Mod version}
 
     ;/// Variables ///;
-    bool enableCapacityModifiers ;Unused
-    bool enableCapacityEffects ;Unused
-    bool allowDangerousScale ;Unused
-    bool sheLikesIt ;Unused
-    bool sheLovesIt ;Unused
-    bool applyAnimations ;Unused
-    bool dbg
-    float synergyLevel ;TODO: Missing setting
-    float maxSynergy ;TODO: Missing setting
-    float maxCapacity ;Unused
-    float firstStageScale ;Unused
-    float secondStageScale ;Unused
-    float thirthStageScale ;Unused
-    float burstScale ;Unused
-    float stretch ;Unused
-    int[] numberOfSouls = new numberOfSouls[5] ;TODO: Missing setting
-    int storageMode ;TODO: Missing setting
+    bool Property enableCapacityModifiers Auto Hidden ;Unused
+    bool Property enableCapacityEffects Auto Hidden ;Unused
+    bool Property allowDangerousScale Auto Hidden ;Unused
+    bool Property sheLikesIt Auto Hidden ;Unused
+    bool Property sheLovesIt Auto Hidden ;Unused
+    bool Property applyAnimations Auto Hidden ;Unused
+    bool Property dbg Auto Hidden
+    float Property synergyLevel Auto Hidden ;TODO: Missing setting
+    float Property maxSynergy Auto Hidden ;TODO: Missing setting
+    float Property maxCapacity Auto Hidden ;Unused
+    float Property firstStageScale Auto Hidden ;Unused
+    float Property secondStageScale Auto Hidden ;Unused
+    float Property thirthStageScale Auto Hidden ;Unused
+    float Property burstScale Auto Hidden ;Unused
+    float Property stretch Auto Hidden ;Unused
+    int[] Property numberOfSouls Auto Hidden ;TODO: Missing setting
+    int Property storageMode Auto Hidden ;TODO: Missing setting
 
     ;/// Functions ///;
 
