@@ -49,7 +49,7 @@ Scriptname SE_AbsorbSoulEffect_Script extends ActiveMagicEffect
 
     Event OnHit(ObjectReference akAggressor, Form akSource, Projectile akProjectile, bool abPowerAttack, bool abSneakAttack, \
         bool abBashAttack, bool abHitBlocked)
-        if(akSource.GetName() == "SoulTrap") ;FIXME it doesn't work
+        if(akSource == Main.SoulTrapFFActor) ;TODO Check if it's work
             Dispel()
         endIf
     EndEvent
