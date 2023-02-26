@@ -104,6 +104,40 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
         return Version
     EndFunction
 
+    Function SaveSettings()
+        bDbg.SetValue(dbg as float)
+        fSynergyLevel.SetValue(synergyLevel)
+        fMaxSynergy.SetValue(maxSynergy)
+        iStorageMode.SetValue(storageMode as float)
+
+        int index = 0
+        While (index < numberOfSouls.Length)
+            iNumberOfSouls[index].SetValue(numberOfSouls[index] as float)
+            index += 1
+        EndWhile
+
+        if(dbg)
+            Debug.Notification("SEater: Settings saved")
+        endif
+    EndFunction
+
+    Function LoadSettings()
+        dbg = bDbg.GetValue() as bool
+        synergyLevel = fSynergyLevel.GetValue()
+        maxSynergy = fMaxSynergy.GetValue()
+        storageMode = iStorageMode.GetValue() as int
+
+        int index = 0
+        While (index < iNumberOfSouls.Length)
+            numberOfSouls[index] = iNumberOfSouls[index].GetValue() as int
+            index += 1
+        EndWhile
+
+        if(dbg)
+            Debug.Notification("SEater: Settings loaded")
+        endIf
+    EndFunction
+
     ;/// Events ///;
 
     ;TODO: MCM menu
@@ -115,17 +149,19 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
 
     ; Called when this config menu registered at the control panel
     Event OnConfigRegister()
+
+        LoadSettings()
         Debug.Notification("SEater: Ready!")
     EndEvent
     
     event OnConfigOpen()
         {Called when this config menu is opened}
-        dbg = bDbg.GetValue() as bool
+        LoadSettings()
     endEvent
     
     event OnConfigClose()
         {Called when this config menu is closed}
-        bDbg.SetValue(dbg as float)
+        SaveSettings()
     endEvent
     
     event OnVersionUpdate(int aVersion)
