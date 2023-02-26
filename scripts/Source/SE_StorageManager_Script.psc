@@ -5,15 +5,6 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
     MagicEffect Property StorageEffect Auto
     Spell Property StorageSpell Auto
 
-    GlobalVariable[] Property iNumberOfSouls Auto
-    {Total number of souls (index 0-4 = petty-grand)}
-
-    GlobalVariable Property fMaxCapacity Auto
-    {The max amount of souls charge which can be hold inside caster body}
-
-    GlobalVariable Property iStorageMode Auto
-    {What happening with unclaimed stored souls (1= Digest, 2= Gestation)}
-
     ;/// Variables ///;
     float targetSynergy ; Used to track gestation at Gestate()
 
@@ -22,9 +13,10 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
     ; Return total number of stored souls
     int Function GetNumberOfSouls()
         int totalNumberOfSouls = 0
+
         int index = 0
-        While (index < iNumberOfSouls.Length)
-            totalNumberOfSouls += iNumberOfSouls[index].GetValue() as int
+        While (index < Config.numberOfSouls.Length)
+            totalNumberOfSouls += Config.numberOfSouls[index]
             index += 1
         EndWhile
 
@@ -33,8 +25,9 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
 
     ; Return the weakest stored soul (or 0 if empty)
     int Function GetWeakest()
+
         int index = 0
-        While (index < iNumberOfSouls.Length && iNumberOfSouls[index].GetValue() == 0)
+        While (index < Config.numberOfSouls.Length && Config.numberOfSouls[index] == 0)
             index += 1
         EndWhile
 
@@ -42,7 +35,7 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
             return 0
         EndIf
 
-        if(Config.bDbg.GetValue() > 0)
+        if(Config.dbg)
             Debug.Notification("SEater: " + (index + 1) + " is the weakest soul inside player")
         endIf
 
@@ -52,11 +45,11 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
     ; Return the strongest stored soul (or 0 if empty)
     int Function GetStrongest()
         int index = 4
-        While (index >= 0 && iNumberOfSouls[index].GetValue() == 0)
+        While (index >= 0 && Config.numberOfSouls[index] == 0)
             index -= 1
         EndWhile
 
-        if(Config.bDbg.GetValue() > 0)
+        if(Config.dbg)
             Debug.Notification("SEater: " + (index + 1) + " is the strongest soul inside player")
         endIf
 
@@ -67,8 +60,8 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
     float Function GetTotalChargeLevel()
         float totalChargeLevel = 0
         int index = 0
-        While (index < iNumberOfSouls.Length)
-            totalChargeLevel += iNumberOfSouls[index].GetValue() * GetSoulChargeBySize(index + 1)
+        While (index < Config.numberOfSouls.Length)
+            totalChargeLevel += Config.numberOfSouls[index] * GetSoulChargeBySize(index + 1)
             index += 1
         EndWhile
 
@@ -78,18 +71,17 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
     ; Returns capacity usage (0-100)
     float Function GetCapacityUsage()
         float storageUsage = GetTotalChargeLevel()
-        float maxCapacity = fMaxCapacity.GetValue()
-        return (storageUsage / maxCapacity) * 100
+        return (storageUsage / Config.maxCapacity) * 100
     EndFunction
 
     ; Add a single soul of given size inside caster
     Function AddSoul(int soulSize)
-        iNumberOfSouls[soulSize - 1].Mod(1)
+        Config.numberOfSouls[soulSize - 1] = Config.numberOfSouls[soulSize - 1] + 1
     endFunction
 
     ; Remove a single soul of given size from caster
     Function RemoveSoul(int soulSize)
-        iNumberOfSouls[soulSize - 1].Mod(-1)
+        Config.numberOfSouls[soulSize - 1] = Config.numberOfSouls[soulSize - 1] - 1
     EndFunction
 
     ; Digest weakest soul, rechargin synergy. The remains of the soul returns to player in small sizes
@@ -107,11 +99,11 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
                 AddSoul(targetSoul)
             EndWhile
             
-            fSynergyLevel.mod(2.5)
-            if(Config.bDbg.GetValue() > 0)
+            Config.synergyLevel += 2.5
+            if(Config.dbg)
                 Debug.Notification("SEater: Digest proceeds")
             endIf
-        elseif(Config.bDbg.GetValue() > 0)
+        elseif(Config.dbg)
             Debug.Notification("SEater: failed to digest. Player's womb is empty")
         endIf
     EndFunction
@@ -119,10 +111,9 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
     ; Grows up souls using synergy. Return true if results in labor
     bool Function Gestate()
         int targetSoul = GetWeakest()
-        bool dbg = Config.bDbg.GetValue() as bool
         if(targetSoul > 0)
             float targetSoulCharge = GetSoulChargeBySize(targetSoul)
-            float synergy = fSynergyLevel.GetValue()
+            float synergy = Config.synergyLevel
             targetSynergy += 2.5
             if(targetSynergy >= targetSoulCharge)
                 if(synergy >= targetSynergy || synergy >= 10.00 && targetSoul < 5)
@@ -134,11 +125,11 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
                         synergy -= targetSoulCharge
                     endIf
                     
-                    if(dbg)
+                    if(Config.dbg)
                         Debug.Notification("SEater: Gestation proceeds")
                     endIf
                 Else
-                    if(dbg)
+                    if(Config.dbg)
                         Debug.Notification("SEater: Gestation ends")
                     endIf
                     return true
@@ -146,12 +137,12 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
 
                 ; Target synergy will be reset after gestation progress/end (even if 10x higher than last processed soul)
                 targetSynergy = 0
-            elseif(dbg)
+            elseif(Config.dbg)
                 Debug.Notification("SEater: Gestation hold")
             endIf
 
-            fSynergyLevel.SetValue(synergy)
-        elseif(dbg)
+            Config.synergyLevel = synergy
+        elseif(Config.dbg)
             Debug.Notification("SEater: Failed to gestate, there no souls to grow.")
         endIf
 
@@ -162,7 +153,7 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
 
     ; Called when a new soul are absorbed successfully
     Event OnSoulAbsorbed(int absorbedSoulSize)
-        if(Config.bDbg.GetValue() > 0)
+        if(Config.dbg)
             Debug.Notification("SEater: OnSoulAbsorbed")
         endif
 
@@ -176,19 +167,19 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
 
     ; Called while StorageEffect are active on player
     Event OnStorageUpdate(float updateLoops)
-        if(Config.bDbg.GetValue() > 0)
+        if(Config.dbg)
             Debug.Notification("SEater: OnStorageUpdate")
             Debug.Notification("Processing " + updateLoops + " Updates")
         endif
 
-        If (iStorageMode.GetValue() == 1)
+        If (Config.storageMode == 1)
             while(updateLoops > 1)
                 Digest()
                 updateLoops -= 1
             EndWhile
 
-            if(fSynergyLevel.GetValue() > fMaxSynergy.GetValue())
-                fMaxSynergy.SetValue(fSynergyLevel.GetValue())
+            if(Config.synergyLevel > Config.maxSynergy)
+                Config.maxSynergy = Config.synergyLevel
             endIf
         else
             bool inLabor
@@ -199,7 +190,7 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
 
             if(inLabor)
                 ;TODO: Gestation Finish (birth all souls)
-                if(Config.bDbg.GetValue() > 0)
+                if(Config.dbg)
                     Debug.Notification("SEater: Not enough synergy, advancing to labor...")
                     Debug.Notification("Not Implemented yet!")
                 endif    
@@ -209,7 +200,7 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
 
     ;TODO: Called after successfully dispel a soul to a soul gem
     Event OnSoulExpeled(int expeledSoulSize)
-        if(Config.bDbg.GetValue() > 0)
+        if(Config.dbg)
             Debug.Notification("SEater: OnSoulExpeled")
         endif
         RemoveSoul(expeledSoulSize)
