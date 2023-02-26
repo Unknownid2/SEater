@@ -90,7 +90,7 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
     float thirthStageScale ;Unused
     float burstScale ;Unused
     float stretch ;Unused
-    int[] numberOfSouls ;TODO: Missing setting
+    int[] numberOfSouls = new numberOfSouls[5] ;TODO: Missing setting
     int storageMode ;TODO: Missing setting
 
     ;/// Functions ///;
