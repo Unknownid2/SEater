@@ -7,12 +7,6 @@ Scriptname SE_MainQuest_Script extends Quest
     Faction Property CreatureFaction Auto
     MagicEffect Property SoulTrapFFActor Auto
     Actor Property PlayerRef Auto
-    
-    GlobalVariable Property fSynergyLevel Auto ; Increases over time. digesting souls or breaking filled soulgems accelerate charge
-    {Used to forge larger souls at gestation mode}
-
-    GlobalVariable Property fMaxSynergy Auto
-    {Increase with SynergyLevel while and only in digest mode}
 
     ;/// Variables ///;
 
@@ -63,8 +57,7 @@ Scriptname SE_MainQuest_Script extends Quest
 
     ; Atempt to absorb soul and return true if sucessfull
     bool Function AbsorbSoul(Actor victim)
-        bool dbg = Config.bDbg.GetValue() as bool
-        if(dbg)
+        if(Config.dbg)
             Debug.Notification("SEater: Atempt to absorb soul...")
             Debug.Notification("SEater: Victim = " + victim.GetDisplayName())
         endif
@@ -75,7 +68,7 @@ Scriptname SE_MainQuest_Script extends Quest
         else
             if(victim.IsDead())
                 int soulSize = GetSoulSize(victim)
-                if(dbg)
+                if(Config.dbg)
                     Debug.Notification("SEater: Absorb Sucessfull")
                     Debug.Notification("SEater: SoulSize = " + soulSize)
                 endIf
@@ -83,7 +76,7 @@ Scriptname SE_MainQuest_Script extends Quest
                 Storage.OnSoulAbsorbed(soulSize)
                 return true
             else
-                if(dbg)
+                if(Config.dbg)
                     Debug.Notification("SEater: Failed to absorb. Victim still alive")
                 endif
 
