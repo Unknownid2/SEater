@@ -72,6 +72,8 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
         {Mod version}
 
 ;/// Properties ///;
+    SE_StorageManager_Script Property Storage Auto
+
     bool Property enableCapacityModifiers Auto Hidden ;Unused
     bool Property enableCapacityEffects Auto Hidden ;Unused
     bool Property allowDangerousScale Auto Hidden ;Unused
@@ -79,16 +81,16 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
     bool Property sheLovesIt Auto Hidden ;Unused
     bool Property applyAnimations Auto Hidden ;Unused
     bool Property dbg Auto Hidden
-    float Property synergyLevel Auto Hidden ;TODO: Missing setting
-    float Property maxSynergy Auto Hidden ;TODO: Missing setting
+    float Property synergyLevel Auto Hidden
+    float Property maxSynergy Auto Hidden
     float Property maxCapacity Auto Hidden ;Unused
     float Property firstStageScale Auto Hidden ;Unused
     float Property secondStageScale Auto Hidden ;Unused
     float Property thirthStageScale Auto Hidden ;Unused
     float Property burstScale Auto Hidden ;Unused
     float Property stretch Auto Hidden ;Unused
-    int[] Property numberOfSouls Auto Hidden ;TODO: Missing setting
-    string Property storageMode Auto Hidden
+    int[] Property numberOfSouls Auto Hidden
+    string Property storageMode Auto Hidden ;FIXME: change ref property type
 
 ;/// Functions ///;
     ; Returns mod version string
@@ -146,6 +148,7 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
 
 ;/// Events ///;
     ;TODO: MCM menu
+
     ; Called when this config menu is initialized
     Event OnConfigInit()
         Debug.Notification("SEater: Initializing...")
@@ -182,7 +185,20 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
         if(a_page == "Stats")
             SetCursorPosition(0)
             SetCursorFillMode(LEFT_TO_RIGHT)
-            AddTextOptionST("stats_fSynergyLevel", "Synergy", synergyLevel + "/" + maxSynergy)
+            AddTextOptionST("stats_Synergy", "Synergy", synergyLevel + "/" + maxSynergy)
+            AddTextOptionST("stats_Mode", "Mode", storageMode) ;TODO: Missing state
+            ;AddTextOptionST("stats_ChargeLevel", "Charge Level", Storage.GetTotalChargeLevel()) ;TODO: Missing state
+
+            ;Stored Souls
+            SetCursorFillMode(TOP_TO_BOTTOM)
+            AddHeaderOption("Stored Souls")
+            SetCursorFillMode(LEFT_TO_RIGHT)
+            AddTextOptionST("stats_NumberOfPetty", "Number of petty souls", numberOfSouls[0]) ;TODO: Missing state
+            AddTextOptionST("stats_NumberOfLesser", "Number of lesser souls", numberOfSouls[1]) ;TODO: Missing state
+            AddTextOptionST("stats_NumberOfCommon", "Number of common souls", numberOfSouls[2]) ;TODO: Missing state
+            AddTextOptionST("stats_NumberOfGreater", "Number of greater souls", numberOfSouls[3]) ;TODO: Missing state
+            AddTextOptionST("stats_NumberOfGrand", "Number of grand souls", numberOfSouls[4]) ;TODO: Missing state
+            AddTextOptionST("stats_TotalNumberOfSouls", "Total number of souls", Storage.GetNumberOfSouls()) ;TODO: Missing state
         elseif(a_page == "Storage")
         elseif(a_page == "Visual")
         elseif(a_page == "System")
@@ -311,7 +327,8 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
 
 ;/// Options States ///;
     ;Stats
-        State stats_fSynergyLevel
+        ;TODO: Incomplete state
+        State stats_Synergy
             Event OnSelectST()
             EndEvent
 
@@ -349,7 +366,7 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
         EndState
 
         State system_Version
-            ;TODO: Don't forget me:
+            ;TODO: Incomplete state
             Event OnSelectST()
             EndEvent
 
