@@ -88,7 +88,7 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
     float Property burstScale Auto Hidden ;Unused
     float Property stretch Auto Hidden ;Unused
     int[] Property numberOfSouls Auto Hidden ;TODO: Missing setting
-    int Property storageMode Auto Hidden ;TODO: Missing setting
+    string Property storageMode Auto Hidden
 
 ;/// Functions ///;
     ; Returns mod version string
@@ -104,7 +104,12 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
         bDbg.SetValue(dbg as float)
         fSynergyLevel.SetValue(synergyLevel)
         fMaxSynergy.SetValue(maxSynergy)
-        iStorageMode.SetValue(storageMode as float)
+        
+        if(storageMode == "Digest")
+            iStorageMode.SetValue(1)
+        else
+            iStorageMode.SetValue(2)
+        endIf
 
         int index = 0
         While (index < numberOfSouls.Length)
@@ -121,7 +126,12 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
         dbg = bDbg.GetValue() as bool
         synergyLevel = fSynergyLevel.GetValue()
         maxSynergy = fMaxSynergy.GetValue()
-        storageMode = iStorageMode.GetValue() as int
+
+        if(iStorageMode.GetValue() == 1)
+            storageMode = "Digest"
+        else
+            storageMode = "Gestation"
+        endIf
 
         int index = 0
         While (index < iNumberOfSouls.Length)
