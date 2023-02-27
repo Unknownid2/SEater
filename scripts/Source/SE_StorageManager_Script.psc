@@ -153,8 +153,10 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
 
     ; Called when a new soul are absorbed successfully
     Event OnSoulAbsorbed(int absorbedSoulSize)
+        parent.OnSoulAbsorbed(absorbedSoulSize)
+        
         if(Config.dbg)
-            Debug.Notification("SEater: OnSoulAbsorbed")
+            Debug.Notification("SEater: OnSoulAbsorbed(Storage)")
         endif
 
         AddSoul(absorbedSoulSize)

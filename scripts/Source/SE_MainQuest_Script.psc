@@ -99,7 +99,10 @@ Scriptname SE_MainQuest_Script extends Quest
     
     ; Called when a new soul are absorbed successfully
     event OnSoulAbsorbed(int absorbedSoulSize)
-        ;TODO: Need Implementation
+        if(Config.dbg)
+            Debug.Notification("SEater: OnSoulAbsorbed(Main)")
+        endif
+
         ;TODO: Apply effects
         ;TODO: Apply Buffs/Debuffs
     endEvent
