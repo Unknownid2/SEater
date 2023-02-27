@@ -1,10 +1,7 @@
 Scriptname SE_Config_Script extends SKI_ConfigBase 
 {Script for Soul Eater MCM}
 
-    ;/// Properties ///;
-
-    ;/// Settings ///;
-
+;/// Settings ///;
     ; Stats
         ;TODO: Absorb Stats and skills (most read only)
 
@@ -74,7 +71,7 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
         int Property Version = 17 AutoReadOnly ;TODO: <- Change before tests
         {Mod version}
 
-    ;/// Variables ///;
+;/// Properties ///;
     bool Property enableCapacityModifiers Auto Hidden ;Unused
     bool Property enableCapacityEffects Auto Hidden ;Unused
     bool Property allowDangerousScale Auto Hidden ;Unused
@@ -93,8 +90,7 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
     int[] Property numberOfSouls Auto Hidden ;TODO: Missing setting
     int Property storageMode Auto Hidden ;TODO: Missing setting
 
-    ;/// Functions ///;
-
+;/// Functions ///;
     ; Returns mod version string
     string Function GetVersionString()
         return "0.1.17" ;TODO: <- Change before tests
@@ -138,8 +134,7 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
         endIf
     EndFunction
 
-    ;/// Events ///;
-
+;/// Events ///;
     ;TODO: MCM menu
     ; Called when this config menu is initialized
     Event OnConfigInit()
@@ -154,172 +149,203 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
         Debug.Notification("SEater: Ready!")
     EndEvent
     
-    event OnConfigOpen()
+    Event OnConfigOpen()
         {Called when this config menu is opened}
         LoadSettings()
-    endEvent
+    EndEvent
     
-    event OnConfigClose()
+    Event OnConfigClose()
         {Called when this config menu is closed}
         SaveSettings()
-    endEvent
+    EndEvent
     
-    event OnVersionUpdate(int aVersion)
+    Event OnVersionUpdate(int aVersion)
         {Called when aVersion update of this script has been detected}
         ;TODO: Update code (if needed)
         iInstalledVersion.SetValue(Version)
         Debug.Notification("SEater: Updated")
         Debug.Notification("Version = " + GetVersionString())
-    endEvent
+    EndEvent
     
-    event OnPageReset(string a_page)
-        {Called when a new page is selected, including the initial empty page}
+    ; Called when a new page is selected, including the initial empty page
+    Event OnPageReset(string a_page)
         if(a_page == "Stats")
+            SetCursorPosition(0)
+            SetCursorFillMode(LEFT_TO_RIGHT)
+            AddTextOptionST("stats_fSynergyLevel", "Synergy", synergyLevel + "/" + maxSynergy)
         elseif(a_page == "Storage")
         elseif(a_page == "Visual")
         elseif(a_page == "System")
             SetCursorPosition(0)
             SetCursorFillMode(TOP_TO_BOTTOM)
-            AddToggleOptionST("system_bDbg", "Debug mode", dbg)
-            AddTextOption("Version = ", GetVersionString())
+            AddToggleOptionST("system_DebugMode", "Debug mode", dbg)
+            AddTextOptionST("system_Version", "Version", GetVersionString())
         endif
-    endEvent
+    EndEvent
     
-    event OnOptionHighlight(int a_option)
+    Event OnOptionHighlight(int a_option)
         {Called when highlighting an option}
         Debug.Notification("SEater: OnOptionHighlight not implemented yet")
-    endEvent
+    EndEvent
     
-    event OnOptionSelect(int a_option)
+    Event OnOptionSelect(int a_option)
         {Called when a non-interactive option has been selected}
         Debug.Notification("SEater: OnOptionSelect not implemented yet")
-    endEvent
+    EndEvent
     
-    event OnOptionDefault(int a_option)
+    Event OnOptionDefault(int a_option)
         {Called when resetting an option to its default value}
         Debug.Notification("SEater: OnOptionDefault not implemented yet")
-    endEvent
+    EndEvent
     
-    event OnOptionSliderOpen(int a_option)
+    Event OnOptionSliderOpen(int a_option)
         {Called when a slider option has been selected}
         Debug.Notification("SEater: OnOptionSliderOpen not implemented yet")
-    endEvent
+    EndEvent
     
-    event OnOptionSliderAccept(int a_option, float a_value)
+    Event OnOptionSliderAccept(int a_option, float a_value)
         {Called when a new slider value has been accepted}
         Debug.Notification("SEater: OnOptionSliderAccept not implemented yet")
-    endEvent
+    EndEvent
     
-    event OnOptionMenuOpen(int a_option)
+    Event OnOptionMenuOpen(int a_option)
         {Called when a menu option has been selected}
         Debug.Notification("SEater: OnOptionMenuOpen not implemented yet")
-    endEvent
+    EndEvent
     
-    event OnOptionMenuAccept(int a_option, int a_index)
+    Event OnOptionMenuAccept(int a_option, int a_index)
         {Called when a menu entry has been accepted}
         Debug.Notification("SEater: OnOptionMenuAccept not implemented yet")
-    endEvent
+    EndEvent
     
-    event OnOptionColorOpen(int a_option)
+    Event OnOptionColorOpen(int a_option)
         {Called when a color option has been selected}
         Debug.Notification("SEater: OnOptionColorOpen not implemented yet")
-    endEvent
+    EndEvent
     
-    event OnOptionColorAccept(int a_option, int a_color)
+    Event OnOptionColorAccept(int a_option, int a_color)
         {Called when a new color has been accepted}
         Debug.Notification("SEater: OnOptionColorAccept not implemented yet")
-    endEvent
+    EndEvent
     
-    event OnOptionKeyMapChange(int a_option, int a_keyCode, string a_conflictControl, string a_conflictName)
+    Event OnOptionKeyMapChange(int a_option, int a_keyCode, string a_conflictControl, string a_conflictName)
         {Called when a key has been remapped}
         Debug.Notification("SEater: OnOptionKeyMapChange not implemented yet")
-    endEvent
+    EndEvent
     
     ; @since 4
-    event OnOptionInputOpen(int a_option)
+    Event OnOptionInputOpen(int a_option)
         {Called when a text input option has been selected}
         Debug.Notification("SEater: OnOptionInputOpen not implemented yet")
-    endEvent
+    EndEvent
     
     ; @since 4
-    event OnOptionInputAccept(int a_option, string a_input)
+    Event OnOptionInputAccept(int a_option, string a_input)
         {Called when a new text input has been accepted}
         Debug.Notification("SEater: OnOptionInputAccept not implemented yet")
-    endEvent
+    EndEvent
     
     ; @since 2
-    event OnSliderOpenST()
+    Event OnSliderOpenST()
         {Called when a slider state option has been selected}
         Debug.Notification("SEater: OnSliderOpenST not implemented yet")
-    endEvent
+    EndEvent
     
     ; @since 2
-    event OnSliderAcceptST(float a_value)
+    Event OnSliderAcceptST(float a_value)
         {Called when a new slider state value has been accepted}
         Debug.Notification("SEater: OnSliderAcceptST not implemented yet")
-    endEvent
+    EndEvent
     
     ; @since 2
-    event OnMenuOpenST()
+    Event OnMenuOpenST()
         {Called when a menu state option has been selected}
         Debug.Notification("SEater: OnMenuOpenST not implemented yet")
-    endEvent
+    EndEvent
     
     ; @since 2
-    event OnMenuAcceptST(int a_index)
+    Event OnMenuAcceptST(int a_index)
         {Called when a menu entry has been accepted for this state option}
         Debug.Notification("SEater: OnMenuAcceptST not implemented yet")
-    endEvent
+    EndEvent
     
     ; @since 2
-    event OnColorOpenST()
+    Event OnColorOpenST()
         {Called when a color state option has been selected}
         Debug.Notification("SEater: OnColorOpenST not implemented yet")
-    endEvent
+    EndEvent
     
     ; @since 2
-    event OnColorAcceptST(int a_color)
+    Event OnColorAcceptST(int a_color)
         {Called when a new color has been accepted for this state option}
         Debug.Notification("SEater: OnColorAcceptST not implemented yet")
-    endEvent
+    EndEvent
     
     ; @since 2
-    event OnKeyMapChangeST(int a_keyCode, string a_conflictControl, string a_conflictName)
+    Event OnKeyMapChangeST(int a_keyCode, string a_conflictControl, string a_conflictName)
         {Called when a key has been remapped for this state option}
         Debug.Notification("SEater: OnKeyMapChangeST not implemented yet")
-    endEvent
+    EndEvent
     
     ; @since 4
-    event OnInputOpenST()
+    Event OnInputOpenST()
         {Called when a text input state option has been selected}
         Debug.Notification("SEater: OnInputOpenST not implemented yet")
-    endEvent
+    EndEvent
     
     ; @since 4
-    event OnInputAcceptST(string a_input)
+    Event OnInputAcceptST(string a_input)
         {Called when a new text input has been accepted for this state option}
         Debug.Notification("SEater: OnInputAcceptST not implemented yet")
-    endEvent
+    EndEvent
 
-    ;/// States ///;
+;/// Options States ///;
+    ;Stats
+        State stats_fSynergyLevel
+            Event OnSelectST()
+            EndEvent
 
-    State system_bDbg
+            Event OnDefaultST()
+            EndEvent
 
-        event OnSelectST()
-            {Called when a non-interactive state option has been selected.}
-            dbg = !dbg
-            SetToggleOptionValueST(dbg)
-        endEvent
-    
-        event OnDefaultST()
-            {Called when resetting a state option to its default value.}
-            dbg = false
-            SetToggleOptionValueST(false)
-        endEvent
-    
-        event OnHighlightST()
-            {Called when highlighting a state option.}
-            SetInfoText("Toggle debug notifications")
-        endEvent
+            Event OnHighlightST()
+            EndEvent
+        EndState
 
-    EndState
+    ;Storage
+        ;/.../;
+
+    ;Visual
+        ;/.../;
+
+    ;System
+        State system_DebugMode
+            Event OnSelectST()
+                {Called when a non-interactive state option has been selected.}
+                dbg = !dbg
+                SetToggleOptionValueST(dbg)
+            EndEvent
+
+            Event OnDefaultST()
+                {Called when resetting a state option to its default value.}
+                dbg = false
+                SetToggleOptionValueST(false)
+            EndEvent
+
+            Event OnHighlightST()
+                {Called when highlighting a state option.}
+                SetInfoText("Toggle debug notifications")
+            EndEvent
+        EndState
+
+        State system_Version
+            ;TODO: Don't forget me:
+            Event OnSelectST()
+            EndEvent
+
+            Event OnDefaultST()
+            EndEvent
+
+            Event OnHighlightST()
+            EndEvent
+        EndState
