@@ -1,14 +1,14 @@
 Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
 {Add/remove souls, Manage souls and gatter storage data}
 
-    ;/// Properties ///;
+;/// Properties ///;
     MagicEffect Property StorageEffect Auto
     Spell Property StorageSpell Auto
 
-    ;/// Variables ///;
+;/// Variables ///;
     float targetSynergy ; Used to track gestation at Gestate()
 
-    ;/// Functions ///;
+;/// Functions ///;
 
     ; Return total number of stored souls
     int Function GetNumberOfSouls()
@@ -149,7 +149,7 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
         return false
     EndFunction
 
-    ;/// Events ///;
+;/// Events ///;
 
     ; Called when a new soul are absorbed successfully
     Event OnSoulAbsorbed(int absorbedSoulSize)
