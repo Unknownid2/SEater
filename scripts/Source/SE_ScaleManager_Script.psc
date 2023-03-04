@@ -4,7 +4,9 @@ Scriptname SE_ScaleManager_Script extends SE_MainQuest_Script
 ;/// Properties ///;
 
 ;/// Variables ///;
-    ;/.../;
+float bellyMultiplier
+float breastMultiplier
+float buttMultiplier
 
 ;/// Functions ///;
 
@@ -73,8 +75,19 @@ Scriptname SE_ScaleManager_Script extends SE_MainQuest_Script
                 Debug.Notification("Updating belly node, initial ref: " + referenceValue)
             endif
 
+            bellyMultiplier = Config.bellyScaleMultiplier
+
+            if(Config.bellyMultiplierReduction)
+                
+                int index = 0
+                While (index < Storage.GetNumberOfSouls())
+                    bellyMultiplier *= (Config.MultiplierReduction - 100) * -0.01
+                    index += 1
+                EndWhile
+            EndIf
+
             referenceValue -= Config.bellyScalingStart
-            referenceValue *= Config.bellyScaleMultiplier
+            referenceValue *= bellyMultiplier
             referenceValue += Config.bellyScaleOffset
 
             if(Config.dbg)
@@ -106,8 +119,19 @@ Scriptname SE_ScaleManager_Script extends SE_MainQuest_Script
                 Debug.Notification("Updating breast node, initial ref: " + referenceValue)
             endif
 
+            breastMultiplier = Config.breastScaleMultiplier
+
+            if(Config.breastMultiplierReduction)
+                
+                int index = 0
+                While (index < Storage.GetNumberOfSouls())
+                    breastMultiplier *= (Config.MultiplierReduction - 100) * -0.01
+                    index += 1
+                EndWhile
+            EndIf
+
             referenceValue -= Config.breastScalingStart
-            referenceValue *= Config.breastScaleMultiplier
+            referenceValue *= breastMultiplier
             referenceValue += Config.breastScaleOffset
 
             if(Config.dbg)
@@ -139,8 +163,19 @@ Scriptname SE_ScaleManager_Script extends SE_MainQuest_Script
                 Debug.Notification("Updating butt node, initial ref: " + referenceValue)
             endif
 
+            buttMultiplier = Config.buttScaleMultiplier
+
+            if(Config.buttMultiplierReduction)
+                
+                int index = 0
+                While (index < Storage.GetNumberOfSouls())
+                    buttMultiplier *= (Config.MultiplierReduction - 100) * -0.01
+                    index += 1
+                EndWhile
+            EndIf
+
             referenceValue -= Config.buttScalingStart
-            referenceValue *= Config.buttScaleMultiplier
+            referenceValue *= buttMultiplier
             referenceValue += Config.buttScaleOffset
 
             if(Config.dbg)
