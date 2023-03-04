@@ -73,8 +73,8 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
             GlobalVariable Property fBellyScalingStart Auto
             {Belly will start growing when value is equal or greater than this}
 
-            GlobalVariable Property fBellyScale Auto
-            {The value selected for belly node will be divided by this before applying to scale}
+            GlobalVariable Property fBellyScaleMultiplier Auto
+            {The value selected for belly node will be multiplied by this before applying to scale}
 
             GlobalVariable Property iBreastScalingVar Auto
             {Wich value to use for breast inflation (refer to values above)}
@@ -82,8 +82,8 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
             GlobalVariable Property fBreastScalingStart Auto
             {Breasts will start growing when value is equal or greater than this}
 
-            GlobalVariable Property fBreastScale Auto
-            {The value selected for breast node will be divided by this before applying to scale}
+            GlobalVariable Property fBreastScaleMultiplier Auto
+            {The value selected for breast node will be multiplied by this before applying to scale}
 
             GlobalVariable Property iButtScalingVar Auto
             {Wich value to use for ass inflation (refer to values above)}
@@ -91,8 +91,8 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
             GlobalVariable Property fButtScalingStart Auto
             {Butt will start growing when value is equal or greater than this}
 
-            GlobalVariable Property fButtScale Auto
-            {The value selected for ass node will be divided by this before applying to scale}
+            GlobalVariable Property fButtScaleMultiplier Auto
+            {The value selected for ass node will be multiplied by this before applying to scale}
 
     ; System
         ;TODO: Misc settings
