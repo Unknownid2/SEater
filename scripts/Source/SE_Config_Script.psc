@@ -76,6 +76,9 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
             GlobalVariable Property fBellyScaleMultiplier Auto
             {The value selected for belly node will be multiplied by this before applying to scale}
 
+            GlobalVariable Property fBellyScaleOffset Auto
+            {Modify scaling result by this value}
+
             GlobalVariable Property iBreastScalingVar Auto
             {Wich value to use for breast inflation (refer to values above)}
 
@@ -85,6 +88,9 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
             GlobalVariable Property fBreastScaleMultiplier Auto
             {The value selected for breast node will be multiplied by this before applying to scale}
 
+            GlobalVariable Property fBreastScaleOffset Auto
+            {Modify scaling result by this value}
+
             GlobalVariable Property iButtScalingVar Auto
             {Wich value to use for ass inflation (refer to values above)}
 
@@ -93,6 +99,9 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
 
             GlobalVariable Property fButtScaleMultiplier Auto
             {The value selected for ass node will be multiplied by this before applying to scale}
+
+            GlobalVariable Property fButtScaleOffset Auto
+            {Modify scaling result by this value}
 
     ; System
         ;TODO: Misc settings
@@ -125,12 +134,15 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
     float Property thirthStageScale Auto Hidden ;Unused
     float Property burstScale Auto Hidden ;Unused
     float Property stretch Auto Hidden ;Unused
-    float Property bellyScale Auto Hidden ;Unused
-    float Property breastScale Auto Hidden ;Unused
-    float Property buttScale Auto Hidden ;Unused
     float Property bellyScalingStart Auto Hidden ;Unused    
+    float Property bellyScaleMultiplier Auto Hidden ;Unused
+    float Property bellyScaleOffset Auto Hidden ;Unused
     float Property breastScalingStart Auto Hidden ;Unused
+    float Property breastScaleMultiplier Auto Hidden ;Unused
+    float Property breastScaleOffset Auto Hidden ;Unused
     float Property buttScalingStart Auto Hidden ;Unused
+    float Property buttScaleMultiplier Auto Hidden ;Unused
+    float Property buttScaleOffset Auto Hidden ;Unused
     int[] Property numberOfSouls Auto Hidden
     string Property storageMode Auto Hidden ;FIXME: change ref property type
     string Property bellyScalingVar Auto Hidden ;Unused
