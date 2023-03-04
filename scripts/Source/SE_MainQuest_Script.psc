@@ -63,27 +63,31 @@ Scriptname SE_MainQuest_Script extends Quest
             Debug.Notification("SEater: Victim = " + victim.GetDisplayName())
         endif
 
-        if(victim.HasMagicEffect(SoulTrapFFActor))
-            Debug.Notification("Failed to absorb. Target soul already catch by another spell")
-            return false
-        else
-            if(victim.IsDead())
-                int soulSize = GetSoulSize(victim)
-                if(Config.dbg)
-                    Debug.Notification("SEater: Absorb Sucessfull")
-                    Debug.Notification("SEater: SoulSize = " + soulSize)
-                endIf
-
-                ;FIXME: Call events on child scripts together in one line
-                OnSoulAbsorbed(soulSize)
-                return true
-            else
-                if(Config.dbg)
-                    Debug.Notification("SEater: Failed to absorb. Victim still alive")
-                endif
-
+        if(SLIF_Main.GetGender(PlayerRef) == 1)
+            if(victim.HasMagicEffect(SoulTrapFFActor))
+                Debug.Notification("Failed to absorb. Target soul already catch by another spell")
                 return false
+            else
+                if(victim.IsDead())
+                    int soulSize = GetSoulSize(victim)
+                    if(Config.dbg)
+                        Debug.Notification("SEater: Absorb Sucessfull")
+                        Debug.Notification("SEater: SoulSize = " + soulSize)
+                    endIf
+
+                    ;FIXME: Call events on child scripts together in one line
+                    OnSoulAbsorbed(soulSize)
+                    return true
+                else
+                    if(Config.dbg)
+                        Debug.Notification("SEater: Failed to absorb. Victim still alive")
+                    endif
+
+                    return false
+                endif
             endif
+        Else
+            Debug.Notification("Failed to absorb. Caster can't be impregnated")
         endif
     EndFunction
 
