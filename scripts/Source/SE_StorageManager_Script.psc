@@ -153,8 +153,7 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
 
     ; Called when a new soul are absorbed successfully
     Event OnSoulAbsorbed(int absorbedSoulSize)
-        parent.OnSoulAbsorbed(absorbedSoulSize)
-        
+
         if(Config.dbg)
             Debug.Notification("SEater: OnSoulAbsorbed(Storage)")
         endif
@@ -165,6 +164,7 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
         endIf
 
         ;TODO: Check if absorbedSoulSize exets storage capacity
+        Scale.UpdateScale()
     EndEvent
 
     ; Called while StorageEffect are active on player
@@ -174,11 +174,13 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
             Debug.Notification("Processing " + updateLoops + " Updates")
         endif
 
-        If (Config.storageMode == 1)
+        If (Config.storageMode == "Digest")
             while(updateLoops > 1)
                 Digest()
                 updateLoops -= 1
             EndWhile
+
+            Scale.UpdateScale()
 
             if(Config.synergyLevel > Config.maxSynergy)
                 Config.maxSynergy = Config.synergyLevel
@@ -189,6 +191,8 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
                 inLabor = Gestate()
                 updateLoops -= 1
             EndWhile
+
+            Scale.UpdateScale()
 
             if(inLabor)
                 ;TODO: Gestation Finish (birth all souls)
