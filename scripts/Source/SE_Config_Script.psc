@@ -12,7 +12,7 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
         {Increase with SynergyLevel while and only in digest mode}
 
         GlobalVariable Property iStorageMode Auto ;TODO: Change between modes
-        {What happening with unclaimed stored souls (1= Digest, 2= Gestation)}
+        {What happening with unclaimed stored souls (1= Digest, 2= Gestation, 0 = Disabled)}
 
         GlobalVariable[] Property iNumberOfSouls Auto
         {Total number of souls. Shorted by size (index 0-4 = petty-grand)}
@@ -144,7 +144,7 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
     float Property buttScaleMultiplier Auto Hidden ;Unused
     float Property buttScaleOffset Auto Hidden ;Unused
     int[] Property numberOfSouls Auto Hidden
-    string Property storageMode Auto Hidden ;FIXME: change ref property type
+    string Property storageMode Auto Hidden
     string Property bellyScalingVar Auto Hidden ;Unused
     string Property breastScalingVar Auto Hidden ;Unused
     string Property buttScalingVar Auto Hidden ;Unused
@@ -166,8 +166,10 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
         
         if(storageMode == "Digest")
             iStorageMode.SetValue(1)
-        else
+        elseif(storageMode == "Gestation")
             iStorageMode.SetValue(2)
+        else
+            iStorageMode.SetValue(0)
         endIf
 
         int index = 0
@@ -188,8 +190,10 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
 
         if(iStorageMode.GetValue() == 1)
             storageMode = "Digest"
-        else
+        elseif(iStorageMode.GetValue() == 2)
             storageMode = "Gestation"
+        Else
+            storageMode = "Disabled"
         endIf
 
         int index = 0

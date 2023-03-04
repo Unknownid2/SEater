@@ -185,7 +185,7 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
             if(Config.synergyLevel > Config.maxSynergy)
                 Config.maxSynergy = Config.synergyLevel
             endIf
-        else
+        elseif (Config.storageMode == "Gestation")
             bool inLabor
             while(updateLoops > 1)
                 inLabor = Gestate()
