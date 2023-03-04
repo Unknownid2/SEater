@@ -5,58 +5,61 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
     ; Stats
         ;TODO: Absorb Stats and skills (most read only)
 
-        GlobalVariable Property fSynergyLevel Auto ; Used to forge larger souls at gestation mode
+        GlobalVariable Property SE_fSynergyLevel_Global Auto ; Used to forge larger souls at gestation mode
         {Increases over time. digesting souls or breaking filled soulgems accelerate charge}
 
-        GlobalVariable Property fMaxSynergy Auto
+        GlobalVariable Property SE_fMaxSynergy_Global Auto
         {Increase with SynergyLevel while and only in digest mode}
 
-        GlobalVariable Property iStorageMode Auto ;TODO: Change between modes
+        GlobalVariable Property SE_iStorageMode_Global Auto ;TODO: Change between modes
         {What happening with unclaimed stored souls (1= Digest, 2= Gestation, 0 = Disabled)}
 
-        GlobalVariable[] Property iNumberOfSouls Auto
+        GlobalVariable[] Property SE_iNumberOfSouls_Global Auto
         {Total number of souls. Shorted by size (index 0-4 = petty-grand)}
 
-        GlobalVariable Property fMaxCapacity Auto
+        GlobalVariable Property SE_fMaxCapacity_Global Auto
         {The max amount of souls charge which can be hold inside caster belly}
 
     ; Storage
         ;TODO: Settings related to storage
 
-        GlobalVariable Property bCapacityModifiers Auto
+        GlobalVariable Property SE_bCapacityModifiers_Global Auto
         {Apply Buffs/Debuffs based on fulles stage}
 
-        GlobalVariable Property bCapacityEffects Auto
+        GlobalVariable Property SE_bCapacityEffects_Global Auto
         {Apply effects based on fulles stage}
 
-        GlobalVariable Property fFirstStage Auto
+        GlobalVariable Property SE_fFirstStage_Global Auto
         {% of capacity usage considered small (0-100)}
 
-        GlobalVariable Property fSecondStage Auto
+        GlobalVariable Property SE_fSecondStage_Global Auto
         {% of capacity usage considered medium (0-100)}
 
-        GlobalVariable Property fThirthStage Auto
+        GlobalVariable Property SE_fThirthStage_Global Auto
         {% of capacity usage considered high (0-100)}
 
-        GlobalVariable Property bAllowDangerousScale Auto
+        GlobalVariable Property SE_bAllowDangerousScale_Global Auto
         {Trespassing max capacity can kill}
 
-        GlobalVariable Property fBurstScale Auto
+        GlobalVariable Property SE_fBurstScale_Global Auto
         {% above max capacity where burst chance reach 100% (0-100)}
 
-        GlobalVariable Property fStretch Auto
+        GlobalVariable Property SE_fStretch_Global Auto
         {If at ThirthStage, increase max capacity by this value over time (set 0 to disable)}
+
+        GlobalVariable Property SE_fMultiplierReduction_Global Auto
+        {Porcentage of scale multiplier to be reduced with each new stored soul (if enabled)}
 
     ; Visual
         ;TODO: Settings related to effects and scale proportions
 
-        GlobalVariable Property bSheLikesIt Auto
+        GlobalVariable Property SE_bSheLikesIt_Global Auto
         {Scaling triggers specials monologs and buffs}
 
-        GlobalVariable Property bSheLovesIt Auto
+        GlobalVariable Property SE_bSheLovesIt_Global Auto
         {Scaling triggers pleasure effects like arousal and moan sounds}
 
-        GlobalVariable Property bApplyAnimations Auto
+        GlobalVariable Property SE_bApplyAnimations_Global Auto
         {Include animations when applying effects or/and dialogues}
 
         ; Scaling
@@ -67,49 +70,58 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
             ; 3 = Mode progress - use special var based on synergy gained by digestion or used by gestation
             ; 4 = Max charge level - use max capacity of soul charge level as scaling var for this node
             ; 5 = Max synergy level - use max acumulated synergy as scaling var for this node
-            GlobalVariable Property iBellyScalingVar Auto
+            GlobalVariable Property SE_iBellyScalingVar_Global Auto
             {Wich value to use for belly inflation (refer to values above)}
 
-            GlobalVariable Property fBellyScalingStart Auto
+            GlobalVariable Property SE_fBellyScalingStart_Global Auto
             {Belly will start growing when value is equal or greater than this}
 
-            GlobalVariable Property fBellyScaleMultiplier Auto
+            GlobalVariable Property SE_fBellyScaleMultiplier_Global Auto
             {The value selected for belly node will be multiplied by this before applying to scale}
 
-            GlobalVariable Property fBellyScaleOffset Auto
+            GlobalVariable Property SE_bBellyMultiplierReduction_Global Auto
+            {Reduce belly scale multiplier by number of souls (good for balancing purposes)}
+
+            GlobalVariable Property SE_fBellyScaleOffset_Global Auto
             {Modify scaling result by this value}
 
-            GlobalVariable Property iBreastScalingVar Auto
+            GlobalVariable Property SE_iBreastScalingVar_Global Auto
             {Wich value to use for breast inflation (refer to values above)}
 
-            GlobalVariable Property fBreastScalingStart Auto
+            GlobalVariable Property SE_fBreastScalingStart_Global Auto
             {Breasts will start growing when value is equal or greater than this}
 
-            GlobalVariable Property fBreastScaleMultiplier Auto
+            GlobalVariable Property SE_fBreastScaleMultiplier_Global Auto
             {The value selected for breast node will be multiplied by this before applying to scale}
 
-            GlobalVariable Property fBreastScaleOffset Auto
+            GlobalVariable Property SE_bBreastMultiplierReduction_Global Auto
+            {Reduce breast scale multiplier by number of souls (good for balancing purposes)}
+
+            GlobalVariable Property SE_fBreastScaleOffset_Global Auto
             {Modify scaling result by this value}
 
-            GlobalVariable Property iButtScalingVar Auto
+            GlobalVariable Property SE_iButtScalingVar_Global Auto
             {Wich value to use for ass inflation (refer to values above)}
 
-            GlobalVariable Property fButtScalingStart Auto
+            GlobalVariable Property SE_fButtScalingStart_Global Auto
             {Butt will start growing when value is equal or greater than this}
 
-            GlobalVariable Property fButtScaleMultiplier Auto
+            GlobalVariable Property SE_fButtScaleMultiplier_Global Auto
             {The value selected for ass node will be multiplied by this before applying to scale}
 
-            GlobalVariable Property fButtScaleOffset Auto
+            GlobalVariable Property SE_bButtMultiplierReduction_Global Auto
+            {Reduce butt scale multiplier by number of souls (good for balancing purposes)}
+
+            GlobalVariable Property SE_fButtScaleOffset_Global Auto
             {Modify scaling result by this value}
 
     ; System
         ;TODO: Misc settings
 
-        GlobalVariable Property bDbg Auto
+        GlobalVariable Property SE_bDbg_Global Auto
         {Toggle debug notifications}
 
-        GlobalVariable Property iInstalledVersion Auto
+        GlobalVariable Property SE_iInstalledVersion_Global Auto
         {Used to track updates}
 
         int Property Version = 17 AutoReadOnly ;TODO: <- Change before tests
@@ -125,6 +137,9 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
     bool Property sheLikesIt Auto Hidden ;Unused
     bool Property sheLovesIt Auto Hidden ;Unused
     bool Property applyAnimations Auto Hidden ;Unused
+    bool Property bellyMultiplierReduction Auto Hidden ;Unused
+    bool Property breastMultiplierReduction Auto Hidden ;Unused
+    bool Property buttMultiplierReduction Auto Hidden ;Unused
     bool Property dbg Auto Hidden
     float Property synergyLevel Auto Hidden
     float Property maxSynergy Auto Hidden
@@ -134,6 +149,7 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
     float Property thirthStageScale Auto Hidden ;Unused
     float Property burstScale Auto Hidden ;Unused
     float Property stretch Auto Hidden ;Unused
+    float Property MultiplierReduction Auto Hidden ;Unused
     float Property bellyScalingStart Auto Hidden ;Unused    
     float Property bellyScaleMultiplier Auto Hidden ;Unused
     float Property bellyScaleOffset Auto Hidden ;Unused
@@ -160,21 +176,21 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
     EndFunction
 
     Function SaveSettings()
-        bDbg.SetValue(dbg as float)
-        fSynergyLevel.SetValue(synergyLevel)
-        fMaxSynergy.SetValue(maxSynergy)
+        SE_bDbg_Global.SetValue(dbg as float)
+        SE_fSynergyLevel_Global.SetValue(synergyLevel)
+        SE_fMaxSynergy_Global.SetValue(maxSynergy)
         
         if(storageMode == "Digest")
-            iStorageMode.SetValue(1)
+            SE_iStorageMode_Global.SetValue(1)
         elseif(storageMode == "Gestation")
-            iStorageMode.SetValue(2)
+            SE_iStorageMode_Global.SetValue(2)
         else
-            iStorageMode.SetValue(0)
+            SE_iStorageMode_Global.SetValue(0)
         endIf
 
         int index = 0
         While (index < numberOfSouls.Length)
-            iNumberOfSouls[index].SetValue(numberOfSouls[index] as float)
+            SE_iNumberOfSouls_Global[index].SetValue(numberOfSouls[index] as float)
             index += 1
         EndWhile
 
@@ -184,21 +200,21 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
     EndFunction
 
     Function LoadSettings()
-        dbg = bDbg.GetValue() as bool
-        synergyLevel = fSynergyLevel.GetValue()
-        maxSynergy = fMaxSynergy.GetValue()
+        dbg = SE_bDbg_Global.GetValue() as bool
+        synergyLevel = SE_fSynergyLevel_Global.GetValue()
+        maxSynergy = SE_fMaxSynergy_Global.GetValue()
 
-        if(iStorageMode.GetValue() == 1)
+        if(SE_iStorageMode_Global.GetValue() == 1)
             storageMode = "Digest"
-        elseif(iStorageMode.GetValue() == 2)
+        elseif(SE_iStorageMode_Global.GetValue() == 2)
             storageMode = "Gestation"
         Else
             storageMode = "Disabled"
         endIf
 
         int index = 0
-        While (index < iNumberOfSouls.Length)
-            numberOfSouls[index] = iNumberOfSouls[index].GetValue() as int
+        While (index < SE_iNumberOfSouls_Global.Length)
+            numberOfSouls[index] = SE_iNumberOfSouls_Global[index].GetValue() as int
             index += 1
         EndWhile
 
@@ -236,7 +252,7 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
     Event OnVersionUpdate(int aVersion)
         {Called when aVersion update of this script has been detected}
         ;TODO: Update code (if needed)
-        iInstalledVersion.SetValue(Version)
+        SE_iInstalledVersion_Global.SetValue(Version)
         Debug.Notification("SEater: Updated")
         Debug.Notification("Version = " + GetVersionString())
     EndEvent
