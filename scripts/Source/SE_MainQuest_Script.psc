@@ -1,16 +1,17 @@
 Scriptname SE_MainQuest_Script extends Quest
 {Soul Eater main script}
 
-    ;/// Properties ///;
+;/// Properties ///;
     SE_Config_Script Property Config Auto
     SE_StorageManager_Script Property Storage Auto
+    SE_ScaleManager_Script Property Scale Auto
     Faction Property CreatureFaction Auto
     MagicEffect Property SoulTrapFFActor Auto
     Actor Property PlayerRef Auto
 
-    ;/// Variables ///;
+;/// Variables ///;
 
-    ;/// Functions ///;
+;/// Functions ///;
 
     ; Return Soul size of target actor
     int Function GetSoulSize(Actor target)
@@ -73,7 +74,8 @@ Scriptname SE_MainQuest_Script extends Quest
                     Debug.Notification("SEater: SoulSize = " + soulSize)
                 endIf
 
-                Storage.OnSoulAbsorbed(soulSize)
+                ;FIXME: Call events on child scripts together in one line
+                OnSoulAbsorbed(soulSize)
                 return true
             else
                 if(Config.dbg)
@@ -94,15 +96,15 @@ Scriptname SE_MainQuest_Script extends Quest
         return false
     EndFunction
 
-    ;/// Events ///;
-    ; TODO: Events not working
+;/// Events ///;
     
     ; Called when a new soul are absorbed successfully
     event OnSoulAbsorbed(int absorbedSoulSize)
         if(Config.dbg)
             Debug.Notification("SEater: OnSoulAbsorbed(Main)")
         endif
-
+        
+        Storage.OnSoulAbsorbed(absorbedSoulSize)
         ;TODO: Apply effects
         ;TODO: Apply Buffs/Debuffs
     endEvent
