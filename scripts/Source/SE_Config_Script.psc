@@ -59,6 +59,41 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
         GlobalVariable Property bApplyAnimations Auto
         {Include animations when applying effects or/and dialogues}
 
+            ; Scaling
+            ; Values for Scaling vars are:
+            ; 0 = Disabled - disable this node from scaling
+            ; 1 = Soul charge level - use soul charge level as scaling var for this node
+            ; 2 = Synergy level - use synergy level as scaling var for this node
+            ; 3 = Mode progress - use special var based on synergy gained by digestion or used by gestation
+            ; 4 = Max charge level - use max capacity of soul charge level as scaling var for this node
+            ; 5 = Max synergy level - use max acumulated synergy as scaling var for this node
+            GlobalVariable Property iBellyScalingVar Auto
+            {Wich value to use for belly inflation (refer to values above)}
+
+            GlobalVariable Property iBellyScalingStage Auto
+            {From which usage stage to belly start growing (0 = disabled, 1 = small, 2 = medium, 3 = high)}
+
+            GlobalVariable Property fBellyScale Auto
+            {The value selected for belly node will be divided by this before applying to scale}
+
+            GlobalVariable Property iBreastScalingVar Auto
+            {Wich value to use for breast inflation (refer to values above)}
+
+            GlobalVariable Property iBreastScalingStage Auto
+            {From which usage stage to breasts start growing (0 = disabled, 1 = small, 2 = medium, 3 = high)}
+
+            GlobalVariable Property fBreastScale Auto
+            {The value selected for breast node will be divided by this before applying to scale}
+
+            GlobalVariable Property iButtScalingVar Auto
+            {Wich value to use for ass inflation (refer to values above)}
+
+            GlobalVariable Property iButtScalingStage Auto
+            {From which usage stage to ass start growing (0 = disabled, 1 = small, 2 = medium, 3 = high)}
+
+            GlobalVariable Property fButtScale Auto
+            {The value selected for ass node will be divided by this before applying to scale}
+
     ; System
         ;TODO: Misc settings
 
@@ -89,8 +124,17 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
     float Property thirthStageScale Auto Hidden ;Unused
     float Property burstScale Auto Hidden ;Unused
     float Property stretch Auto Hidden ;Unused
+    float Property bellyScale Auto Hidden ;Unused
+    float Property breastScale Auto Hidden ;Unused
+    float Property buttScale Auto Hidden ;Unused
     int[] Property numberOfSouls Auto Hidden
     string Property storageMode Auto Hidden ;FIXME: change ref property type
+    string Property bellyScalingVar Auto Hidden ;Unused
+    string Property bellyScalingStage Auto Hidden ;Unused
+    string Property breastScalingVar Auto Hidden ;Unused
+    string Property breastScalingStage Auto Hidden ;Unused
+    string Property buttScalingVar Auto Hidden ;Unused
+    string Property buttScalingStage Auto Hidden ;Unused
 
 ;/// Functions ///;
     ; Returns mod version string
