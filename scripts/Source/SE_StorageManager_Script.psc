@@ -210,4 +210,5 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
             Debug.Notification("SEater: OnSoulExpeled")
         endif
         RemoveSoul(expeledSoulSize)
+        Scale.UpdateScale()
     EndEvent
