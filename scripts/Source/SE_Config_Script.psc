@@ -59,7 +59,7 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
         GlobalVariable Property bApplyAnimations Auto
         {Include animations when applying effects or/and dialogues}
 
-            ; Scaling
+        ; Scaling
             ; Values for Scaling vars are:
             ; 0 = Disabled - disable this node from scaling
             ; 1 = Soul charge level - use soul charge level as scaling var for this node
@@ -70,8 +70,8 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
             GlobalVariable Property iBellyScalingVar Auto
             {Wich value to use for belly inflation (refer to values above)}
 
-            GlobalVariable Property iBellyScalingStage Auto
-            {From which usage stage to belly start growing (0 = disabled, 1 = small, 2 = medium, 3 = high)}
+            GlobalVariable Property fBellyScalingStart Auto
+            {Belly will start growing when value is equal or greater than this}
 
             GlobalVariable Property fBellyScale Auto
             {The value selected for belly node will be divided by this before applying to scale}
@@ -79,8 +79,8 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
             GlobalVariable Property iBreastScalingVar Auto
             {Wich value to use for breast inflation (refer to values above)}
 
-            GlobalVariable Property iBreastScalingStage Auto
-            {From which usage stage to breasts start growing (0 = disabled, 1 = small, 2 = medium, 3 = high)}
+            GlobalVariable Property fBreastScalingStart Auto
+            {Breasts will start growing when value is equal or greater than this}
 
             GlobalVariable Property fBreastScale Auto
             {The value selected for breast node will be divided by this before applying to scale}
@@ -88,8 +88,8 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
             GlobalVariable Property iButtScalingVar Auto
             {Wich value to use for ass inflation (refer to values above)}
 
-            GlobalVariable Property iButtScalingStage Auto
-            {From which usage stage to ass start growing (0 = disabled, 1 = small, 2 = medium, 3 = high)}
+            GlobalVariable Property fButtScalingStart Auto
+            {Butt will start growing when value is equal or greater than this}
 
             GlobalVariable Property fButtScale Auto
             {The value selected for ass node will be divided by this before applying to scale}
@@ -109,6 +109,7 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
 ;/// Properties ///;
     SE_StorageManager_Script Property Storage Auto
 
+    ;TODO: Check Properties usage
     bool Property enableCapacityModifiers Auto Hidden ;Unused
     bool Property enableCapacityEffects Auto Hidden ;Unused
     bool Property allowDangerousScale Auto Hidden ;Unused
@@ -127,14 +128,14 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
     float Property bellyScale Auto Hidden ;Unused
     float Property breastScale Auto Hidden ;Unused
     float Property buttScale Auto Hidden ;Unused
+    float Property bellyScalingStart Auto Hidden ;Unused    
+    float Property breastScalingStart Auto Hidden ;Unused
+    float Property buttScalingStart Auto Hidden ;Unused
     int[] Property numberOfSouls Auto Hidden
     string Property storageMode Auto Hidden ;FIXME: change ref property type
     string Property bellyScalingVar Auto Hidden ;Unused
-    string Property bellyScalingStage Auto Hidden ;Unused
     string Property breastScalingVar Auto Hidden ;Unused
-    string Property breastScalingStage Auto Hidden ;Unused
     string Property buttScalingVar Auto Hidden ;Unused
-    string Property buttScalingStage Auto Hidden ;Unused
 
 ;/// Functions ///;
     ; Returns mod version string
