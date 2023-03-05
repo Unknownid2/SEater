@@ -68,7 +68,7 @@ float buttMultiplier
             SLIF_Main.unregisterNode(PlayerRef, "slif_belly", Config.ModName)
 
             if(Config.dbg)
-                Debug.Notification("initial ref value < 0: belly node unregistered")
+                Debug.Notification("initial ref value bellow 0: belly node unregistered")
             endif
         else
             if(Config.dbg)
@@ -111,7 +111,7 @@ float buttMultiplier
             SLIF_Main.unregisterNode(PlayerRef, "slif_breast", Config.ModName)
 
             if(Config.dbg)
-                Debug.Notification("initial ref value < 0: breast node unregistered")
+                Debug.Notification("initial ref value bellow 0: breast node unregistered")
             endif
         else
             if(Config.dbg)
@@ -155,7 +155,7 @@ float buttMultiplier
             SLIF_Main.unregisterNode(PlayerRef, "slif_butt", Config.ModName)
 
             if(Config.dbg)
-                Debug.Notification("initial ref value < 0: butt node unregistered")
+                Debug.Notification("initial ref value bellow 0: butt node unregistered")
             endif
         else
             if(Config.dbg)
