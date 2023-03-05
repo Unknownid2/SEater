@@ -136,7 +136,7 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
         GlobalVariable Property SE_iInstalledVersion_Global Auto
         {Used to track updates}
 
-        int Property Version = 17 AutoReadOnly ;TODO: <- Change before tests
+        int Property Version = 20 AutoReadOnly ;TODO: <- Change before tests
         {Mod version}
 
 ;/// Properties ///;
@@ -180,7 +180,7 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
 ;/// Functions ///;
     ; Returns mod version string
     string Function GetVersionString()
-        return "0.1.17" ;TODO: <- Change before tests
+        return "0.1.20" ;TODO: <- Change before tests
     EndFunction
 
     int Function GetVersion()
@@ -214,6 +214,7 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
         dbg = SE_bDbg_Global.GetValue() as bool
         synergyLevel = SE_fSynergyLevel_Global.GetValue()
         maxSynergy = SE_fMaxSynergy_Global.GetValue()
+        numberOfSouls = new int[5]
         numberOfSouls[0] = SE_iNumberOfPetty_Global.GetValue() as int
         numberOfSouls[1] = SE_iNumberOfLesser_Global.GetValue() as int
         numberOfSouls[2] = SE_iNumberOfCommon_Global.GetValue() as int
