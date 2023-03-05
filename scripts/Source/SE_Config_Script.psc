@@ -60,7 +60,7 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
         {If at ThirthStage, increase max capacity by this value over time (set 0 to disable)}
 
         GlobalVariable Property SE_fMultiplierReduction_Global Auto
-        {Porcentage of scale multiplier to be reduced with each new stored soul (if enabled)}
+        {Porcentage of scale multiplier to be reduced with each stored soul (if enabled) (0-100)}
 
     ; Visual
         ;TODO: Settings related to effects and scale proportions
@@ -88,10 +88,10 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
             GlobalVariable Property SE_fBellyScalingStart_Global Auto
             {Belly will start growing when value is equal or greater than this}
 
-            GlobalVariable Property SE_fBellyScaleMultiplier_Global Auto
+            GlobalVariable Property SE_fBellyMultiplier_Global Auto
             {The value selected for belly node will be multiplied by this before applying to scale}
 
-            GlobalVariable Property SE_bBellyMultiplierReduction_Global Auto
+            GlobalVariable Property SE_bScaleBellyMultiplier_Global Auto
             {Reduce belly scale multiplier by number of souls (good for balancing purposes)}
 
             GlobalVariable Property SE_fBellyScaleOffset_Global Auto
@@ -103,10 +103,10 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
             GlobalVariable Property SE_fBreastScalingStart_Global Auto
             {Breasts will start growing when value is equal or greater than this}
 
-            GlobalVariable Property SE_fBreastScaleMultiplier_Global Auto
+            GlobalVariable Property SE_fBreastMultiplier_Global Auto
             {The value selected for breast node will be multiplied by this before applying to scale}
 
-            GlobalVariable Property SE_bBreastMultiplierReduction_Global Auto
+            GlobalVariable Property SE_bScaleBreastMultiplier_Global Auto
             {Reduce breast scale multiplier by number of souls (good for balancing purposes)}
 
             GlobalVariable Property SE_fBreastScaleOffset_Global Auto
@@ -118,10 +118,10 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
             GlobalVariable Property SE_fButtScalingStart_Global Auto
             {Butt will start growing when value is equal or greater than this}
 
-            GlobalVariable Property SE_fButtScaleMultiplier_Global Auto
+            GlobalVariable Property SE_fButtMultiplier_Global Auto
             {The value selected for ass node will be multiplied by this before applying to scale}
 
-            GlobalVariable Property SE_bButtMultiplierReduction_Global Auto
+            GlobalVariable Property SE_bScaleButtMultiplier_Global Auto
             {Reduce butt scale multiplier by number of souls (good for balancing purposes)}
 
             GlobalVariable Property SE_fButtScaleOffset_Global Auto
@@ -149,9 +149,9 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
     bool Property sheLikesIt Auto Hidden ;Unused
     bool Property sheLovesIt Auto Hidden ;Unused
     bool Property applyAnimations Auto Hidden ;Unused
-    bool Property bellyMultiplierReduction Auto Hidden ;Unused
-    bool Property breastMultiplierReduction Auto Hidden ;Unused
-    bool Property buttMultiplierReduction Auto Hidden ;Unused
+    bool Property scaleBellyMultiplier Auto Hidden ;Unused
+    bool Property scaleBreastMultiplier Auto Hidden ;Unused
+    bool Property scaleButtMultiplier Auto Hidden ;Unused
     bool Property dbg Auto Hidden
     float Property synergyLevel Auto Hidden
     float Property maxSynergy Auto Hidden
@@ -161,15 +161,15 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
     float Property thirthStageScale Auto Hidden ;Unused
     float Property burstScale Auto Hidden ;Unused
     float Property stretch Auto Hidden ;Unused
-    float Property MultiplierReduction Auto Hidden ;Unused
+    float Property multiplierScalePorcentage Auto Hidden ;Unused
     float Property bellyScalingStart Auto Hidden ;Unused    
-    float Property bellyScaleMultiplier Auto Hidden ;Unused
+    float Property bellyMultiplier Auto Hidden ;Unused
     float Property bellyScaleOffset Auto Hidden ;Unused
     float Property breastScalingStart Auto Hidden ;Unused
-    float Property breastScaleMultiplier Auto Hidden ;Unused
+    float Property breastMultiplier Auto Hidden ;Unused
     float Property breastScaleOffset Auto Hidden ;Unused
     float Property buttScalingStart Auto Hidden ;Unused
-    float Property buttScaleMultiplier Auto Hidden ;Unused
+    float Property buttMultiplier Auto Hidden ;Unused
     float Property buttScaleOffset Auto Hidden ;Unused
     int[] Property numberOfSouls Auto Hidden
     string Property storageMode Auto Hidden

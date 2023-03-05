@@ -75,13 +75,12 @@ float buttMultiplier
                 Debug.Notification("Updating belly node, initial ref: " + referenceValue)
             endif
 
-            bellyMultiplier = Config.bellyScaleMultiplier
+            bellyMultiplier = Config.bellyMultiplier
 
-            if(Config.bellyMultiplierReduction)
-                
+            if(Config.scaleBellyMultiplier)
                 int index = 0
                 While (index < Storage.GetNumberOfSouls())
-                    bellyMultiplier *= (Config.MultiplierReduction - 100) * -0.01
+                    bellyMultiplier *= (Config.multiplierScalePorcentage - 100) * -0.01
                     index += 1
                 EndWhile
             EndIf
@@ -119,13 +118,13 @@ float buttMultiplier
                 Debug.Notification("Updating breast node, initial ref: " + referenceValue)
             endif
 
-            breastMultiplier = Config.breastScaleMultiplier
+            breastMultiplier = Config.breastMultiplier
 
-            if(Config.breastMultiplierReduction)
+            if(Config.scaleBreastMultiplier)
                 
                 int index = 0
                 While (index < Storage.GetNumberOfSouls())
-                    breastMultiplier *= (Config.MultiplierReduction - 100) * -0.01
+                    breastMultiplier *= (Config.multiplierScalePorcentage - 100) * -0.01
                     index += 1
                 EndWhile
             EndIf
@@ -163,13 +162,13 @@ float buttMultiplier
                 Debug.Notification("Updating butt node, initial ref: " + referenceValue)
             endif
 
-            buttMultiplier = Config.buttScaleMultiplier
+            buttMultiplier = Config.buttMultiplier
 
-            if(Config.buttMultiplierReduction)
+            if(Config.scaleButtMultiplier)
                 
                 int index = 0
                 While (index < Storage.GetNumberOfSouls())
-                    buttMultiplier *= (Config.MultiplierReduction - 100) * -0.01
+                    buttMultiplier *= (Config.multiplierScalePorcentage - 100) * -0.01
                     index += 1
                 EndWhile
             EndIf
