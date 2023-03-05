@@ -149,9 +149,9 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
     bool Property sheLikesIt Auto Hidden ;Unused
     bool Property sheLovesIt Auto Hidden ;Unused
     bool Property applyAnimations Auto Hidden ;Unused
-    bool Property scaleBellyMultiplier Auto Hidden ;Unused
-    bool Property scaleBreastMultiplier Auto Hidden ;Unused
-    bool Property scaleButtMultiplier Auto Hidden ;Unused
+    bool Property scaleBellyMultiplier Auto Hidden ;TODO: Missing Settings
+    bool Property scaleBreastMultiplier Auto Hidden ;TODO: Missing Settings
+    bool Property scaleButtMultiplier Auto Hidden ;TODO: Missing Settings
     bool Property dbg Auto Hidden
     float Property synergyLevel Auto Hidden
     float Property maxSynergy Auto Hidden
@@ -161,21 +161,21 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
     float Property thirthStageScale Auto Hidden ;Unused
     float Property burstScale Auto Hidden ;Unused
     float Property stretch Auto Hidden ;Unused
-    float Property multiplierScalePorcentage Auto Hidden ;Unused
-    float Property bellyScalingStart Auto Hidden ;Unused    
-    float Property bellyMultiplier Auto Hidden ;Unused
-    float Property bellyScaleOffset Auto Hidden ;Unused
-    float Property breastScalingStart Auto Hidden ;Unused
-    float Property breastMultiplier Auto Hidden ;Unused
-    float Property breastScaleOffset Auto Hidden ;Unused
-    float Property buttScalingStart Auto Hidden ;Unused
-    float Property buttMultiplier Auto Hidden ;Unused
-    float Property buttScaleOffset Auto Hidden ;Unused
+    float Property multiplierScalePorcentage Auto Hidden ;TODO: Missing Settings
+    float Property bellyScalingStart Auto Hidden ;TODO: Missing Settings   
+    float Property bellyMultiplier Auto Hidden ;TODO: Missing Settings
+    float Property bellyScaleOffset Auto Hidden ;TODO: Missing Settings
+    float Property breastScalingStart Auto Hidden ;TODO: Missing Settings
+    float Property breastMultiplier Auto Hidden ;TODO: Missing Settings
+    float Property breastScaleOffset Auto Hidden ;TODO: Missing Settings
+    float Property buttScalingStart Auto Hidden ;TODO: Missing Settings
+    float Property buttMultiplier Auto Hidden ;TODO: Missing Settings
+    float Property buttScaleOffset Auto Hidden ;TODO: Missing Settings
     int[] Property numberOfSouls Auto Hidden
     string Property storageMode Auto Hidden
-    string Property bellyScalingVar Auto Hidden ;Unused
-    string Property breastScalingVar Auto Hidden ;Unused
-    string Property buttScalingVar Auto Hidden ;Unused
+    string Property bellyScalingVar Auto Hidden ;TODO: Missing Settings
+    string Property breastScalingVar Auto Hidden ;TODO: Missing Settings
+    string Property buttScalingVar Auto Hidden ;TODO: Missing Settings
 
 ;/// Functions ///;
     ; Returns mod version string
@@ -189,8 +189,21 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
 
     Function SaveSettings()
         SE_bDbg_Global.SetValue(dbg as float)
+        SE_bScaleBellyMultiplier_Global.SetValue(scaleBellyMultiplier as float)
+        SE_bScaleBreastMultiplier_Global.SetValue(scaleBreastMultiplier as float)
+        SE_bScaleButtMultiplier_Global.SetValue(scaleButtMultiplier as float)
         SE_fSynergyLevel_Global.SetValue(synergyLevel)
         SE_fMaxSynergy_Global.SetValue(maxSynergy)
+        SE_fMultiplierReduction_Global.SetValue(multiplierScalePorcentage)
+        SE_fBellyScalingStart_Global.SetValue(bellyScalingStart)
+        SE_fBreastScalingStart_Global.SetValue(breastScalingStart)
+        SE_fButtScalingStart_Global.SetValue(buttScalingStart)
+        SE_fBellyMultiplier_Global.SetValue(bellyMultiplier)
+        SE_fBreastMultiplier_Global.SetValue(breastMultiplier)
+        SE_fButtMultiplier_Global.SetValue(buttMultiplier)
+        SE_fBellyScaleOffset_Global.SetValue(bellyScaleOffset)
+        SE_fBreastScaleOffset_Global.SetValue(breastScaleOffset)
+        SE_fButtScaleOffset_Global.SetValue(buttScaleOffset)
         SE_iNumberOfPetty_Global.SetValue(numberOfSouls[0] as float)
         SE_iNumberOfLesser_Global.SetValue(numberOfSouls[1] as float)
         SE_iNumberOfCommon_Global.SetValue(numberOfSouls[2] as float)
@@ -205,6 +218,48 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
             SE_iStorageMode_Global.SetValue(0)
         endIf
 
+        if(bellyScalingVar == "Soul charge level")
+            SE_iBellyScalingVar_Global.SetValue(1)
+        elseif(bellyScalingVar == "Synergy level")
+            SE_iBellyScalingVar_Global.SetValue(2)
+        elseif(bellyScalingVar == "Mode progress")
+            SE_iBellyScalingVar_Global.SetValue(3)
+        elseif(bellyScalingVar == "Max charge level")
+            SE_iBellyScalingVar_Global.SetValue(4)
+        elseif(bellyScalingVar == "Max synergy level")
+            SE_iBellyScalingVar_Global.SetValue(5)
+        else
+            SE_iBellyScalingVar_Global.SetValue(0)
+        endif
+
+        if(breastScalingVar == "Soul charge level")
+            SE_iBreastScalingVar_Global.SetValue(1)
+        elseif(breastScalingVar == "Synergy level")
+            SE_iBreastScalingVar_Global.SetValue(2)
+        elseif(breastScalingVar == "Mode progress")
+            SE_iBreastScalingVar_Global.SetValue(3)
+        elseif(breastScalingVar == "Max charge level")
+            SE_iBreastScalingVar_Global.SetValue(4)
+        elseif(breastScalingVar == "Max synergy level")
+            SE_iBreastScalingVar_Global.SetValue(5)
+        else
+            SE_iBreastScalingVar_Global.SetValue(0)
+        endif
+
+        if(buttScalingVar == "Soul charge level")
+            SE_iButtScalingVar_Global.SetValue(1)
+        elseif(buttScalingVar == "Synergy level")
+            SE_iButtScalingVar_Global.SetValue(2)
+        elseif(buttScalingVar == "Mode progress")
+            SE_iButtScalingVar_Global.SetValue(3)
+        elseif(buttScalingVar == "Max charge level")
+            SE_iButtScalingVar_Global.SetValue(4)
+        elseif(buttScalingVar == "Max synergy level")
+            SE_iButtScalingVar_Global.SetValue(5)
+        else
+            SE_iButtScalingVar_Global.SetValue(0)
+        endif
+
         if(dbg)
             Debug.Notification("SEater: Settings saved")
         endif
@@ -212,8 +267,21 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
 
     Function LoadSettings()
         dbg = SE_bDbg_Global.GetValue() as bool
+        scaleBellyMultiplier = SE_bScaleBellyMultiplier_Global.GetValue() as bool
+        scaleBreastMultiplier = SE_bScaleBreastMultiplier_Global.GetValue() as bool
+        scaleButtMultiplier = SE_bScaleButtMultiplier_Global.GetValue() as bool
         synergyLevel = SE_fSynergyLevel_Global.GetValue()
         maxSynergy = SE_fMaxSynergy_Global.GetValue()
+        multiplierScalePorcentage = SE_fMultiplierReduction_Global.GetValue()
+        bellyScalingStart = SE_fBellyScalingStart_Global.GetValue()
+        breastScalingStart = SE_fBreastScalingStart_Global.GetValue()
+        buttScalingStart = SE_fButtScalingStart_Global.GetValue()
+        bellyMultiplier = SE_fBellyMultiplier_Global.GetValue()
+        breastMultiplier = SE_fBreastMultiplier_Global.GetValue()
+        buttMultiplier = SE_fButtMultiplier_Global.GetValue()
+        bellyScaleOffset = SE_fBellyScaleOffset_Global.GetValue()
+        breastScaleOffset = SE_fBreastScaleOffset_Global.GetValue()
+        buttScaleOffset = SE_fButtScaleOffset_Global.GetValue()
         numberOfSouls = new int[5]
         numberOfSouls[0] = SE_iNumberOfPetty_Global.GetValue() as int
         numberOfSouls[1] = SE_iNumberOfLesser_Global.GetValue() as int
@@ -228,6 +296,48 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
         Else
             storageMode = "Disabled"
         endIf
+
+        if(SE_iBellyScalingVar_Global.GetValue() == 1)
+            bellyScalingVar = "Soul charge level"
+        elseif(SE_iBellyScalingVar_Global.GetValue() == 2)
+            bellyScalingVar = "Synergy level"
+        elseif(SE_iBellyScalingVar_Global.GetValue() == 3)
+            bellyScalingVar = "Mode progress"
+        elseif(SE_iBellyScalingVar_Global.GetValue() == 4)
+            bellyScalingVar = "Max charge level"
+        elseif(SE_iBellyScalingVar_Global.GetValue() == 5)
+            bellyScalingVar = "Max synergy level"
+        else
+            bellyScalingVar = "Disabled"
+        endif
+
+        if(SE_iBreastScalingVar_Global.GetValue() == 1)
+            breastScalingVar = "Soul charge level"
+        elseif(SE_iBreastScalingVar_Global.GetValue() == 2)
+            breastScalingVar = "Synergy level"
+        elseif(SE_iBreastScalingVar_Global.GetValue() == 3)
+            breastScalingVar = "Mode progress"
+        elseif(SE_iBreastScalingVar_Global.GetValue() == 4)
+            breastScalingVar = "Max charge level"
+        elseif(SE_iBreastScalingVar_Global.GetValue() == 5)
+            breastScalingVar = "Max synergy level"
+        else
+            breastScalingVar = "Disabled"
+        endif
+
+        if(SE_iButtScalingVar_Global.GetValue() == 1)
+            buttScalingVar = "Soul charge level"
+        elseif(SE_iButtScalingVar_Global.GetValue() == 2)
+            buttScalingVar = "Synergy level"
+        elseif(SE_iButtScalingVar_Global.GetValue() == 3)
+            buttScalingVar = "Mode progress"
+        elseif(SE_iButtScalingVar_Global.GetValue() == 4)
+            buttScalingVar = "Max charge level"
+        elseif(SE_iButtScalingVar_Global.GetValue() == 5)
+            buttScalingVar = "Max synergy level"
+        else
+            buttScalingVar = "Disabled"
+        endif
 
         if(dbg)
             Debug.Notification("SEater: Settings loaded")
