@@ -13,9 +13,21 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
 
         GlobalVariable Property SE_iStorageMode_Global Auto ;TODO: Change between modes
         {What happening with unclaimed stored souls (1= Digest, 2= Gestation, 0 = Disabled)}
+        
+        GlobalVariable Property SE_iNumberOfPetty_Global Auto
+        {Number of stored petty souls}
 
-        GlobalVariable[] Property SE_iNumberOfSouls_Global Auto
-        {Total number of souls. Shorted by size (index 0-4 = petty-grand)}
+        GlobalVariable Property SE_iNumberOfLesser_Global Auto
+        {Number of stored lesser souls}
+
+        GlobalVariable Property SE_iNumberOfCommon_Global Auto
+        {Number of stored common souls}
+
+        GlobalVariable Property SE_iNumberOfGreater_Global Auto
+        {Number of stored greater souls}
+
+        GlobalVariable Property SE_iNumberOfGrand_Global Auto
+        {Number of stored grand souls}
 
         GlobalVariable Property SE_fMaxCapacity_Global Auto
         {The max amount of souls charge which can be hold inside caster belly}
@@ -179,6 +191,11 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
         SE_bDbg_Global.SetValue(dbg as float)
         SE_fSynergyLevel_Global.SetValue(synergyLevel)
         SE_fMaxSynergy_Global.SetValue(maxSynergy)
+        SE_iNumberOfPetty_Global.SetValue(numberOfSouls[0] as float)
+        SE_iNumberOfLesser_Global.SetValue(numberOfSouls[1] as float)
+        SE_iNumberOfCommon_Global.SetValue(numberOfSouls[2] as float)
+        SE_iNumberOfGreater_Global.SetValue(numberOfSouls[3] as float)
+        SE_iNumberOfGrand_Global.SetValue(numberOfSouls[4] as float)
         
         if(storageMode == "Digest")
             SE_iStorageMode_Global.SetValue(1)
@@ -187,12 +204,6 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
         else
             SE_iStorageMode_Global.SetValue(0)
         endIf
-
-        int index = 0
-        While (index < numberOfSouls.Length)
-            SE_iNumberOfSouls_Global[index].SetValue(numberOfSouls[index] as float)
-            index += 1
-        EndWhile
 
         if(dbg)
             Debug.Notification("SEater: Settings saved")
@@ -203,6 +214,11 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
         dbg = SE_bDbg_Global.GetValue() as bool
         synergyLevel = SE_fSynergyLevel_Global.GetValue()
         maxSynergy = SE_fMaxSynergy_Global.GetValue()
+        numberOfSouls[0] = SE_iNumberOfPetty_Global.GetValue() as int
+        numberOfSouls[1] = SE_iNumberOfLesser_Global.GetValue() as int
+        numberOfSouls[2] = SE_iNumberOfCommon_Global.GetValue() as int
+        numberOfSouls[3] = SE_iNumberOfGreater_Global.GetValue() as int
+        numberOfSouls[4] = SE_iNumberOfGrand_Global.GetValue() as int
 
         if(SE_iStorageMode_Global.GetValue() == 1)
             storageMode = "Digest"
@@ -211,12 +227,6 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
         Else
             storageMode = "Disabled"
         endIf
-
-        int index = 0
-        While (index < SE_iNumberOfSouls_Global.Length)
-            numberOfSouls[index] = SE_iNumberOfSouls_Global[index].GetValue() as int
-            index += 1
-        EndWhile
 
         if(dbg)
             Debug.Notification("SEater: Settings loaded")
