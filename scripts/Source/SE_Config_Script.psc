@@ -1,6 +1,9 @@
 Scriptname SE_Config_Script extends SKI_ConfigBase 
 {Script for Soul Eater MCM}
 
+import StringUtil
+
+
 ;/// Settings ///;
     ; Stats
         ;TODO: Absorb Stats and skills (most read only)
@@ -181,6 +184,26 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
     ; Returns mod version string
     string Function GetVersionString()
         return "0.1.20" ;TODO: <- Change before tests
+    EndFunction
+
+    ; Cuts decimals after dot and return the result as string
+    string Function FormatFloat(float value, int maxDecimals)
+        string formation = value
+        string result = ""
+
+        int index = 0
+        int dotIndex = Find(formation, ".")
+        While (index < GetLength(formation))
+            result += GetNthChar(formation, index)
+
+            If (index - dotIndex >= maxDecimals)
+                index = GetLength(formation)
+            EndIf
+
+            index += 1
+        EndWhile
+
+        return result
     EndFunction
 
     int Function GetVersion()
