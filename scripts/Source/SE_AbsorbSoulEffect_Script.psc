@@ -35,7 +35,7 @@ Scriptname SE_AbsorbSoulEffect_Script extends ActiveMagicEffect
 
     ; Event received when this effect is first started (OnInit may not have been run yet!)
     Event OnEffectStart(Actor target, Actor caster)
-        if(Config.bDbg.GetValue() > 0)
+        if(Config.dbg)
             Debug.Notification("SEater: OnEffectStart")
         endif
         
@@ -57,7 +57,7 @@ Scriptname SE_AbsorbSoulEffect_Script extends ActiveMagicEffect
     ; Event received when this effect is finished (effect may already be deleted, calling
     ; functions on this effect will fail)
     Event OnEffectFinish(Actor target, Actor caster)
-        bool dbg = Config.bDbg.GetValue() as bool
+        bool dbg = Config.dbg
         if(dbg)
             Debug.Notification("SEater: OnEffectFinish")
         endif
