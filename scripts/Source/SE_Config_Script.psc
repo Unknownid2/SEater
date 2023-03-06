@@ -139,7 +139,7 @@ import StringUtil
         GlobalVariable Property SE_iInstalledVersion_Global Auto
         {Used to track updates}
 
-        int Property Version = 20 AutoReadOnly ;TODO: <- Change before tests
+        int Property Version = 21 AutoReadOnly ;TODO: <- Change before tests
         {Mod version}
 
 ;/// Properties ///;
@@ -183,7 +183,7 @@ import StringUtil
 ;/// Functions ///;
     ; Returns mod version string
     string Function GetVersionString()
-        return "0.1.20" ;TODO: <- Change before tests
+        return "0.1.21" ;TODO: <- Change before tests
     EndFunction
 
     ; Cuts decimals after dot and return the result as string
@@ -421,10 +421,13 @@ import StringUtil
             AddTextOptionST("stats_NumberOfGrand", "Number of grand souls", numberOfSouls[4]) ;TODO: Missing state
 
         elseif(a_page == "Storage")
+            SetCursorPosition(0)
+            SetCursorFillMode(LEFT_TO_RIGHT)
+            AddSliderOptionST("storage_MultiplierReduction", "Multiplier reduction", multiplierScalePorcentage, "{0}%") ;TODO: Missing state
+
         elseif(a_page == "Visual")
             SetCursorPosition(0)
             SetCursorFillMode(TOP_TO_BOTTOM)
-            AddSliderOptionST("visual_MultiplierReduction", "Multiplier reduction", multiplierScalePorcentage, "{0}%") ;TODO: Missing state
 
             ;Scaling
             SetCursorPosition(1)
