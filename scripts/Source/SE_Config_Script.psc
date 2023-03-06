@@ -180,6 +180,39 @@ import StringUtil
     string Property breastScalingVar Auto Hidden
     string Property buttScalingVar Auto Hidden
 
+;/// Default Values ///;
+    const bool default_EnableCapacityModifiers = true
+    const bool default_EnableCapacityEffects = true
+    const bool default_AllowDangerousScale = true
+    const bool default_SheLikesIt = true
+    const bool default_SheLovesIt = true
+    const bool default_ApplyAnimations = true
+    const bool default_ScaleBellyMultiplier = true
+    const bool default_ScaleBreastMultiplier = true
+    const bool default_ScaleButtMultiplier = true
+    const bool default_Dbg = true
+    const float default_SynergyLevel = 0.0
+    const float default_MaxSynergy = 0.0
+    const float default_MaxCapacity = 0.0
+    const float default_FirstStageScale = 25
+    const float default_SecondStageScale = 50
+    const float default_ThirthStageScale = 75
+    const float default_BurstScale = 100
+    const float default_Stretch = 1.0
+    const float default_MultiplierScalePorcentage = 10
+    const float default_BellyScalingStart = 0.0
+    const float default_BellyMultiplier = 0.300
+    const float default_BellyScaleOffset = 1.0
+    const float default_BreastScalingStart = 0.0
+    const float default_BreastMultiplier = 0.030
+    const float default_BreastScaleOffset = 1.0
+    const float default_ButtScalingStart = 0.0
+    const float default_ButtMultiplier = 0.030
+    const float default_ButtScaleOffset = 1.0
+    const string default_BellyScalingVar = "Soul charge level"
+    const string default_BreastScalingVar = "Soul charge level"
+    const string default_ButtScalingVar = "Soul charge level"
+
 ;/// Functions ///;
     ; Returns mod version string
     string Function GetVersionString()
