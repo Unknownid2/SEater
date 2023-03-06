@@ -152,9 +152,9 @@ import StringUtil
     bool Property sheLikesIt Auto Hidden ;Unused
     bool Property sheLovesIt Auto Hidden ;Unused
     bool Property applyAnimations Auto Hidden ;Unused
-    bool Property scaleBellyMultiplier Auto Hidden ;TODO: Missing Settings
-    bool Property scaleBreastMultiplier Auto Hidden ;TODO: Missing Settings
-    bool Property scaleButtMultiplier Auto Hidden ;TODO: Missing Settings
+    bool Property scaleBellyMultiplier Auto Hidden
+    bool Property scaleBreastMultiplier Auto Hidden
+    bool Property scaleButtMultiplier Auto Hidden
     bool Property dbg Auto Hidden
     float Property synergyLevel Auto Hidden
     float Property maxSynergy Auto Hidden
@@ -164,21 +164,21 @@ import StringUtil
     float Property thirthStageScale Auto Hidden ;Unused
     float Property burstScale Auto Hidden ;Unused
     float Property stretch Auto Hidden ;Unused
-    float Property multiplierScalePorcentage Auto Hidden ;TODO: Missing Settings
-    float Property bellyScalingStart Auto Hidden ;TODO: Missing Settings   
-    float Property bellyMultiplier Auto Hidden ;TODO: Missing Settings
-    float Property bellyScaleOffset Auto Hidden ;TODO: Missing Settings
-    float Property breastScalingStart Auto Hidden ;TODO: Missing Settings
-    float Property breastMultiplier Auto Hidden ;TODO: Missing Settings
-    float Property breastScaleOffset Auto Hidden ;TODO: Missing Settings
-    float Property buttScalingStart Auto Hidden ;TODO: Missing Settings
-    float Property buttMultiplier Auto Hidden ;TODO: Missing Settings
-    float Property buttScaleOffset Auto Hidden ;TODO: Missing Settings
+    float Property multiplierScalePorcentage Auto Hidden
+    float Property bellyScalingStart Auto Hidden
+    float Property bellyMultiplier Auto Hidden
+    float Property bellyScaleOffset Auto Hidden
+    float Property breastScalingStart Auto Hidden
+    float Property breastMultiplier Auto Hidden
+    float Property breastScaleOffset Auto Hidden
+    float Property buttScalingStart Auto Hidden
+    float Property buttMultiplier Auto Hidden
+    float Property buttScaleOffset Auto Hidden
     int[] Property numberOfSouls Auto Hidden
     string Property storageMode Auto Hidden
-    string Property bellyScalingVar Auto Hidden ;TODO: Missing Settings
-    string Property breastScalingVar Auto Hidden ;TODO: Missing Settings
-    string Property buttScalingVar Auto Hidden ;TODO: Missing Settings
+    string Property bellyScalingVar Auto Hidden
+    string Property breastScalingVar Auto Hidden
+    string Property buttScalingVar Auto Hidden
 
 ;/// Functions ///;
     ; Returns mod version string
@@ -422,11 +422,41 @@ import StringUtil
 
         elseif(a_page == "Storage")
         elseif(a_page == "Visual")
+            SetCursorPosition(0)
+            SetCursorFillMode(TOP_TO_BOTTOM)
+            AddSliderOptionST("visual_MultiplierReduction", "Multiplier reduction", multiplierScalePorcentage, "{0}%") ;TODO: Missing state
+
+            ;Scaling
+            SetCursorPosition(1)
+            AddHeaderOption("Belly Scaling")
+            AddMenuOptionST("visual_Belly_ScalingValue", "Scaling value", bellyScalingVar) ;TODO: Missing state
+            AddSliderOptionST("visual_Belly_ScalingStart", "Scaling start", bellyScalingStart, "{1}") ;TODO: Missing state
+            AddSliderOptionST("visual_Belly_Multiplier", "Multiplier", bellyMultiplier, "{3}") ;TODO: Missing state
+            AddSliderOptionST("visual_Belly_Offset", "Offset", bellyScaleOffset, "{2}") ;TODO: Missing state
+            AddToggleOptionST("visual_Belly_ReduceMultiplier", "Reduce multiplier", scaleBellyMultiplier) ;TODO: Missing state
+            AddEmptyOption()
+
+            AddHeaderOption("Breast Scaling")
+            AddMenuOptionST("visual_Breast_ScalingValue", "Scaling value", breastScalingVar) ;TODO: Missing state
+            AddSliderOptionST("visual_Breast_ScalingStart", "Scaling start", breastScalingStart, "{1}") ;TODO: Missing state
+            AddSliderOptionST("visual_Breast_Multiplier", "Multiplier", breastMultiplier, "{3}") ;TODO: Missing state
+            AddSliderOptionST("visual_Breast_Offset", "Offset", breastScaleOffset, "{2}") ;TODO: Missing state
+            AddToggleOptionST("visual_Breast_ReduceMultiplier", "Reduce multiplier", scaleBreastMultiplier) ;TODO: Missing state
+            AddEmptyOption()
+
+            AddHeaderOption("Butt Scaling")
+            AddMenuOptionST("visual_Butt_ScalingValue", "Scaling value", buttScalingVar) ;TODO: Missing state
+            AddSliderOptionST("visual_Butt_ScalingStart", "Scaling start", buttScalingStart, "{1}") ;TODO: Missing state
+            AddSliderOptionST("visual_Butt_Multiplier", "Multiplier", buttMultiplier, "{3}") ;TODO: Missing state
+            AddSliderOptionST("visual_Butt_Offset", "Offset", buttScaleOffset, "{2}") ;TODO: Missing state
+            AddToggleOptionST("visual_Butt_ReduceMultiplier", "Reduce multiplier", scaleButtMultiplier) ;TODO: Missing state
+
         elseif(a_page == "System")
             SetCursorPosition(0)
             SetCursorFillMode(TOP_TO_BOTTOM)
             AddToggleOptionST("system_DebugMode", "Debug mode", dbg)
             AddTextOptionST("system_Version", "Version", GetVersionString())
+
         endif
     EndEvent
     
