@@ -405,21 +405,21 @@ import StringUtil
     Event OnPageReset(string a_page)
         if(a_page == "Stats")
             SetCursorPosition(0)
-            SetCursorFillMode(LEFT_TO_RIGHT)
-            AddTextOptionST("stats_Synergy", "Synergy", synergyLevel + "/" + maxSynergy)
+            SetCursorFillMode(TOP_TO_BOTTOM)
+            AddTextOptionST("stats_Synergy", "Synergy", FormatFloat(synergyLevel, 1) + "/" + FormatFloat(maxSynergy, 1))
             AddTextOptionST("stats_Mode", "Mode", storageMode) ;TODO: Missing state
             ;AddTextOptionST("stats_ChargeLevel", "Charge Level", Storage.GetTotalChargeLevel()) ;TODO: Missing state
 
             ;Stored Souls
-            SetCursorFillMode(TOP_TO_BOTTOM)
+            SetCursorPosition(1)
             AddHeaderOption("Stored Souls")
-            SetCursorFillMode(LEFT_TO_RIGHT)
+            AddTextOptionST("stats_TotalNumberOfSouls", "Total number of souls", Storage.GetNumberOfSouls()) ;TODO: Missing state
             AddTextOptionST("stats_NumberOfPetty", "Number of petty souls", numberOfSouls[0]) ;TODO: Missing state
             AddTextOptionST("stats_NumberOfLesser", "Number of lesser souls", numberOfSouls[1]) ;TODO: Missing state
             AddTextOptionST("stats_NumberOfCommon", "Number of common souls", numberOfSouls[2]) ;TODO: Missing state
             AddTextOptionST("stats_NumberOfGreater", "Number of greater souls", numberOfSouls[3]) ;TODO: Missing state
             AddTextOptionST("stats_NumberOfGrand", "Number of grand souls", numberOfSouls[4]) ;TODO: Missing state
-            AddTextOptionST("stats_TotalNumberOfSouls", "Total number of souls", Storage.GetNumberOfSouls()) ;TODO: Missing state
+
         elseif(a_page == "Storage")
         elseif(a_page == "Visual")
         elseif(a_page == "System")
