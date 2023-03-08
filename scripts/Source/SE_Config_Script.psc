@@ -316,9 +316,7 @@ import StringUtil
             SE_iButtScalingVar_Global.SetValue(0)
         endif
 
-        if(dbg)
-            Debug.Notification("SEater: Settings saved")
-        endif
+        Debug.Notification("SEater: Settings saved")
     EndFunction
 
     Function LoadSettings()
@@ -395,9 +393,7 @@ import StringUtil
             buttScalingVar = "Disabled"
         endif
 
-        if(dbg)
-            Debug.Notification("SEater: Settings loaded")
-        endIf
+        Debug.Notification("SEater: Settings loaded")
     EndFunction
 
 ;/// Events ///;
