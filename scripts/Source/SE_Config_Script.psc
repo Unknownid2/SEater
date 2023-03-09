@@ -252,6 +252,15 @@ import StringUtil
         return result
     EndFunction
 
+    ; Used by state options to define options description
+    string Function Description()
+        string descriptionA = ""
+        string descriptionB = ""
+        string descriptionC = ""
+
+        return descriptionA + descriptionB + descriptionC
+    EndFunction
+
     int Function GetVersion()
         return Version
     EndFunction
