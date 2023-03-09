@@ -419,6 +419,9 @@ import StringUtil
             SetCursorFillMode(TOP_TO_BOTTOM)
             AddToggleOptionST("system_DebugMode", "Debug mode", dbg)
             AddTextOptionST("system_Version", "Version", GetVersionString())
+            
+            SetCursorPosition(1)
+            AddTextOptionST("system_ResetSettings", "Reset settings", "") ;TODO: Missing state
 
         endif
     EndEvent
