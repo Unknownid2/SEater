@@ -78,15 +78,8 @@ import StringUtil
         {Include animations when applying effects or/and dialogues}
 
         ; Scaling
-            ; Values for Scaling vars are:
-            ; 0 = Disabled - disable this node from scaling
-            ; 1 = Soul charge level - use soul charge level as scaling var for this node
-            ; 2 = Synergy level - use synergy level as scaling var for this node
-            ; 3 = Mode progress - use special var based on synergy gained by digestion or used by gestation
-            ; 4 = Max charge level - use max capacity of soul charge level as scaling var for this node
-            ; 5 = Max synergy level - use max acumulated synergy as scaling var for this node
             GlobalVariable Property SE_iBellyScalingVar_Global Auto
-            {Wich value to use for belly inflation (refer to values above)}
+            {Wich value to use for belly inflation (0-5)}
 
             GlobalVariable Property SE_fBellyScalingStart_Global Auto
             {Belly will start growing when value is equal or greater than this}
@@ -101,7 +94,7 @@ import StringUtil
             {Modify scaling result by this value}
 
             GlobalVariable Property SE_iBreastScalingVar_Global Auto
-            {Wich value to use for breast inflation (refer to values above)}
+            {Wich value to use for breast inflation (0-5)}
 
             GlobalVariable Property SE_fBreastScalingStart_Global Auto
             {Breasts will start growing when value is equal or greater than this}
@@ -116,7 +109,7 @@ import StringUtil
             {Modify scaling result by this value}
 
             GlobalVariable Property SE_iButtScalingVar_Global Auto
-            {Wich value to use for ass inflation (refer to values above)}
+            {Wich value to use for ass inflation (0-5)}
 
             GlobalVariable Property SE_fButtScalingStart_Global Auto
             {Butt will start growing when value is equal or greater than this}
@@ -175,10 +168,10 @@ import StringUtil
     float Property buttMultiplier Auto Hidden
     float Property buttScaleOffset Auto Hidden
     int[] Property numberOfSouls Auto Hidden
-    string Property storageMode Auto Hidden
-    string Property bellyScalingVar Auto Hidden
-    string Property breastScalingVar Auto Hidden
-    string Property buttScalingVar Auto Hidden
+    int Property storageMode Auto Hidden ;TODO: The mode can be changed at soul stone once per day or at end of previous mode.
+    int Property bellyScalingVar Auto Hidden
+    int Property breastScalingVar Auto Hidden
+    int Property buttScalingVar Auto Hidden
 
 ;/// Default Values ///;
     const bool default_EnableCapacityModifiers = true
@@ -212,6 +205,25 @@ import StringUtil
     const string default_BellyScalingVar = "Soul charge level"
     const string default_BreastScalingVar = "Soul charge level"
     const string default_ButtScalingVar = "Soul charge level"
+;/// Enumerators[] ///;
+    string[] StorageModes
+    string[] ScalingVars
+
+    ; Creation
+    Function SetEnums()
+        StorageModes = new string[3]
+            StorageModes[0] = "Disabled"
+            StorageModes[1] = "Digest"
+            StorageModes[2] = "Gestation"
+        ScalingVars = new string[6]
+            ; Values for Scaling vars are:
+            ScalingVars[0] = "Disabled" ; disable this node from scaling
+            ScalingVars[1] = "Soul charge level" ; use soul charge level as scaling var for this node
+            ScalingVars[2] = "Synergy level" ; use synergy level as scaling var for this node
+            ScalingVars[3] = "Mode progress" ; use special var based on synergy gained by digestion or used by gestation
+            ScalingVars[4] = "Max charge level" ; use max capacity of soul charge level as scaling var for this node
+            ScalingVars[5] = "Max synergy level" ; use max acumulated synergy as scaling var for this node
+    EndFunction
 
 ;/// Functions ///;
     ; Returns mod version string
@@ -265,56 +277,10 @@ import StringUtil
         SE_iNumberOfCommon_Global.SetValue(numberOfSouls[2] as float)
         SE_iNumberOfGreater_Global.SetValue(numberOfSouls[3] as float)
         SE_iNumberOfGrand_Global.SetValue(numberOfSouls[4] as float)
-        
-        if(storageMode == "Digest")
-            SE_iStorageMode_Global.SetValue(1)
-        elseif(storageMode == "Gestation")
-            SE_iStorageMode_Global.SetValue(2)
-        else
-            SE_iStorageMode_Global.SetValue(0)
-        endIf
-
-        if(bellyScalingVar == "Soul charge level")
-            SE_iBellyScalingVar_Global.SetValue(1)
-        elseif(bellyScalingVar == "Synergy level")
-            SE_iBellyScalingVar_Global.SetValue(2)
-        elseif(bellyScalingVar == "Mode progress")
-            SE_iBellyScalingVar_Global.SetValue(3)
-        elseif(bellyScalingVar == "Max charge level")
-            SE_iBellyScalingVar_Global.SetValue(4)
-        elseif(bellyScalingVar == "Max synergy level")
-            SE_iBellyScalingVar_Global.SetValue(5)
-        else
-            SE_iBellyScalingVar_Global.SetValue(0)
-        endif
-
-        if(breastScalingVar == "Soul charge level")
-            SE_iBreastScalingVar_Global.SetValue(1)
-        elseif(breastScalingVar == "Synergy level")
-            SE_iBreastScalingVar_Global.SetValue(2)
-        elseif(breastScalingVar == "Mode progress")
-            SE_iBreastScalingVar_Global.SetValue(3)
-        elseif(breastScalingVar == "Max charge level")
-            SE_iBreastScalingVar_Global.SetValue(4)
-        elseif(breastScalingVar == "Max synergy level")
-            SE_iBreastScalingVar_Global.SetValue(5)
-        else
-            SE_iBreastScalingVar_Global.SetValue(0)
-        endif
-
-        if(buttScalingVar == "Soul charge level")
-            SE_iButtScalingVar_Global.SetValue(1)
-        elseif(buttScalingVar == "Synergy level")
-            SE_iButtScalingVar_Global.SetValue(2)
-        elseif(buttScalingVar == "Mode progress")
-            SE_iButtScalingVar_Global.SetValue(3)
-        elseif(buttScalingVar == "Max charge level")
-            SE_iButtScalingVar_Global.SetValue(4)
-        elseif(buttScalingVar == "Max synergy level")
-            SE_iButtScalingVar_Global.SetValue(5)
-        else
-            SE_iButtScalingVar_Global.SetValue(0)
-        endif
+        SE_iStorageMode_Global.SetValue(storageMode as float)
+        SE_iBellyScalingVar_Global.SetValue(bellyScalingVar as float)
+        SE_iBreastScalingVar_Global.SetValue(breastScalingVar as float)
+        SE_iButtScalingVar_Global.SetValue(buttScalingVar as float)
 
         Debug.Notification("SEater: Settings saved")
     EndFunction
@@ -342,56 +308,10 @@ import StringUtil
         numberOfSouls[2] = SE_iNumberOfCommon_Global.GetValue() as int
         numberOfSouls[3] = SE_iNumberOfGreater_Global.GetValue() as int
         numberOfSouls[4] = SE_iNumberOfGrand_Global.GetValue() as int
-
-        if(SE_iStorageMode_Global.GetValue() == 1)
-            storageMode = "Digest"
-        elseif(SE_iStorageMode_Global.GetValue() == 2)
-            storageMode = "Gestation"
-        Else
-            storageMode = "Disabled"
-        endIf
-
-        if(SE_iBellyScalingVar_Global.GetValue() == 1)
-            bellyScalingVar = "Soul charge level"
-        elseif(SE_iBellyScalingVar_Global.GetValue() == 2)
-            bellyScalingVar = "Synergy level"
-        elseif(SE_iBellyScalingVar_Global.GetValue() == 3)
-            bellyScalingVar = "Mode progress"
-        elseif(SE_iBellyScalingVar_Global.GetValue() == 4)
-            bellyScalingVar = "Max charge level"
-        elseif(SE_iBellyScalingVar_Global.GetValue() == 5)
-            bellyScalingVar = "Max synergy level"
-        else
-            bellyScalingVar = "Disabled"
-        endif
-
-        if(SE_iBreastScalingVar_Global.GetValue() == 1)
-            breastScalingVar = "Soul charge level"
-        elseif(SE_iBreastScalingVar_Global.GetValue() == 2)
-            breastScalingVar = "Synergy level"
-        elseif(SE_iBreastScalingVar_Global.GetValue() == 3)
-            breastScalingVar = "Mode progress"
-        elseif(SE_iBreastScalingVar_Global.GetValue() == 4)
-            breastScalingVar = "Max charge level"
-        elseif(SE_iBreastScalingVar_Global.GetValue() == 5)
-            breastScalingVar = "Max synergy level"
-        else
-            breastScalingVar = "Disabled"
-        endif
-
-        if(SE_iButtScalingVar_Global.GetValue() == 1)
-            buttScalingVar = "Soul charge level"
-        elseif(SE_iButtScalingVar_Global.GetValue() == 2)
-            buttScalingVar = "Synergy level"
-        elseif(SE_iButtScalingVar_Global.GetValue() == 3)
-            buttScalingVar = "Mode progress"
-        elseif(SE_iButtScalingVar_Global.GetValue() == 4)
-            buttScalingVar = "Max charge level"
-        elseif(SE_iButtScalingVar_Global.GetValue() == 5)
-            buttScalingVar = "Max synergy level"
-        else
-            buttScalingVar = "Disabled"
-        endif
+        storageMode = SE_iStorageMode_Global.GetValue() as int
+        bellyScalingVar = SE_iBellyScalingVar_Global.GetValue() as int
+        breastScalingVar = SE_iBreastScalingVar_Global.GetValue() as int
+        buttScalingVar = SE_iButtScalingVar_Global.GetValue() as int
 
         Debug.Notification("SEater: Settings loaded")
     EndFunction
@@ -409,6 +329,7 @@ import StringUtil
     Event OnConfigRegister()
 
         LoadSettings()
+        SetEnums()
         Debug.Notification("SEater: Ready!")
     EndEvent
     
@@ -436,7 +357,7 @@ import StringUtil
             SetCursorPosition(0)
             SetCursorFillMode(TOP_TO_BOTTOM)
             AddTextOptionST("stats_Synergy", "Synergy", FormatFloat(synergyLevel, 1) + "/" + FormatFloat(maxSynergy, 1))
-            AddTextOptionST("stats_Mode", "Mode", storageMode) ;TODO: Missing state
+            AddTextOptionST("stats_Mode", "Mode", StorageModes[storageMode])
             ;AddTextOptionST("stats_ChargeLevel", "Charge Level", Storage.GetTotalChargeLevel()) ;TODO: Missing state
 
             ;Stored Souls
@@ -461,7 +382,7 @@ import StringUtil
             ;Scaling
             SetCursorPosition(1)
             AddHeaderOption("Belly Scaling")
-            AddMenuOptionST("visual_Belly_ScalingValue", "Scaling value", bellyScalingVar) ;TODO: Missing state
+            AddMenuOptionST("visual_Belly_ScalingValue", "Scaling value", ScalingVars[bellyScalingVar]) ;TODO: Missing state
             AddSliderOptionST("visual_Belly_ScalingStart", "Scaling start", bellyScalingStart, "{1}") ;TODO: Missing state
             AddSliderOptionST("visual_Belly_Multiplier", "Multiplier", bellyMultiplier, "{3}") ;TODO: Missing state
             AddSliderOptionST("visual_Belly_Offset", "Offset", bellyScaleOffset, "{2}") ;TODO: Missing state
@@ -469,7 +390,7 @@ import StringUtil
             AddEmptyOption()
 
             AddHeaderOption("Breast Scaling")
-            AddMenuOptionST("visual_Breast_ScalingValue", "Scaling value", breastScalingVar) ;TODO: Missing state
+            AddMenuOptionST("visual_Breast_ScalingValue", "Scaling value", ScalingVars[breastScalingVar]) ;TODO: Missing state
             AddSliderOptionST("visual_Breast_ScalingStart", "Scaling start", breastScalingStart, "{1}") ;TODO: Missing state
             AddSliderOptionST("visual_Breast_Multiplier", "Multiplier", breastMultiplier, "{3}") ;TODO: Missing state
             AddSliderOptionST("visual_Breast_Offset", "Offset", breastScaleOffset, "{2}") ;TODO: Missing state
@@ -477,7 +398,7 @@ import StringUtil
             AddEmptyOption()
 
             AddHeaderOption("Butt Scaling")
-            AddMenuOptionST("visual_Butt_ScalingValue", "Scaling value", buttScalingVar) ;TODO: Missing state
+            AddMenuOptionST("visual_Butt_ScalingValue", "Scaling value", ScalingVars[buttScalingVar]) ;TODO: Missing state
             AddSliderOptionST("visual_Butt_ScalingStart", "Scaling start", buttScalingStart, "{1}") ;TODO: Missing state
             AddSliderOptionST("visual_Butt_Multiplier", "Multiplier", buttMultiplier, "{3}") ;TODO: Missing state
             AddSliderOptionST("visual_Butt_Offset", "Offset", buttScaleOffset, "{2}") ;TODO: Missing state
