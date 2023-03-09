@@ -679,6 +679,7 @@ import StringUtil
         EndState
 
     ;Visual
+;//////////////////////////////////////////////// BELLY ///////////////////////////////////////////////////////;
         State visual_Belly_ScalingValue
             Event OnMenuOpenST()
                 SetMenuDialogStartIndex(bellyScalingVar)
@@ -687,9 +688,25 @@ import StringUtil
             EndEvent
 
             Event OnMenuAcceptST(int value)
+                bellyScalingVar = value
+                SetMenuOptionValueST(ScalingVars[bellyScalingVar])
+
+                If (value == 0)
+                    SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Belly_ScalingStart")
+                    SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Belly_Multiplier")
+                    SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Belly_Offset")
+                    SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Belly_ReduceMultiplier")
+                else
+                    SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Belly_ScalingStart")
+                    SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Belly_Multiplier")
+                    SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Belly_Offset")
+                    SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Belly_ReduceMultiplier")
+                EndIf
             EndEvent
 
             Event OnDefaultST()
+                bellyScalingVar = default_BellyScalingVar
+                SetMenuOptionValueST(ScalingVars[bellyScalingVar])
             EndEvent
 
             Event OnHighlightST()
@@ -753,7 +770,7 @@ import StringUtil
                 SetInfoText("")
             EndEvent
         EndState
-
+;//////////////////////////////////////////////// BREAST ///////////////////////////////////////////////////////;
         State visual_Breast_ScalingValue
             Event OnMenuOpenST()
                 SetMenuDialogStartIndex(breastScalingVar)
@@ -762,9 +779,25 @@ import StringUtil
             EndEvent
 
             Event OnMenuAcceptST(int value)
+                breastScalingVar = value
+                SetMenuOptionValueST(ScalingVars[breastScalingVar])
+
+                If (value == 0)
+                    SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_ScalingStart")
+                    SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_Multiplier")
+                    SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_Offset")
+                    SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_ReduceMultiplier")
+                else
+                    SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Breast_ScalingStart")
+                    SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Breast_Multiplier")
+                    SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Breast_Offset")
+                    SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Breast_ReduceMultiplier")
+                EndIf
             EndEvent
 
             Event OnDefaultST()
+                breastScalingVar = default_BreastScalingVar
+                SetMenuOptionValueST(ScalingVars[breastScalingVar])
             EndEvent
 
             Event OnHighlightST()
@@ -828,7 +861,7 @@ import StringUtil
                 SetInfoText("")
             EndEvent
         EndState
-
+;//////////////////////////////////////////////// BUTT ///////////////////////////////////////////////////////;
         State visual_Butt_ScalingValue
             Event OnMenuOpenST()
                 SetMenuDialogStartIndex(buttScalingVar)
@@ -837,9 +870,25 @@ import StringUtil
             EndEvent
 
             Event OnMenuAcceptST(int value)
+                buttScalingVar = value
+                SetMenuOptionValueST(ScalingVars[buttScalingVar])
+
+                If (value == 0)
+                    SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Butt_ScalingStart")
+                    SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Butt_Multiplier")
+                    SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Butt_Offset")
+                    SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Butt_ReduceMultiplier")
+                else
+                    SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Butt_ScalingStart")
+                    SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Butt_Multiplier")
+                    SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Butt_Offset")
+                    SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Butt_ReduceMultiplier")
+                EndIf
             EndEvent
 
             Event OnDefaultST()
+                buttScalingVar = default_ButtScalingVar
+                SetMenuOptionValueST(ScalingVars[buttScalingVar])
             EndEvent
 
             Event OnHighlightST()
