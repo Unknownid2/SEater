@@ -373,17 +373,17 @@ import StringUtil
             ;Stored Souls
             SetCursorPosition(1)
             AddHeaderOption("Stored Souls")
-            AddTextOptionST("stats_TotalNumberOfSouls", "Total number of souls", Storage.GetNumberOfSouls()) ;TODO: Missing state
-            AddTextOptionST("stats_NumberOfPetty", "Number of petty souls", numberOfSouls[0]) ;TODO: Missing state
-            AddTextOptionST("stats_NumberOfLesser", "Number of lesser souls", numberOfSouls[1]) ;TODO: Missing state
-            AddTextOptionST("stats_NumberOfCommon", "Number of common souls", numberOfSouls[2]) ;TODO: Missing state
-            AddTextOptionST("stats_NumberOfGreater", "Number of greater souls", numberOfSouls[3]) ;TODO: Missing state
-            AddTextOptionST("stats_NumberOfGrand", "Number of grand souls", numberOfSouls[4]) ;TODO: Missing state
+            AddTextOptionST("stats_TotalNumberOfSouls", "Total number of souls", Storage.GetNumberOfSouls())
+            AddTextOptionST("stats_NumberOfPetty", "Number of petty souls", numberOfSouls[0])
+            AddTextOptionST("stats_NumberOfLesser", "Number of lesser souls", numberOfSouls[1])
+            AddTextOptionST("stats_NumberOfCommon", "Number of common souls", numberOfSouls[2])
+            AddTextOptionST("stats_NumberOfGreater", "Number of greater souls", numberOfSouls[3])
+            AddTextOptionST("stats_NumberOfGrand", "Number of grand souls", numberOfSouls[4])
 
         elseif(a_page == "Storage")
             SetCursorPosition(0)
             SetCursorFillMode(LEFT_TO_RIGHT)
-            AddSliderOptionST("storage_MultiplierReduction", "Multiplier reduction", multiplierScalePorcentage, "{0}%") ;TODO: Missing state
+            AddSliderOptionST("storage_MultiplierReduction", "Multiplier reduction", multiplierScalePorcentage, "{0}%")
 
         elseif(a_page == "Visual")
             SetCursorPosition(0)
@@ -486,30 +486,6 @@ import StringUtil
     EndEvent
     
     ; @since 2
-    Event OnSliderOpenST()
-        {Called when a slider state option has been selected}
-        Debug.Notification("SEater: OnSliderOpenST not implemented yet")
-    EndEvent
-    
-    ; @since 2
-    Event OnSliderAcceptST(float a_value)
-        {Called when a new slider state value has been accepted}
-        Debug.Notification("SEater: OnSliderAcceptST not implemented yet")
-    EndEvent
-    
-    ; @since 2
-    Event OnMenuOpenST()
-        {Called when a menu state option has been selected}
-        Debug.Notification("SEater: OnMenuOpenST not implemented yet")
-    EndEvent
-    
-    ; @since 2
-    Event OnMenuAcceptST(int a_index)
-        {Called when a menu entry has been accepted for this state option}
-        Debug.Notification("SEater: OnMenuAcceptST not implemented yet")
-    EndEvent
-    
-    ; @since 2
     Event OnColorOpenST()
         {Called when a color state option has been selected}
         Debug.Notification("SEater: OnColorOpenST not implemented yet")
@@ -541,8 +517,229 @@ import StringUtil
 
 ;/// Options States ///;
     ;Stats
-        ;TODO: Incomplete state
         State stats_Synergy
+            string Function Description()
+                string descriptionA = "Used to forge larger souls at gestation mode.\n"
+                string descriptionB = "Can recharge by digesting souls, breaking soulgems or over time while not carrying souls"
+                string descriptionC = "but only digest increases maximum synergy."
+
+                return descriptionA + descriptionB + descriptionC
+            EndFunction
+            
+            Event OnSelectST()
+                Debug.MessageBox(Description())
+            EndEvent
+
+            Event OnDefaultST()
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText(Description())
+            EndEvent
+        EndState
+
+        State stats_Mode
+            string Function Description()
+                string descriptionA = "The state of storage. Define what happen with unclaimed stored souls.\n"
+                string descriptionB = ""
+                
+                If (storageMode == "Digest")
+                    descriptionB = "Digest: The smaller piece of soul are converted into synergy."
+                elseif (storageMode == "Gestation")
+                    descriptionB = "Gestation: Synergy are used to turn weakest soul into larger souls."
+                else
+                    descriptionB = "Disabled: Souls cann't be stored and any atempt to absorb will fail"
+                EndIf
+
+                return descriptionA + descriptionB
+            EndFunction
+
+            Event OnSelectST()
+                Debug.MessageBox(Description())
+            EndEvent
+
+            Event OnDefaultST()
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText(Description())
+            EndEvent
+        EndState
+
+        State stats_TotalNumberOfSouls
+
+            Event OnSelectST()
+                Debug.MessageBox("Total number of stored souls")
+            EndEvent
+
+            Event OnDefaultST()
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("Total number of stored souls")
+            EndEvent
+        EndState
+
+        State stats_NumberOfPetty
+
+            Event OnSelectST()
+                Debug.MessageBox("Total number of stored petty souls")
+            EndEvent
+
+            Event OnDefaultST()
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("Total number of stored petty souls")
+            EndEvent
+        EndState
+
+        State stats_NumberOfLesser
+
+            Event OnSelectST()
+                Debug.MessageBox("Total number of stored lesser souls")
+            EndEvent
+
+            Event OnDefaultST()
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("Total number of stored lesser souls")
+            EndEvent
+        EndState
+
+        State stats_NumberOfCommon
+
+            Event OnSelectST()
+                Debug.MessageBox("Total number of stored common souls")
+            EndEvent
+
+            Event OnDefaultST()
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("Total number of stored common souls")
+            EndEvent
+        EndState
+
+        State stats_NumberOfGreater
+
+            Event OnSelectST()
+                Debug.MessageBox("Total number of stored greater souls")
+            EndEvent
+
+            Event OnDefaultST()
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("Total number of stored greater souls")
+            EndEvent
+        EndState
+
+        State stats_NumberOfGrand
+
+            Event OnSelectST()
+                Debug.MessageBox("Total number of stored grand souls")
+            EndEvent
+
+            Event OnDefaultST()
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("Total number of stored grand souls")
+            EndEvent
+        EndState
+
+    ;Storage
+        State storage_MultiplierReduction
+
+            Event OnSliderOpenST()
+                SetSliderDialogStartValue(multiplierScalePorcentage)
+                SetSliderDialogDefaultValue(default_MultiplierScalePorcentage)
+                SetSliderDialogRange(0, 100)
+                SetSliderDialogInterval(1)
+            EndEvent
+
+            Event OnSliderAcceptST(float value)
+                multiplierScalePorcentage = value
+                SetSliderOptionValueST(multiplierScalePorcentage, "{0}%")
+            EndEvent
+
+            Event OnDefaultST()
+                multiplierScalePorcentage = default_MultiplierScalePorcentage
+                SetSliderOptionValueST(multiplierScalePorcentage, "{0}%")
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("For each stored soul, scaling multipliers will be reduced by this porcentage (if enabled) (0-100)")
+            EndEvent
+        EndState
+
+    ;Visual
+        State visual_Belly_ScalingValue
+            Event OnMenuOpenST()
+                SetMenuDialogStartIndex(bellyScalingVar)
+                SetMenuDialogDefaultIndex(default_BellyScalingVar)
+                SetMenuDialogOptions(ScalingVars)
+            EndEvent
+
+            Event OnMenuAcceptST(int value)
+            EndEvent
+
+            Event OnDefaultST()
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("")
+            EndEvent
+        EndState
+
+        State visual_Belly_ScalingStart
+            Event OnSliderOpenST()
+            EndEvent
+
+            Event OnSliderAcceptST(float value)
+            EndEvent
+
+            Event OnDefaultST()
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("")
+            EndEvent
+        EndState
+
+        State visual_Belly_Multiplier
+            Event OnSliderOpenST()
+            EndEvent
+
+            Event OnSliderAcceptST(float value)
+            EndEvent
+
+            Event OnDefaultST()
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("")
+            EndEvent
+        EndState
+
+        State visual_Belly_Offset
+            Event OnSliderOpenST()
+            EndEvent
+
+            Event OnSliderAcceptST(float value)
+            EndEvent
+
+            Event OnDefaultST()
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("")
+            EndEvent
+        EndState
+
+        State visual_Belly_ReduceMultiplier
             Event OnSelectST()
             EndEvent
 
@@ -550,14 +747,160 @@ import StringUtil
             EndEvent
 
             Event OnHighlightST()
+                SetInfoText("")
             EndEvent
         EndState
 
-    ;Storage
-        ;/.../;
+        State visual_Breast_ScalingValue
+            Event OnMenuOpenST()
+                SetMenuDialogStartIndex(breastScalingVar)
+                SetMenuDialogDefaultIndex(default_BreastScalingVar)
+                SetMenuDialogOptions(ScalingVars)
+            EndEvent
 
-    ;Visual
-        ;/.../;
+            Event OnMenuAcceptST(int value)
+            EndEvent
+
+            Event OnDefaultST()
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("")
+            EndEvent
+        EndState
+
+        State visual_Breast_ScalingStart
+            Event OnSliderOpenST()
+            EndEvent
+
+            Event OnSliderAcceptST(float value)
+            EndEvent
+
+            Event OnDefaultST()
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("")
+            EndEvent
+        EndState
+
+        State visual_Breast_Multiplier
+            Event OnSliderOpenST()
+            EndEvent
+
+            Event OnSliderAcceptST(float value)
+            EndEvent
+
+            Event OnDefaultST()
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("")
+            EndEvent
+        EndState
+
+        State visual_Breast_Offset
+            Event OnSliderOpenST()
+            EndEvent
+
+            Event OnSliderAcceptST(float value)
+            EndEvent
+
+            Event OnDefaultST()
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("")
+            EndEvent
+        EndState
+
+        State visual_Breast_ReduceMultiplier
+            Event OnSelectST()
+            EndEvent
+
+            Event OnDefaultST()
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("")
+            EndEvent
+        EndState
+
+        State visual_Butt_ScalingValue
+            Event OnMenuOpenST()
+                SetMenuDialogStartIndex(buttScalingVar)
+                SetMenuDialogDefaultIndex(default_ButtScalingVar)
+                SetMenuDialogOptions(ScalingVars)
+            EndEvent
+
+            Event OnMenuAcceptST(int value)
+            EndEvent
+
+            Event OnDefaultST()
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("")
+            EndEvent
+        EndState
+
+        State visual_Butt_ScalingStart
+            Event OnSliderOpenST()
+            EndEvent
+
+            Event OnSliderAcceptST(float value)
+            EndEvent
+
+            Event OnDefaultST()
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("")
+            EndEvent
+        EndState
+
+        State visual_Butt_Multiplier
+            Event OnSliderOpenST()
+            EndEvent
+
+            Event OnSliderAcceptST(float value)
+            EndEvent
+
+            Event OnDefaultST()
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("")
+            EndEvent
+        EndState
+
+        State visual_Butt_Offset
+            Event OnSliderOpenST()
+            EndEvent
+
+            Event OnSliderAcceptST(float value)
+            EndEvent
+
+            Event OnDefaultST()
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("")
+            EndEvent
+        EndState
+
+        State visual_Butt_ReduceMultiplier
+            Event OnSelectST()
+            EndEvent
+
+            Event OnDefaultST()
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("")
+            EndEvent
+        EndState
+
 
     ;System
         State system_DebugMode
