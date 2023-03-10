@@ -137,6 +137,7 @@ import StringUtil
 
 ;/// Properties ///;
     SE_StorageManager_Script Property Storage Auto
+    SE_ScaleManager_Script Property Scale Auto
     bool Property ConfirmReset = false Auto Hidden
 
     ;TODO: Check Properties usage
@@ -387,6 +388,7 @@ import StringUtil
     Event OnConfigClose()
         {Called when this config menu is closed}
         SaveSettings()
+        Scale.UpdateScale()
         ConfirmReset = false
     EndEvent
     
