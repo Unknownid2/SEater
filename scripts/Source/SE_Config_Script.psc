@@ -445,9 +445,6 @@ import StringUtil
     Event OnConfigOpen()
         {Called when this config menu is opened}
         LoadSettings()
-        ToggleScalingOptions("Belly", bellyScalingVar)
-        ToggleScalingOptions("Breast", breastScalingVar)
-        ToggleScalingOptions("Butt", buttScalingVar)
     EndEvent
     
     Event OnConfigClose()
@@ -491,6 +488,10 @@ import StringUtil
             AddSliderOptionST("storage_MultiplierReduction", "Multiplier reduction", multiplierScalePorcentage, "{0}%")
 
         elseif(a_page == "Visual")
+            ToggleScalingOptions("Belly", bellyScalingVar)
+            ToggleScalingOptions("Breast", breastScalingVar)
+            ToggleScalingOptions("Butt", buttScalingVar)
+
             SetCursorPosition(0)
             SetCursorFillMode(TOP_TO_BOTTOM)
 
