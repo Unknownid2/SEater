@@ -17,45 +17,45 @@ float buttMultiplier
         endif
 
         ;TODO: Scaling methods
-        if(Config.bellyScalingVar == "Soul charge level")
+        if(Config.bellyScalingVar == 1) ; Soul charge level
             UpdateBelly(Storage.GetTotalChargeLevel())
-        elseif(Config.bellyScalingVar == "Synergy level")
+        elseif(Config.bellyScalingVar == 2) ; Synergy level
             UpdateBelly(Config.synergyLevel)
-        elseif(Config.bellyScalingVar == "Mode progress")
+        elseif(Config.bellyScalingVar == 3) ; Mode progress
             ;TODO: Digest/Gestation progress
-        elseif(Config.bellyScalingVar == "Max charge level")
+        elseif(Config.bellyScalingVar == 4) ; Max charge level
             UpdateBelly(Config.maxCapacity)
-        elseif(Config.bellyScalingVar == "Max synergy level")
+        elseif(Config.bellyScalingVar == 5) ; Max synergy level
             UpdateBelly(Config.maxSynergy)
         Else
             UpdateBelly(-1) ; For unregistering this node
         endIf
         
-        if(Config.breastScalingVar == "Soul charge level")
+        if(Config.breastScalingVar == 1) ; Soul charge level
             UpdateBreast(Storage.GetTotalChargeLevel())
 
-        elseif(Config.breastScalingVar == "Synergy level")
+        elseif(Config.breastScalingVar == 2) ; Synergy level
             UpdateBreast(Config.synergyLevel)
-        elseif(Config.breastScalingVar == "Mode progress")
+        elseif(Config.breastScalingVar == 3) ; Mode progress
             ;TODO: Digest/Gestation progress
-        elseif(Config.breastScalingVar == "Max charge level")
+        elseif(Config.breastScalingVar == 4) ; Max charge level
             UpdateBreast(Config.maxCapacity)
-        elseif(Config.breastScalingVar == "Max synergy level")
+        elseif(Config.breastScalingVar == 5) ; Max synergy level
             UpdateBreast(Config.maxSynergy)
         Else
             UpdateBreast(-1) ; For unregistering this node
         endIf
 
-        if(Config.buttScalingVar == "Soul charge level")
+        if(Config.buttScalingVar == 1) ; Soul charge level
             UpdateButt(Storage.GetTotalChargeLevel())
-        elseif(Config.buttScalingVar == "Synergy level")
+        elseif(Config.buttScalingVar == 2) ; Synergy level
             UpdateButt(Config.synergyLevel)
-        elseif(Config.buttScalingVar == "Mode progress")
+        elseif(Config.buttScalingVar == 3) ; Mode progress
             ;TODO: Digest/Gestation progress
-        elseif(Config.buttScalingVar == "Max charge level")
+        elseif(Config.buttScalingVar == 4) ; Max charge level
             UpdateButt(Config.maxCapacity)
 
-        elseif(Config.buttScalingVar == "Max synergy level")
+        elseif(Config.buttScalingVar == 5) ; Max synergy level
             UpdateButt(Config.maxSynergy)
         Else
             UpdateButt(-1) ; For unregistering this node
