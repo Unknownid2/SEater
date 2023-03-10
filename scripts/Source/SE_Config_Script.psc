@@ -137,6 +137,7 @@ import StringUtil
 
 ;/// Properties ///;
     SE_StorageManager_Script Property Storage Auto
+    Message Property ConfirmReset Auto
 
     ;TODO: Check Properties usage
     bool Property enableCapacityModifiers Auto Hidden ;Unused
@@ -326,6 +327,41 @@ import StringUtil
         Debug.Notification("SEater: Settings loaded")
     EndFunction
 
+    ; Set all settings to its default_ values
+    Function ResetSettings()
+        enableCapacityModifiers = default_EnableCapacityModifiers
+        enableCapacityEffects = default_EnableCapacityEffects
+        allowDangerousScale = default_AllowDangerousScale
+        sheLikesIt = default_SheLikesIt
+        sheLovesIt = default_SheLovesIt
+        applyAnimations = default_ApplyAnimations
+        scaleBellyMultiplier = default_ScaleBellyMultiplier
+        scaleBreastMultiplier = default_ScaleBreastMultiplier
+        scaleButtMultiplier = default_ScaleButtMultiplier
+        dbg = default_Dbg
+        synergyLevel = default_SynergyLevel
+        maxSynergy = default_MaxSynergy
+        maxCapacity = default_MaxCapacity
+        firstStageScale = default_FirstStageScale
+        secondStageScale = default_SecondStageScale
+        thirthStageScale = default_ThirthStageScale
+        burstScale = default_BurstScale
+        stretch = default_Stretch
+        multiplierScalePorcentage = default_MultiplierScalePorcentage
+        bellyScalingStart = default_BellyScalingStart
+        bellyMultiplier = default_BellyMultiplier
+        bellyScaleOffset = default_BellyScaleOffset
+        breastScalingStart = default_BreastScalingStart
+        breastMultiplier = default_BreastMultiplier
+        breastScaleOffset = default_BreastScaleOffset
+        buttScalingStart = default_ButtScalingStart
+        buttMultiplier = default_ButtMultiplier
+        buttScaleOffset = default_ButtScaleOffset
+        bellyScalingVar = default_BellyScalingVar
+        breastScalingVar = default_BreastScalingVar
+        buttScalingVar = default_ButtScalingVar
+    EndFunction
+
 ;/// Events ///;
     ;TODO: MCM menu
 
@@ -421,7 +457,7 @@ import StringUtil
             AddTextOptionST("system_Version", "Version", GetVersionString())
             
             SetCursorPosition(1)
-            AddTextOptionST("system_ResetSettings", "Reset settings", "") ;TODO: Missing state
+            AddTextOptionST("system_ResetSettings", "Reset settings", "")
 
         endif
     EndEvent
@@ -679,7 +715,7 @@ import StringUtil
         EndState
 
     ;Visual
-;//////////////////////////////////////////////// BELLY ///////////////////////////////////////////////////////;
+        ;//////////////////////////////////////////////// BELLY ///////////////////////////////////////////////////////;
         State visual_Belly_ScalingValue
             string Function Description()
                 string descriptionA = "Wich value to use for belly inflation.\n"
@@ -820,7 +856,7 @@ import StringUtil
                 SetInfoText("Reduce belly scale multiplier by number of souls (good for balancing purposes).")
             EndEvent
         EndState
-;//////////////////////////////////////////////// BREAST ///////////////////////////////////////////////////////;
+        ;//////////////////////////////////////////////// BREAST ///////////////////////////////////////////////////////;
         State visual_Breast_ScalingValue
             string Function Description()
                 string descriptionA = "Wich value to use for breast inflation.\n"
@@ -961,7 +997,7 @@ import StringUtil
                 SetInfoText("Reduce breast scale multiplier by number of souls (good for balancing purposes)")
             EndEvent
         EndState
-;//////////////////////////////////////////////// BUTT ///////////////////////////////////////////////////////;
+        ;//////////////////////////////////////////////// BUTT ///////////////////////////////////////////////////////;
         State visual_Butt_ScalingValue
             string Function Description()
                 string descriptionA = "Wich value to use for butt inflation.\n"
@@ -1125,7 +1161,6 @@ import StringUtil
         EndState
 
         State system_Version
-            ;TODO: Incomplete state
             Event OnSelectST()
                 ; Nothing
             EndEvent
@@ -1136,5 +1171,21 @@ import StringUtil
 
             Event OnHighlightST()
                 SetInfoText("Build " + SE_iInstalledVersion_Global.GetValue())
+            EndEvent
+        EndState
+
+        State system_ResetSettings
+            Event OnSelectST()
+                If (ConfirmReset.Show() == 1)
+                    ResetSettings()
+                EndIf
+            EndEvent
+
+            Event OnDefaultST()
+                ; Nothing
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("Reset all mod settings to its default values.")
             EndEvent
         EndState
