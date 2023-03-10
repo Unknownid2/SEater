@@ -207,6 +207,7 @@ import StringUtil
     int default_BellyScalingVar = 1
     int default_BreastScalingVar = 1
     int default_ButtScalingVar = 1
+    int default_StorageMode = 0
 
 ;/// Enumerators[] ///;
     string[] StorageModes
@@ -272,8 +273,6 @@ import StringUtil
         SE_bScaleBellyMultiplier_Global.SetValue(scaleBellyMultiplier as float)
         SE_bScaleBreastMultiplier_Global.SetValue(scaleBreastMultiplier as float)
         SE_bScaleButtMultiplier_Global.SetValue(scaleButtMultiplier as float)
-        SE_fSynergyLevel_Global.SetValue(synergyLevel)
-        SE_fMaxSynergy_Global.SetValue(maxSynergy)
         SE_fMultiplierReduction_Global.SetValue(multiplierScalePorcentage)
         SE_fBellyScalingStart_Global.SetValue(bellyScalingStart)
         SE_fBreastScalingStart_Global.SetValue(breastScalingStart)
@@ -284,15 +283,19 @@ import StringUtil
         SE_fBellyScaleOffset_Global.SetValue(bellyScaleOffset)
         SE_fBreastScaleOffset_Global.SetValue(breastScaleOffset)
         SE_fButtScaleOffset_Global.SetValue(buttScaleOffset)
-        SE_iNumberOfPetty_Global.SetValue(numberOfSouls[0] as float)
-        SE_iNumberOfLesser_Global.SetValue(numberOfSouls[1] as float)
-        SE_iNumberOfCommon_Global.SetValue(numberOfSouls[2] as float)
-        SE_iNumberOfGreater_Global.SetValue(numberOfSouls[3] as float)
-        SE_iNumberOfGrand_Global.SetValue(numberOfSouls[4] as float)
-        SE_iStorageMode_Global.SetValue(storageMode as float)
         SE_iBellyScalingVar_Global.SetValue(bellyScalingVar as float)
         SE_iBreastScalingVar_Global.SetValue(breastScalingVar as float)
         SE_iButtScalingVar_Global.SetValue(buttScalingVar as float)
+
+        ; Stats
+            SE_fSynergyLevel_Global.SetValue(synergyLevel)
+            SE_fMaxSynergy_Global.SetValue(maxSynergy)
+            SE_iNumberOfPetty_Global.SetValue(numberOfSouls[0] as float)
+            SE_iNumberOfLesser_Global.SetValue(numberOfSouls[1] as float)
+            SE_iNumberOfCommon_Global.SetValue(numberOfSouls[2] as float)
+            SE_iNumberOfGreater_Global.SetValue(numberOfSouls[3] as float)
+            SE_iNumberOfGrand_Global.SetValue(numberOfSouls[4] as float)
+            SE_iStorageMode_Global.SetValue(storageMode as float)
 
         Debug.Notification("SEater: Settings saved")
     EndFunction
@@ -302,8 +305,6 @@ import StringUtil
         scaleBellyMultiplier = SE_bScaleBellyMultiplier_Global.GetValue() as bool
         scaleBreastMultiplier = SE_bScaleBreastMultiplier_Global.GetValue() as bool
         scaleButtMultiplier = SE_bScaleButtMultiplier_Global.GetValue() as bool
-        synergyLevel = SE_fSynergyLevel_Global.GetValue()
-        maxSynergy = SE_fMaxSynergy_Global.GetValue()
         multiplierScalePorcentage = SE_fMultiplierReduction_Global.GetValue()
         bellyScalingStart = SE_fBellyScalingStart_Global.GetValue()
         breastScalingStart = SE_fBreastScalingStart_Global.GetValue()
@@ -314,6 +315,17 @@ import StringUtil
         bellyScaleOffset = SE_fBellyScaleOffset_Global.GetValue()
         breastScaleOffset = SE_fBreastScaleOffset_Global.GetValue()
         buttScaleOffset = SE_fButtScaleOffset_Global.GetValue()
+        bellyScalingVar = SE_iBellyScalingVar_Global.GetValue() as int
+        breastScalingVar = SE_iBreastScalingVar_Global.GetValue() as int
+        buttScalingVar = SE_iButtScalingVar_Global.GetValue() as int
+
+        Debug.Notification("SEater: Settings loaded")
+    EndFunction
+
+    ; Atempt to recover stats from older versions
+    Function RetrieveSavedData()
+        synergyLevel = SE_fSynergyLevel_Global.GetValue()
+        maxSynergy = SE_fMaxSynergy_Global.GetValue()
         numberOfSouls = new int[5]
         numberOfSouls[0] = SE_iNumberOfPetty_Global.GetValue() as int
         numberOfSouls[1] = SE_iNumberOfLesser_Global.GetValue() as int
@@ -321,11 +333,8 @@ import StringUtil
         numberOfSouls[3] = SE_iNumberOfGreater_Global.GetValue() as int
         numberOfSouls[4] = SE_iNumberOfGrand_Global.GetValue() as int
         storageMode = SE_iStorageMode_Global.GetValue() as int
-        bellyScalingVar = SE_iBellyScalingVar_Global.GetValue() as int
-        breastScalingVar = SE_iBreastScalingVar_Global.GetValue() as int
-        buttScalingVar = SE_iButtScalingVar_Global.GetValue() as int
 
-        Debug.Notification("SEater: Settings loaded")
+        Debug.Notification("SEater: Previous stats loaded")
     EndFunction
 
     ; Set all settings to its default_ values
@@ -340,8 +349,6 @@ import StringUtil
         scaleBreastMultiplier = default_ScaleBreastMultiplier
         scaleButtMultiplier = default_ScaleButtMultiplier
         dbg = default_Dbg
-        synergyLevel = default_SynergyLevel
-        maxSynergy = default_MaxSynergy
         maxCapacity = default_MaxCapacity
         firstStageScale = default_FirstStageScale
         secondStageScale = default_SecondStageScale
@@ -363,6 +370,19 @@ import StringUtil
         buttScalingVar = default_ButtScalingVar
     EndFunction
 
+    ; Reset all stats and progress
+    Function ResetStats()
+        ;TODO: Remove spells and powers from player
+        synergyLevel = default_SynergyLevel
+        maxSynergy = default_MaxSynergy
+        numberOfSouls = new int[5]
+        numberOfSouls[0] = 0
+        numberOfSouls[1] = 0
+        numberOfSouls[2] = 0
+        numberOfSouls[3] = 0
+        numberOfSouls[4] = 0
+        storageMode = default_StorageMode
+    EndFunction
 ;/// Events ///;
     ;TODO: MCM menu
 
@@ -395,6 +415,7 @@ import StringUtil
     Event OnVersionUpdate(int aVersion)
         {Called when aVersion update of this script has been detected}
         ;TODO: Update code (if needed)
+        RetrieveSavedData()
         SE_iInstalledVersion_Global.SetValue(Version)
         Debug.Notification("SEater: Updated")
         Debug.Notification("Version = " + GetVersionString())
@@ -458,10 +479,11 @@ import StringUtil
             SetCursorFillMode(TOP_TO_BOTTOM)
             AddToggleOptionST("system_DebugMode", "Debug mode", dbg)
             AddTextOptionST("system_Version", "Version", GetVersionString())
+            AddTextOptionST("system_RetrieveSavedStats", "Retrieve saved stats", "")
             
             SetCursorPosition(1)
             AddTextOptionST("system_ResetSettings", "Reset settings", "")
-
+            AddTextOptionST("system_ResetStats", "Reset stats", "")
         endif
     EndEvent
     
@@ -1177,6 +1199,20 @@ import StringUtil
             EndEvent
         EndState
 
+        State system_RetrieveSavedStats
+            Event OnSelectST()
+                RetrieveSavedData()
+            EndEvent
+
+            Event OnDefaultST()
+                ; Nothing
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("Reload previous stats from Global Variables")
+            EndEvent
+        EndState
+
         State system_ResetSettings
             Event OnSelectST()
                 If (ConfirmReset)
@@ -1195,5 +1231,26 @@ import StringUtil
 
             Event OnHighlightST()
                 SetInfoText("Reset all mod settings to its default values.")
+            EndEvent
+        EndState
+
+        State system_ResetStats
+            Event OnSelectST()
+                If (ConfirmReset)
+                    ResetStats()
+                    SetTextOptionValueST("")
+                    Debug.MessageBox("Close all menus")
+                Else
+                    ConfirmReset = true
+                    SetTextOptionValueST("Confirm?")
+                EndIf
+            EndEvent
+
+            Event OnDefaultST()
+                ; Nothing
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("Reset all player stats")
             EndEvent
         EndState
