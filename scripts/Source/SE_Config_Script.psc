@@ -132,7 +132,7 @@ import StringUtil
         GlobalVariable Property SE_iInstalledVersion_Global Auto
         {Used to track updates}
 
-        int Property Version = 21 AutoReadOnly ;TODO: <- Change before tests
+        int Property Version = 22 AutoReadOnly ;TODO: <- Change before tests
         {Mod version}
 
 ;/// Properties ///;
@@ -230,7 +230,7 @@ import StringUtil
 ;/// Functions ///;
     ; Returns mod version string
     string Function GetVersionString()
-        return "0.1.21" ;TODO: <- Change before tests
+        return "0.1.22" ;TODO: <- Change before tests
     EndFunction
 
     ; Cuts decimals after dot and return the result as string
