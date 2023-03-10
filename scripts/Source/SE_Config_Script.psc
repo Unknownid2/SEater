@@ -91,7 +91,7 @@ import StringUtil
             {Reduce belly scale multiplier by number of souls (good for balancing purposes)}
 
             GlobalVariable Property SE_fBellyScaleOffset_Global Auto
-            {Modify scaling result by this value}
+            {Base scale value (Modify scaling result by this value)}
 
             GlobalVariable Property SE_iBreastScalingVar_Global Auto
             {Wich value to use for breast inflation (0-5)}
@@ -106,7 +106,7 @@ import StringUtil
             {Reduce breast scale multiplier by number of souls (good for balancing purposes)}
 
             GlobalVariable Property SE_fBreastScaleOffset_Global Auto
-            {Modify scaling result by this value}
+            {Base scale value (Modify scaling result by this value)}
 
             GlobalVariable Property SE_iButtScalingVar_Global Auto
             {Wich value to use for ass inflation (0-5)}
@@ -121,7 +121,7 @@ import StringUtil
             {Reduce butt scale multiplier by number of souls (good for balancing purposes)}
 
             GlobalVariable Property SE_fButtScaleOffset_Global Auto
-            {Modify scaling result by this value}
+            {Base scale value (Modify scaling result by this value)}
 
     ; System
         ;TODO: Misc settings
@@ -393,26 +393,26 @@ import StringUtil
             SetCursorPosition(1)
             AddHeaderOption("Belly Scaling")
             AddMenuOptionST("visual_Belly_ScalingValue", "Scaling value", ScalingVars[bellyScalingVar])
-            AddSliderOptionST("visual_Belly_ScalingStart", "Scaling start", bellyScalingStart, "{1}") ;TODO: Missing state
-            AddSliderOptionST("visual_Belly_Multiplier", "Multiplier", bellyMultiplier, "{3}") ;TODO: Missing state
-            AddSliderOptionST("visual_Belly_Offset", "Offset", bellyScaleOffset, "{2}") ;TODO: Missing state
-            AddToggleOptionST("visual_Belly_ReduceMultiplier", "Reduce multiplier", scaleBellyMultiplier) ;TODO: Missing state
+            AddSliderOptionST("visual_Belly_ScalingStart", "Scaling start", bellyScalingStart, "{1}")
+            AddSliderOptionST("visual_Belly_Multiplier", "Multiplier", bellyMultiplier, "{3}")
+            AddSliderOptionST("visual_Belly_Offset", "Offset", bellyScaleOffset, "{2}")
+            AddToggleOptionST("visual_Belly_ReduceMultiplier", "Reduce multiplier", scaleBellyMultiplier)
             AddEmptyOption()
 
             AddHeaderOption("Breast Scaling")
             AddMenuOptionST("visual_Breast_ScalingValue", "Scaling value", ScalingVars[breastScalingVar])
-            AddSliderOptionST("visual_Breast_ScalingStart", "Scaling start", breastScalingStart, "{1}") ;TODO: Missing state
-            AddSliderOptionST("visual_Breast_Multiplier", "Multiplier", breastMultiplier, "{3}") ;TODO: Missing state
-            AddSliderOptionST("visual_Breast_Offset", "Offset", breastScaleOffset, "{2}") ;TODO: Missing state
-            AddToggleOptionST("visual_Breast_ReduceMultiplier", "Reduce multiplier", scaleBreastMultiplier) ;TODO: Missing state
+            AddSliderOptionST("visual_Breast_ScalingStart", "Scaling start", breastScalingStart, "{1}")
+            AddSliderOptionST("visual_Breast_Multiplier", "Multiplier", breastMultiplier, "{3}")
+            AddSliderOptionST("visual_Breast_Offset", "Offset", breastScaleOffset, "{2}")
+            AddToggleOptionST("visual_Breast_ReduceMultiplier", "Reduce multiplier", scaleBreastMultiplier)
             AddEmptyOption()
 
             AddHeaderOption("Butt Scaling")
             AddMenuOptionST("visual_Butt_ScalingValue", "Scaling value", ScalingVars[buttScalingVar])
-            AddSliderOptionST("visual_Butt_ScalingStart", "Scaling start", buttScalingStart, "{1}") ;TODO: Missing state
-            AddSliderOptionST("visual_Butt_Multiplier", "Multiplier", buttMultiplier, "{3}") ;TODO: Missing state
-            AddSliderOptionST("visual_Butt_Offset", "Offset", buttScaleOffset, "{2}") ;TODO: Missing state
-            AddToggleOptionST("visual_Butt_ReduceMultiplier", "Reduce multiplier", scaleButtMultiplier) ;TODO: Missing state
+            AddSliderOptionST("visual_Butt_ScalingStart", "Scaling start", buttScalingStart, "{1}")
+            AddSliderOptionST("visual_Butt_Multiplier", "Multiplier", buttMultiplier, "{3}")
+            AddSliderOptionST("visual_Butt_Offset", "Offset", buttScaleOffset, "{2}")
+            AddToggleOptionST("visual_Butt_ReduceMultiplier", "Reduce multiplier", scaleButtMultiplier)
 
         elseif(a_page == "System")
             SetCursorPosition(0)
@@ -738,58 +738,86 @@ import StringUtil
 
         State visual_Belly_ScalingStart
             Event OnSliderOpenST()
+                SetSliderDialogStartValue(bellyScalingStart)
+                SetSliderDialogDefaultValue(default_BellyScalingStart)
+                SetSliderDialogRange(0.0, 100.0)
+                SetSliderDialogInterval(0.1)
             EndEvent
 
             Event OnSliderAcceptST(float value)
+                bellyScalingStart = value
+                SetSliderOptionValueST(bellyScalingStart, "{1}")
             EndEvent
 
             Event OnDefaultST()
+                bellyScalingStart = default_BellyScalingStart
+                SetSliderOptionValueST(bellyScalingStart, "{1}")
             EndEvent
 
             Event OnHighlightST()
-                SetInfoText("")
+                SetInfoText("Belly will start growing when selected value is equal or greater than this.")
             EndEvent
         EndState
 
         State visual_Belly_Multiplier
             Event OnSliderOpenST()
+                SetSliderDialogStartValue(bellyMultiplier)
+                SetSliderDialogDefaultValue(default_BellyMultiplier)
+                SetSliderDialogRange(0.000, 1.000)
+                SetSliderDialogInterval(0.001)
             EndEvent
 
             Event OnSliderAcceptST(float value)
+                bellyMultiplier = value
+                SetSliderOptionValueST(bellyMultiplier, "{3}")
             EndEvent
 
             Event OnDefaultST()
+                bellyMultiplier = default_BellyMultiplier
+                SetSliderOptionValueST(bellyMultiplier, "{3}")
             EndEvent
 
             Event OnHighlightST()
-                SetInfoText("")
+                SetInfoText("Multiply belly scale by this")
             EndEvent
         EndState
 
         State visual_Belly_Offset
             Event OnSliderOpenST()
+                SetSliderDialogStartValue(bellyScaleOffset)
+                SetSliderDialogDefaultValue(default_BellyScaleOffset)
+                SetSliderDialogRange(-30.0, 30.0)
+                SetSliderDialogInterval(0.1)
             EndEvent
 
             Event OnSliderAcceptST(float value)
+                bellyScaleOffset = value
+                SetSliderOptionValueST(bellyScaleOffset, "{1}")
             EndEvent
 
             Event OnDefaultST()
+                bellyScaleOffset = default_BellyScaleOffset
+                SetSliderOptionValueST(bellyScaleOffset, "{1}")
             EndEvent
 
             Event OnHighlightST()
-                SetInfoText("")
+                SetInfoText("Base scale value (Modify scaling result by this value)")
             EndEvent
         EndState
 
         State visual_Belly_ReduceMultiplier
             Event OnSelectST()
+                scaleBellyMultiplier = !scaleBellyMultiplier
+                SetToggleOptionValueST(scaleBellyMultiplier)
             EndEvent
 
             Event OnDefaultST()
+                scaleBellyMultiplier = default_ScaleBellyMultiplier
+                SetToggleOptionValueST(scaleBellyMultiplier)
             EndEvent
 
             Event OnHighlightST()
-                SetInfoText("")
+                SetInfoText("Reduce belly scale multiplier by number of souls (good for balancing purposes).")
             EndEvent
         EndState
 ;//////////////////////////////////////////////// BREAST ///////////////////////////////////////////////////////;
@@ -851,58 +879,86 @@ import StringUtil
 
         State visual_Breast_ScalingStart
             Event OnSliderOpenST()
+                SetSliderDialogStartValue(breastScalingStart)
+                SetSliderDialogDefaultValue(default_BreastScalingStart)
+                SetSliderDialogRange(0.0, 100.0)
+                SetSliderDialogInterval(0.1)
             EndEvent
 
             Event OnSliderAcceptST(float value)
+                breastScalingStart = value
+                SetSliderOptionValueST(breastScalingStart, "{1}")
             EndEvent
 
             Event OnDefaultST()
+                breastScalingStart = default_BreastScalingStart
+                SetSliderOptionValueST(breastScalingStart, "{1}")
             EndEvent
 
             Event OnHighlightST()
-                SetInfoText("")
+                SetInfoText("Breast will start growing when selected value is equal or greater than this.")
             EndEvent
         EndState
 
         State visual_Breast_Multiplier
             Event OnSliderOpenST()
+                SetSliderDialogStartValue(breastMultiplier)
+                SetSliderDialogDefaultValue(default_BreastMultiplier)
+                SetSliderDialogRange(0.000, 1.000)
+                SetSliderDialogInterval(0.001)
             EndEvent
 
             Event OnSliderAcceptST(float value)
+                breastMultiplier = value
+                SetSliderOptionValueST(breastMultiplier, "{3}")
             EndEvent
 
             Event OnDefaultST()
+                breastMultiplier = default_BreastMultiplier
+                SetSliderOptionValueST(breastMultiplier, "{3}")
             EndEvent
 
             Event OnHighlightST()
-                SetInfoText("")
+                SetInfoText("Multiply breast scale by this")
             EndEvent
         EndState
 
         State visual_Breast_Offset
             Event OnSliderOpenST()
+                SetSliderDialogStartValue(breastScaleOffset)
+                SetSliderDialogDefaultValue(default_BreastScaleOffset)
+                SetSliderDialogRange(-30.0, 30.0)
+                SetSliderDialogInterval(0.1)
             EndEvent
 
             Event OnSliderAcceptST(float value)
+                breastScaleOffset = value
+                SetSliderOptionValueST(breastScaleOffset, "{1}")
             EndEvent
 
             Event OnDefaultST()
+                breastScaleOffset = default_BreastScaleOffset
+                SetSliderOptionValueST(breastScaleOffset, "{1}")
             EndEvent
 
             Event OnHighlightST()
-                SetInfoText("")
+                SetInfoText("Base scale value (Modify scaling result by this value)")
             EndEvent
         EndState
 
         State visual_Breast_ReduceMultiplier
             Event OnSelectST()
+                scaleBreastMultiplier = !scaleBreastMultiplier
+                SetToggleOptionValueST(scaleBreastMultiplier)
             EndEvent
 
             Event OnDefaultST()
+                scaleBreastMultiplier = default_ScaleBreastMultiplier
+                SetToggleOptionValueST(scaleBreastMultiplier)
             EndEvent
 
             Event OnHighlightST()
-                SetInfoText("")
+                SetInfoText("Reduce breast scale multiplier by number of souls (good for balancing purposes)")
             EndEvent
         EndState
 ;//////////////////////////////////////////////// BUTT ///////////////////////////////////////////////////////;
@@ -964,58 +1020,86 @@ import StringUtil
 
         State visual_Butt_ScalingStart
             Event OnSliderOpenST()
+                SetSliderDialogStartValue(buttScalingStart)
+                SetSliderDialogDefaultValue(default_ButtScalingStart)
+                SetSliderDialogRange(0.0, 100.0)
+                SetSliderDialogInterval(0.1)
             EndEvent
 
             Event OnSliderAcceptST(float value)
+                buttScalingStart = value
+                SetSliderOptionValueST(buttScalingStart, "{1}")
             EndEvent
 
             Event OnDefaultST()
+                buttScalingStart = default_ButtScalingStart
+                SetSliderOptionValueST(buttScalingStart, "{1}")
             EndEvent
 
             Event OnHighlightST()
-                SetInfoText("")
+                SetInfoText("Butt will start growing when selected value is equal or greater than this.")
             EndEvent
         EndState
 
         State visual_Butt_Multiplier
             Event OnSliderOpenST()
+                SetSliderDialogStartValue(buttMultiplier)
+                SetSliderDialogDefaultValue(default_ButtMultiplier)
+                SetSliderDialogRange(0.000, 1.000)
+                SetSliderDialogInterval(0.001)
             EndEvent
 
             Event OnSliderAcceptST(float value)
+                buttMultiplier = value
+                SetSliderOptionValueST(buttMultiplier, "{3}")
             EndEvent
 
             Event OnDefaultST()
+                buttMultiplier = default_ButtMultiplier
+                SetSliderOptionValueST(buttMultiplier, "{3}")
             EndEvent
 
             Event OnHighlightST()
-                SetInfoText("")
+                SetInfoText("Multiply butt scale by this")
             EndEvent
         EndState
 
         State visual_Butt_Offset
             Event OnSliderOpenST()
+                SetSliderDialogStartValue(buttScaleOffset)
+                SetSliderDialogDefaultValue(default_ButtScaleOffset)
+                SetSliderDialogRange(-30.0, 30.0)
+                SetSliderDialogInterval(0.1)
             EndEvent
 
             Event OnSliderAcceptST(float value)
+                buttScaleOffset = value
+                SetSliderOptionValueST(buttScaleOffset, "{1}")
             EndEvent
 
             Event OnDefaultST()
+                buttScaleOffset = default_ButtScaleOffset
+                SetSliderOptionValueST(buttScaleOffset, "{1}")
             EndEvent
 
             Event OnHighlightST()
-                SetInfoText("")
+                SetInfoText("Base scale value (Modify scaling result by this value)")
             EndEvent
         EndState
 
         State visual_Butt_ReduceMultiplier
             Event OnSelectST()
+                scaleButtMultiplier = !scaleButtMultiplier
+                SetToggleOptionValueST(scaleButtMultiplier)
             EndEvent
 
             Event OnDefaultST()
+                scaleButtMultiplier = default_ScaleButtMultiplier
+                SetToggleOptionValueST(scaleButtMultiplier)
             EndEvent
 
             Event OnHighlightST()
-                SetInfoText("")
+                SetInfoText("Reduce butt scale multiplier by number of souls (good for balancing purposes)")
             EndEvent
         EndState
 
@@ -1043,11 +1127,14 @@ import StringUtil
         State system_Version
             ;TODO: Incomplete state
             Event OnSelectST()
+                ; Nothing
             EndEvent
 
             Event OnDefaultST()
+                ; Nothing
             EndEvent
 
             Event OnHighlightST()
+                SetInfoText("Build " + SE_iInstalledVersion_Global.GetValue())
             EndEvent
         EndState
