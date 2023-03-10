@@ -137,7 +137,7 @@ import StringUtil
 
 ;/// Properties ///;
     SE_StorageManager_Script Property Storage Auto
-    Message Property ConfirmReset Auto
+    bool Property ConfirmReset = false Auto Hidden
 
     ;TODO: Check Properties usage
     bool Property enableCapacityModifiers Auto Hidden ;Unused
@@ -387,6 +387,7 @@ import StringUtil
     Event OnConfigClose()
         {Called when this config menu is closed}
         SaveSettings()
+        ConfirmReset = false
     EndEvent
     
     Event OnVersionUpdate(int aVersion)
@@ -1176,8 +1177,13 @@ import StringUtil
 
         State system_ResetSettings
             Event OnSelectST()
-                If (ConfirmReset.Show() == 1)
+                If (ConfirmReset)
                     ResetSettings()
+                    SetTextOptionValueST("")
+                    Debug.MessageBox("Close all menus")
+                Else
+                    ConfirmReset = true
+                    SetTextOptionValueST("Confirm?")
                 EndIf
             EndEvent
 
