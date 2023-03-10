@@ -383,6 +383,48 @@ import StringUtil
         numberOfSouls[4] = 0
         storageMode = default_StorageMode
     EndFunction
+
+    ; Enable/Greyout specific scaling node options (Belly, Breast or Butt) (0 = Disable, 1 = Enable)
+    Function ToggleScalingOptions(string node, float value)
+        If (node == "Belly")
+            If (value == 0)
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Belly_ScalingStart")
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Belly_Multiplier")
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Belly_Offset")
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Belly_ReduceMultiplier")
+            else
+                SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Belly_ScalingStart")
+                SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Belly_Multiplier")
+                SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Belly_Offset")
+                SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Belly_ReduceMultiplier")
+            EndIf
+        Elseif (node == "Breast")
+            If (value == 0)
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_ScalingStart")
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_Multiplier")
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_Offset")
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_ReduceMultiplier")
+            else
+                SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Breast_ScalingStart")
+                SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Breast_Multiplier")
+                SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Breast_Offset")
+                SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Breast_ReduceMultiplier")
+            EndIf
+        Else
+            If (value == 0)
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Butt_ScalingStart")
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Butt_Multiplier")
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Butt_Offset")
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Butt_ReduceMultiplier")
+            else
+                SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Butt_ScalingStart")
+                SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Butt_Multiplier")
+                SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Butt_Offset")
+                SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Butt_ReduceMultiplier")
+            EndIf
+        EndIf
+    EndFunction
+
 ;/// Events ///;
     ;TODO: MCM menu
 
@@ -403,6 +445,9 @@ import StringUtil
     Event OnConfigOpen()
         {Called when this config menu is opened}
         LoadSettings()
+        ToggleScalingOptions("Belly", bellyScalingVar)
+        ToggleScalingOptions("Breast", breastScalingVar)
+        ToggleScalingOptions("Butt", buttScalingVar)
     EndEvent
     
     Event OnConfigClose()
@@ -774,17 +819,7 @@ import StringUtil
                 bellyScalingVar = value
                 SetMenuOptionValueST(ScalingVars[bellyScalingVar])
 
-                If (value == 0)
-                    SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Belly_ScalingStart")
-                    SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Belly_Multiplier")
-                    SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Belly_Offset")
-                    SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Belly_ReduceMultiplier")
-                else
-                    SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Belly_ScalingStart")
-                    SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Belly_Multiplier")
-                    SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Belly_Offset")
-                    SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Belly_ReduceMultiplier")
-                EndIf
+                ToggleScalingOptions("Belly", value)
             EndEvent
 
             Event OnDefaultST()
@@ -915,17 +950,7 @@ import StringUtil
                 breastScalingVar = value
                 SetMenuOptionValueST(ScalingVars[breastScalingVar])
 
-                If (value == 0)
-                    SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_ScalingStart")
-                    SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_Multiplier")
-                    SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_Offset")
-                    SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_ReduceMultiplier")
-                else
-                    SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Breast_ScalingStart")
-                    SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Breast_Multiplier")
-                    SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Breast_Offset")
-                    SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Breast_ReduceMultiplier")
-                EndIf
+                ToggleScalingOptions("Breast", value)
             EndEvent
 
             Event OnDefaultST()
@@ -1056,17 +1081,7 @@ import StringUtil
                 buttScalingVar = value
                 SetMenuOptionValueST(ScalingVars[buttScalingVar])
 
-                If (value == 0)
-                    SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Butt_ScalingStart")
-                    SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Butt_Multiplier")
-                    SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Butt_Offset")
-                    SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Butt_ReduceMultiplier")
-                else
-                    SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Butt_ScalingStart")
-                    SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Butt_Multiplier")
-                    SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Butt_Offset")
-                    SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Butt_ReduceMultiplier")
-                EndIf
+                ToggleScalingOptions("Butt", value)
             EndEvent
 
             Event OnDefaultST()
