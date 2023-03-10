@@ -174,7 +174,7 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
             Debug.Notification("Processing " + updateLoops + " Updates")
         endif
 
-        If (Config.storageMode == "Digest")
+        If (Config.storageMode == 1)
             while(updateLoops > 1)
                 Digest()
                 updateLoops -= 1
@@ -185,7 +185,7 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
             if(Config.synergyLevel > Config.maxSynergy)
                 Config.maxSynergy = Config.synergyLevel
             endIf
-        elseif (Config.storageMode == "Gestation")
+        elseif (Config.storageMode == 2)
             bool inLabor
             while(updateLoops > 1)
                 inLabor = Gestate()

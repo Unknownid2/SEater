@@ -63,7 +63,7 @@ Scriptname SE_MainQuest_Script extends Quest
             Debug.Notification("SEater: Victim = " + victim.GetDisplayName())
         endif
 
-        if(PlayerRef.GetActorBase().GetSex() == 1 && Config.storageMode != "Disabled")
+        if(PlayerRef.GetActorBase().GetSex() == 1 && Config.storageMode > 0)
             if(victim.HasMagicEffect(SoulTrapFFActor))
                 Debug.Notification("Failed to absorb. Target soul already catch by another spell")
                 return false
