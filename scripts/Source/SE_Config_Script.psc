@@ -392,7 +392,7 @@ import StringUtil
             ;Scaling
             SetCursorPosition(1)
             AddHeaderOption("Belly Scaling")
-            AddMenuOptionST("visual_Belly_ScalingValue", "Scaling value", ScalingVars[bellyScalingVar]) ;TODO: Missing state
+            AddMenuOptionST("visual_Belly_ScalingValue", "Scaling value", ScalingVars[bellyScalingVar])
             AddSliderOptionST("visual_Belly_ScalingStart", "Scaling start", bellyScalingStart, "{1}") ;TODO: Missing state
             AddSliderOptionST("visual_Belly_Multiplier", "Multiplier", bellyMultiplier, "{3}") ;TODO: Missing state
             AddSliderOptionST("visual_Belly_Offset", "Offset", bellyScaleOffset, "{2}") ;TODO: Missing state
@@ -400,7 +400,7 @@ import StringUtil
             AddEmptyOption()
 
             AddHeaderOption("Breast Scaling")
-            AddMenuOptionST("visual_Breast_ScalingValue", "Scaling value", ScalingVars[breastScalingVar]) ;TODO: Missing state
+            AddMenuOptionST("visual_Breast_ScalingValue", "Scaling value", ScalingVars[breastScalingVar])
             AddSliderOptionST("visual_Breast_ScalingStart", "Scaling start", breastScalingStart, "{1}") ;TODO: Missing state
             AddSliderOptionST("visual_Breast_Multiplier", "Multiplier", breastMultiplier, "{3}") ;TODO: Missing state
             AddSliderOptionST("visual_Breast_Offset", "Offset", breastScaleOffset, "{2}") ;TODO: Missing state
@@ -408,7 +408,7 @@ import StringUtil
             AddEmptyOption()
 
             AddHeaderOption("Butt Scaling")
-            AddMenuOptionST("visual_Butt_ScalingValue", "Scaling value", ScalingVars[buttScalingVar]) ;TODO: Missing state
+            AddMenuOptionST("visual_Butt_ScalingValue", "Scaling value", ScalingVars[buttScalingVar])
             AddSliderOptionST("visual_Butt_ScalingStart", "Scaling start", buttScalingStart, "{1}") ;TODO: Missing state
             AddSliderOptionST("visual_Butt_Multiplier", "Multiplier", buttMultiplier, "{3}") ;TODO: Missing state
             AddSliderOptionST("visual_Butt_Offset", "Offset", buttScaleOffset, "{2}") ;TODO: Missing state
@@ -681,6 +681,28 @@ import StringUtil
     ;Visual
 ;//////////////////////////////////////////////// BELLY ///////////////////////////////////////////////////////;
         State visual_Belly_ScalingValue
+            string Function Description()
+                string descriptionA = "Wich value to use for belly inflation.\n"
+                string descriptionB = ""
+
+                If (bellyScalingVar == 1)
+                    descriptionB = "Soul charge level: Use soul charge level to scale belly."
+                elseif(bellyScalingVar == 2)
+                    descriptionB = "Synergy level: use synergy level to scale belly."
+                elseif(bellyScalingVar == 3)
+                    descriptionB = "Mode progress: Use synergy changes to scale belly."
+                    descriptionB = "Not implemented yet." ;TODO: remove after implementation
+                elseif(bellyScalingVar == 4)
+                    descriptionB = "Max charge level: Use storage max capacity to scale belly."
+                elseif(bellyScalingVar == 5)
+                    descriptionB = "Max synergy level: Use max acumulated synergy to scale belly."
+                else
+                    descriptionB = "Disabled: Do not use any value and disable belly scaling."
+                EndIf
+        
+                return descriptionA + descriptionB
+            EndFunction
+
             Event OnMenuOpenST()
                 SetMenuDialogStartIndex(bellyScalingVar)
                 SetMenuDialogDefaultIndex(default_BellyScalingVar)
@@ -710,7 +732,7 @@ import StringUtil
             EndEvent
 
             Event OnHighlightST()
-                SetInfoText("")
+                SetInfoText(Description())
             EndEvent
         EndState
 
@@ -772,6 +794,28 @@ import StringUtil
         EndState
 ;//////////////////////////////////////////////// BREAST ///////////////////////////////////////////////////////;
         State visual_Breast_ScalingValue
+            string Function Description()
+                string descriptionA = "Wich value to use for breast inflation.\n"
+                string descriptionB = ""
+
+                If (bellyScalingVar == 1)
+                    descriptionB = "Soul charge level: Use soul charge level to scale breast."
+                elseif(bellyScalingVar == 2)
+                    descriptionB = "Synergy level: use synergy level to scale breast."
+                elseif(bellyScalingVar == 3)
+                    descriptionB = "Mode progress: Use synergy changes to scale breast."
+                    descriptionB = "Not implemented yet." ;TODO: remove after implementation
+                elseif(bellyScalingVar == 4)
+                    descriptionB = "Max charge level: Use storage max capacity to scale breast."
+                elseif(bellyScalingVar == 5)
+                    descriptionB = "Max synergy level: Use max acumulated synergy to scale breast."
+                else
+                    descriptionB = "Disabled: Do not use any value and disable breast scaling."
+                EndIf
+        
+                return descriptionA + descriptionB
+            EndFunction
+
             Event OnMenuOpenST()
                 SetMenuDialogStartIndex(breastScalingVar)
                 SetMenuDialogDefaultIndex(default_BreastScalingVar)
@@ -801,7 +845,7 @@ import StringUtil
             EndEvent
 
             Event OnHighlightST()
-                SetInfoText("")
+                SetInfoText(Description())
             EndEvent
         EndState
 
@@ -863,6 +907,28 @@ import StringUtil
         EndState
 ;//////////////////////////////////////////////// BUTT ///////////////////////////////////////////////////////;
         State visual_Butt_ScalingValue
+            string Function Description()
+                string descriptionA = "Wich value to use for butt inflation.\n"
+                string descriptionB = ""
+
+                If (bellyScalingVar == 1)
+                    descriptionB = "Soul charge level: Use soul charge level to scale butt."
+                elseif(bellyScalingVar == 2)
+                    descriptionB = "Synergy level: use synergy level to scale butt."
+                elseif(bellyScalingVar == 3)
+                    descriptionB = "Mode progress: Use synergy changes to scale butt."
+                    descriptionB = "Not implemented yet." ;TODO: remove after implementation
+                elseif(bellyScalingVar == 4)
+                    descriptionB = "Max charge level: Use storage max capacity to scale butt."
+                elseif(bellyScalingVar == 5)
+                    descriptionB = "Max synergy level: Use max acumulated synergy to scale butt."
+                else
+                    descriptionB = "Disabled: Do not use any value and disable butt scaling."
+                EndIf
+        
+                return descriptionA + descriptionB
+            EndFunction
+
             Event OnMenuOpenST()
                 SetMenuDialogStartIndex(buttScalingVar)
                 SetMenuDialogDefaultIndex(default_ButtScalingVar)
@@ -892,7 +958,7 @@ import StringUtil
             EndEvent
 
             Event OnHighlightST()
-                SetInfoText("")
+                SetInfoText(Description())
             EndEvent
         EndState
 
