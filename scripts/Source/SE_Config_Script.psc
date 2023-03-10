@@ -132,7 +132,7 @@ import StringUtil
         GlobalVariable Property SE_iInstalledVersion_Global Auto
         {Used to track updates}
 
-        int Property Version = 22 AutoReadOnly ;TODO: <- Change before tests
+        int Property Version = 23 AutoReadOnly ;TODO: <- Change before tests
         {Mod version}
 
 ;/// Properties ///;
@@ -230,7 +230,7 @@ import StringUtil
 ;/// Functions ///;
     ; Returns mod version string
     string Function GetVersionString()
-        return "0.1.22" ;TODO: <- Change before tests
+        return "0.1.23" ;TODO: <- Change before tests
     EndFunction
 
     ; Cuts decimals after dot and return the result as string
@@ -560,7 +560,7 @@ import StringUtil
             string Function Description()
                 string descriptionA = "Used to forge larger souls at gestation mode.\n"
                 string descriptionB = "Can recharge by digesting souls, breaking soulgems or over time while not carrying souls"
-                string descriptionC = "but only digest increases maximum synergy."
+                string descriptionC = " but only digest increases maximum synergy."
 
                 return descriptionA + descriptionB + descriptionC
             EndFunction
@@ -582,9 +582,9 @@ import StringUtil
                 string descriptionA = "The state of storage. Define what happen with unclaimed stored souls.\n"
                 string descriptionB = ""
                 
-                If (storageMode == "Digest")
+                If (storageMode == 1)
                     descriptionB = "Digest: The smaller piece of soul are converted into synergy."
-                elseif (storageMode == "Gestation")
+                elseif (storageMode == 2)
                     descriptionB = "Gestation: Synergy are used to turn weakest soul into larger souls."
                 else
                     descriptionB = "Disabled: Souls cann't be stored and any atempt to absorb will fail"
@@ -1170,7 +1170,7 @@ import StringUtil
             EndEvent
 
             Event OnHighlightST()
-                SetInfoText("Build " + SE_iInstalledVersion_Global.GetValue())
+                SetInfoText("Build " + SE_iInstalledVersion_Global.GetValue() as int)
             EndEvent
         EndState
 
