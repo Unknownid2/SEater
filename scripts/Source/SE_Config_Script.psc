@@ -217,7 +217,7 @@ import StringUtil
 
     ; Used by state options to define options description
     string Function Description()
-        string descriptionA = ""
+        string descriptionA = "Missing description!"
         string descriptionB = ""
         string descriptionC = ""
 
@@ -230,49 +230,53 @@ import StringUtil
 
     ; Set all settings to its default_ values
     Function ResetSettings()
-        enableCapacityModifiers = default_EnableCapacityModifiers
-        enableCapacityEffects = default_EnableCapacityEffects
-        allowDangerousScale = default_AllowDangerousScale
-        sheLikesIt = default_SheLikesIt
-        sheLovesIt = default_SheLovesIt
-        applyAnimations = default_ApplyAnimations
-        scaleBellyMultiplier = default_ScaleBellyMultiplier
-        scaleBreastMultiplier = default_ScaleBreastMultiplier
-        scaleButtMultiplier = default_ScaleButtMultiplier
-        dbg = default_Dbg
-        maxCapacity = default_MaxCapacity
-        firstStageScale = default_FirstStageScale
-        secondStageScale = default_SecondStageScale
-        thirthStageScale = default_ThirthStageScale
-        burstScale = default_BurstScale
-        stretch = default_Stretch
-        multiplierScalePorcentage = default_MultiplierScalePorcentage
-        bellyScalingStart = default_BellyScalingStart
-        bellyMultiplier = default_BellyMultiplier
-        bellyScaleOffset = default_BellyScaleOffset
-        breastScalingStart = default_BreastScalingStart
-        breastMultiplier = default_BreastMultiplier
-        breastScaleOffset = default_BreastScaleOffset
-        buttScalingStart = default_ButtScalingStart
-        buttMultiplier = default_ButtMultiplier
-        buttScaleOffset = default_ButtScaleOffset
-        bellyScalingVar = default_BellyScalingVar
-        breastScalingVar = default_BreastScalingVar
-        buttScalingVar = default_ButtScalingVar
+        ;Storage
+        enableCapacityModifiers = default_enableCapacityModifiers
+        enableCapacityEffects = default_enableCapacityEffects
+        firstStageScale = default_firstStageScale
+        secondStageScale = default_secondStageScale
+        thirthStageScale = default_thirthStageScale
+        allowDangerousScale = default_allowDangerousScale
+        burstScale = default_burstScale
+        stretch = default_stretch
+
+        ;Visual
+        sheLikesIt = default_sheLikesIt
+        sheLovesIt = default_sheLovesIt
+        applyAnimations = default_applyAnimations
+
+        ;Belly Scaling
+        enableBellyScaling = default_enableBellyScaling
+        bellyMinSize = default_bellyMinSize
+        bellyBaseMaxSize = default_bellyBaseMaxSize
+        bellyStretch = default_bellyStretch
+        bellyMultiplier = default_bellyMultiplier
+
+        ;Breast Scaling
+        enableBreastScaling = default_enableBreastScaling
+        breastMinSize = default_breastMinSize
+        bellyToBreastMaxSize = default_bellyToBreastMaxSize
+        breastIncrementValue = default_breastIncrementValue
+        breastDecrementValue = default_breastDecrementValue
+        breastMultiplier = default_breastMultiplier
+
+        ;System
+        dbg = default_dbg
     EndFunction
 
     ; Reset all stats and progress
     Function ResetStats()
         ;TODO: Remove spells and powers from player
-        synergyLevel = default_SynergyLevel
-        maxSynergy = default_MaxSynergy
+        synergyLevel = default_synergyLevel
+        maxSynergy = default_maxSynergy
         numberOfSouls = new int[5]
         numberOfSouls[0] = 0
         numberOfSouls[1] = 0
         numberOfSouls[2] = 0
         numberOfSouls[3] = 0
         numberOfSouls[4] = 0
-        storageMode = default_StorageMode
+        storageMode = default_storageMode
+        maxCapacity = default_maxCapacity
     EndFunction
 
     ; Enable/Greyout specific scaling node options (Belly, Breast or Butt) (0 = Disable, 1 = Enable)
