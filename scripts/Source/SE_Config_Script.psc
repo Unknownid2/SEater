@@ -11,126 +11,44 @@ import StringUtil
         GlobalVariable Property SE_fSynergyLevel_Global Auto ; Used to forge larger souls at gestation mode
         {Increases over time. digesting souls or breaking filled soulgems accelerate charge}
 
-        GlobalVariable Property SE_fMaxSynergy_Global Auto
-        {Increase with SynergyLevel while and only in digest mode}
 
-        GlobalVariable Property SE_iStorageMode_Global Auto ;TODO: Change between modes
-        {What happening with unclaimed stored souls (1= Digest, 2= Gestation, 0 = Disabled)}
-        
-        GlobalVariable Property SE_iNumberOfPetty_Global Auto
-        {Number of stored petty souls}
 
-        GlobalVariable Property SE_iNumberOfLesser_Global Auto
-        {Number of stored lesser souls}
 
-        GlobalVariable Property SE_iNumberOfCommon_Global Auto
-        {Number of stored common souls}
 
-        GlobalVariable Property SE_iNumberOfGreater_Global Auto
-        {Number of stored greater souls}
 
-        GlobalVariable Property SE_iNumberOfGrand_Global Auto
-        {Number of stored grand souls}
 
-        GlobalVariable Property SE_fMaxCapacity_Global Auto
-        {The max amount of souls charge which can be hold inside caster belly}
 
-    ; Storage
-        ;TODO: Settings related to storage
 
-        GlobalVariable Property SE_bCapacityModifiers_Global Auto
-        {Apply Buffs/Debuffs based on fulles stage}
 
-        GlobalVariable Property SE_bCapacityEffects_Global Auto
-        {Apply effects based on fulles stage}
 
-        GlobalVariable Property SE_fFirstStage_Global Auto
-        {% of capacity usage considered small (0-100)}
 
-        GlobalVariable Property SE_fSecondStage_Global Auto
-        {% of capacity usage considered medium (0-100)}
 
-        GlobalVariable Property SE_fThirthStage_Global Auto
-        {% of capacity usage considered high (0-100)}
 
-        GlobalVariable Property SE_bAllowDangerousScale_Global Auto
-        {Trespassing max capacity can kill}
 
-        GlobalVariable Property SE_fBurstScale_Global Auto
-        {% above max capacity where burst chance reach 100% (0-100)}
 
-        GlobalVariable Property SE_fStretch_Global Auto
-        {If at ThirthStage, increase max capacity by this value over time (set 0 to disable)}
 
-        GlobalVariable Property SE_fMultiplierReduction_Global Auto
-        {Porcentage of scale multiplier to be reduced with each stored soul (if enabled) (0-100)}
 
-    ; Visual
-        ;TODO: Settings related to effects and scale proportions
 
-        GlobalVariable Property SE_bSheLikesIt_Global Auto
-        {Scaling triggers specials monologs and buffs}
 
-        GlobalVariable Property SE_bSheLovesIt_Global Auto
-        {Scaling triggers pleasure effects like arousal and moan sounds}
 
-        GlobalVariable Property SE_bApplyAnimations_Global Auto
-        {Include animations when applying effects or/and dialogues}
 
-        ; Scaling
-            GlobalVariable Property SE_iBellyScalingVar_Global Auto
-            {Wich value to use for belly inflation (0-5)}
 
-            GlobalVariable Property SE_fBellyScalingStart_Global Auto
-            {Belly will start growing when value is equal or greater than this}
 
-            GlobalVariable Property SE_fBellyMultiplier_Global Auto
-            {The value selected for belly node will be multiplied by this before applying to scale}
 
-            GlobalVariable Property SE_bScaleBellyMultiplier_Global Auto
-            {Reduce belly scale multiplier by number of souls (good for balancing purposes)}
 
-            GlobalVariable Property SE_fBellyScaleOffset_Global Auto
-            {Base scale value (Modify scaling result by this value)}
 
-            GlobalVariable Property SE_iBreastScalingVar_Global Auto
-            {Wich value to use for breast inflation (0-5)}
 
-            GlobalVariable Property SE_fBreastScalingStart_Global Auto
-            {Breasts will start growing when value is equal or greater than this}
 
-            GlobalVariable Property SE_fBreastMultiplier_Global Auto
-            {The value selected for breast node will be multiplied by this before applying to scale}
 
-            GlobalVariable Property SE_bScaleBreastMultiplier_Global Auto
-            {Reduce breast scale multiplier by number of souls (good for balancing purposes)}
 
-            GlobalVariable Property SE_fBreastScaleOffset_Global Auto
-            {Base scale value (Modify scaling result by this value)}
 
-            GlobalVariable Property SE_iButtScalingVar_Global Auto
-            {Wich value to use for ass inflation (0-5)}
 
-            GlobalVariable Property SE_fButtScalingStart_Global Auto
-            {Butt will start growing when value is equal or greater than this}
 
-            GlobalVariable Property SE_fButtMultiplier_Global Auto
-            {The value selected for ass node will be multiplied by this before applying to scale}
 
-            GlobalVariable Property SE_bScaleButtMultiplier_Global Auto
-            {Reduce butt scale multiplier by number of souls (good for balancing purposes)}
 
-            GlobalVariable Property SE_fButtScaleOffset_Global Auto
-            {Base scale value (Modify scaling result by this value)}
 
-    ; System
-        ;TODO: Misc settings
 
-        GlobalVariable Property SE_bDbg_Global Auto
-        {Toggle debug notifications}
 
-        GlobalVariable Property SE_iInstalledVersion_Global Auto
-        {Used to track updates}
 
         int Property Version = 25 AutoReadOnly ;TODO: <- Change before tests
         {Mod version}
@@ -268,75 +186,6 @@ import StringUtil
         return Version
     EndFunction
 
-    Function SaveSettings()
-        SE_bDbg_Global.SetValue(dbg as float)
-        SE_bScaleBellyMultiplier_Global.SetValue(scaleBellyMultiplier as float)
-        SE_bScaleBreastMultiplier_Global.SetValue(scaleBreastMultiplier as float)
-        SE_bScaleButtMultiplier_Global.SetValue(scaleButtMultiplier as float)
-        SE_fMultiplierReduction_Global.SetValue(multiplierScalePorcentage)
-        SE_fBellyScalingStart_Global.SetValue(bellyScalingStart)
-        SE_fBreastScalingStart_Global.SetValue(breastScalingStart)
-        SE_fButtScalingStart_Global.SetValue(buttScalingStart)
-        SE_fBellyMultiplier_Global.SetValue(bellyMultiplier)
-        SE_fBreastMultiplier_Global.SetValue(breastMultiplier)
-        SE_fButtMultiplier_Global.SetValue(buttMultiplier)
-        SE_fBellyScaleOffset_Global.SetValue(bellyScaleOffset)
-        SE_fBreastScaleOffset_Global.SetValue(breastScaleOffset)
-        SE_fButtScaleOffset_Global.SetValue(buttScaleOffset)
-        SE_iBellyScalingVar_Global.SetValue(bellyScalingVar as float)
-        SE_iBreastScalingVar_Global.SetValue(breastScalingVar as float)
-        SE_iButtScalingVar_Global.SetValue(buttScalingVar as float)
-
-        ; Stats
-            SE_fSynergyLevel_Global.SetValue(synergyLevel)
-            SE_fMaxSynergy_Global.SetValue(maxSynergy)
-            SE_iNumberOfPetty_Global.SetValue(numberOfSouls[0] as float)
-            SE_iNumberOfLesser_Global.SetValue(numberOfSouls[1] as float)
-            SE_iNumberOfCommon_Global.SetValue(numberOfSouls[2] as float)
-            SE_iNumberOfGreater_Global.SetValue(numberOfSouls[3] as float)
-            SE_iNumberOfGrand_Global.SetValue(numberOfSouls[4] as float)
-            SE_iStorageMode_Global.SetValue(storageMode as float)
-
-        Debug.Notification("SEater: Settings saved")
-    EndFunction
-
-    Function LoadSettings()
-        dbg = SE_bDbg_Global.GetValue() as bool
-        scaleBellyMultiplier = SE_bScaleBellyMultiplier_Global.GetValue() as bool
-        scaleBreastMultiplier = SE_bScaleBreastMultiplier_Global.GetValue() as bool
-        scaleButtMultiplier = SE_bScaleButtMultiplier_Global.GetValue() as bool
-        multiplierScalePorcentage = SE_fMultiplierReduction_Global.GetValue()
-        bellyScalingStart = SE_fBellyScalingStart_Global.GetValue()
-        breastScalingStart = SE_fBreastScalingStart_Global.GetValue()
-        buttScalingStart = SE_fButtScalingStart_Global.GetValue()
-        bellyMultiplier = SE_fBellyMultiplier_Global.GetValue()
-        breastMultiplier = SE_fBreastMultiplier_Global.GetValue()
-        buttMultiplier = SE_fButtMultiplier_Global.GetValue()
-        bellyScaleOffset = SE_fBellyScaleOffset_Global.GetValue()
-        breastScaleOffset = SE_fBreastScaleOffset_Global.GetValue()
-        buttScaleOffset = SE_fButtScaleOffset_Global.GetValue()
-        bellyScalingVar = SE_iBellyScalingVar_Global.GetValue() as int
-        breastScalingVar = SE_iBreastScalingVar_Global.GetValue() as int
-        buttScalingVar = SE_iButtScalingVar_Global.GetValue() as int
-
-        Debug.Notification("SEater: Settings loaded")
-    EndFunction
-
-    ; Atempt to recover stats from older versions
-    Function RetrieveSavedData()
-        synergyLevel = SE_fSynergyLevel_Global.GetValue()
-        maxSynergy = SE_fMaxSynergy_Global.GetValue()
-        numberOfSouls = new int[5]
-        numberOfSouls[0] = SE_iNumberOfPetty_Global.GetValue() as int
-        numberOfSouls[1] = SE_iNumberOfLesser_Global.GetValue() as int
-        numberOfSouls[2] = SE_iNumberOfCommon_Global.GetValue() as int
-        numberOfSouls[3] = SE_iNumberOfGreater_Global.GetValue() as int
-        numberOfSouls[4] = SE_iNumberOfGrand_Global.GetValue() as int
-        storageMode = SE_iStorageMode_Global.GetValue() as int
-
-        Debug.Notification("SEater: Previous stats loaded")
-    EndFunction
-
     ; Set all settings to its default_ values
     Function ResetSettings()
         enableCapacityModifiers = default_EnableCapacityModifiers
@@ -437,19 +286,16 @@ import StringUtil
     ; Called when this config menu registered at the control panel
     Event OnConfigRegister()
 
-        LoadSettings()
         SetEnums()
         Debug.Notification("SEater: Ready!")
     EndEvent
     
     Event OnConfigOpen()
         {Called when this config menu is opened}
-        LoadSettings()
     EndEvent
     
     Event OnConfigClose()
         {Called when this config menu is closed}
-        SaveSettings()
         Scale.UpdateScale()
         ConfirmReset = false
     EndEvent
@@ -457,8 +303,6 @@ import StringUtil
     Event OnVersionUpdate(int aVersion)
         {Called when aVersion update of this script has been detected}
         ;TODO: Update code (if needed)
-        RetrieveSavedData()
-        SE_iInstalledVersion_Global.SetValue(Version)
         Debug.Notification("SEater: Updated")
         Debug.Notification("Version = " + GetVersionString())
     EndEvent
@@ -525,7 +369,6 @@ import StringUtil
             SetCursorFillMode(TOP_TO_BOTTOM)
             AddToggleOptionST("system_DebugMode", "Debug mode", dbg)
             AddTextOptionST("system_Version", "Version", GetVersionString())
-            AddTextOptionST("system_RetrieveSavedStats", "Retrieve saved stats", "")
             
             SetCursorPosition(1)
             AddTextOptionST("system_ResetSettings", "Reset settings", "")
@@ -1211,21 +1054,7 @@ import StringUtil
             EndEvent
 
             Event OnHighlightST()
-                SetInfoText("Build " + SE_iInstalledVersion_Global.GetValue() as int)
-            EndEvent
-        EndState
-
-        State system_RetrieveSavedStats
-            Event OnSelectST()
-                RetrieveSavedData()
-            EndEvent
-
-            Event OnDefaultST()
-                ; Nothing
-            EndEvent
-
-            Event OnHighlightST()
-                SetInfoText("Reload previous stats from Global Variables")
+                SetInfoText("Build: " + GetVersion())
             EndEvent
         EndState
 
