@@ -100,6 +100,19 @@ Scriptname SE_MainQuest_Script extends Quest
         return false
     EndFunction
 
+    ; Call this to test mod functions
+    Function TestMod()
+        ;TODO: tests behavior
+            ; Add all spells, powers and items to player
+            ; Scale belly to max than shrink
+            ; Scale breast to max than shrink
+            ; Repeat for digest and gestation modes:
+                ; Add random number of souls to storage
+                ; Update events some times
+                ; Emptie storage
+                ; Update events some times
+    EndFunction
+
 ;/// Events ///;
     
     ; Called when a new soul are absorbed successfully
