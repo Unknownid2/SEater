@@ -71,7 +71,12 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
     ; Returns capacity usage (0-100)
     float Function GetCapacityUsage()
         float storageUsage = GetTotalChargeLevel()
-        return (storageUsage / Config.maxCapacity) * 100
+
+        If (storageUsage > 0)
+            return (storageUsage / Config.maxCapacity) * 100
+        Else
+            return storageUsage
+        EndIf
     EndFunction
 
     ; Add a single soul of given size inside caster
