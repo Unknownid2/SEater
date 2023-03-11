@@ -3,154 +3,196 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
 
 import StringUtil
 
-
-;/// Settings ///;
-    ; Stats
-        ;TODO: Absorb Stats and skills (most read only)
-
-        GlobalVariable Property SE_fSynergyLevel_Global Auto ; Used to forge larger souls at gestation mode
-        {Increases over time. digesting souls or breaking filled soulgems accelerate charge}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        int Property Version = 25 AutoReadOnly ;TODO: <- Change before tests
-        {Mod version}
-
 ;/// Properties ///;
     SE_StorageManager_Script Property Storage Auto
     SE_ScaleManager_Script Property Scale Auto
-    bool Property ConfirmReset = false Auto Hidden
 
     ;TODO: Check Properties usage
-    bool Property enableCapacityModifiers Auto Hidden ;Unused
-    bool Property enableCapacityEffects Auto Hidden ;Unused
-    bool Property allowDangerousScale Auto Hidden ;Unused
-    bool Property sheLikesIt Auto Hidden ;Unused
-    bool Property sheLovesIt Auto Hidden ;Unused
-    bool Property applyAnimations Auto Hidden ;Unused
-    bool Property scaleBellyMultiplier Auto Hidden
-    bool Property scaleBreastMultiplier Auto Hidden
-    bool Property scaleButtMultiplier Auto Hidden
-    bool Property dbg Auto Hidden
-    float Property synergyLevel Auto Hidden
-    float Property maxSynergy Auto Hidden
-    float Property maxCapacity Auto Hidden ;Unused
-    float Property firstStageScale Auto Hidden ;Unused
-    float Property secondStageScale Auto Hidden ;Unused
-    float Property thirthStageScale Auto Hidden ;Unused
-    float Property burstScale Auto Hidden ;Unused
-    float Property stretch Auto Hidden ;Unused
-    float Property multiplierScalePorcentage Auto Hidden
-    float Property bellyScalingStart Auto Hidden
-    float Property bellyMultiplier Auto Hidden
-    float Property bellyScaleOffset Auto Hidden
-    float Property breastScalingStart Auto Hidden
-    float Property breastMultiplier Auto Hidden
-    float Property breastScaleOffset Auto Hidden
-    float Property buttScalingStart Auto Hidden
-    float Property buttMultiplier Auto Hidden
-    float Property buttScaleOffset Auto Hidden
-    int[] Property numberOfSouls Auto Hidden
-    int Property storageMode Auto Hidden ;TODO: The mode can be changed at soul stone once per day or at end of previous mode.
-    int Property bellyScalingVar Auto Hidden
-    int Property breastScalingVar Auto Hidden
-    int Property buttScalingVar Auto Hidden
+    ; Settings
+        ; Stats
+            ;TODO: Absorb Stats and skills (most read only)
 
-;/// Default Values ///;
-    bool default_EnableCapacityModifiers = true
-    bool default_EnableCapacityEffects = true
-    bool default_AllowDangerousScale = true
-    bool default_SheLikesIt = true
-    bool default_SheLovesIt = true
-    bool default_ApplyAnimations = true
-    bool default_ScaleBellyMultiplier = true
-    bool default_ScaleBreastMultiplier = true
-    bool default_ScaleButtMultiplier = true
-    bool default_Dbg = false
-    float default_SynergyLevel = 0.0
-    float default_MaxSynergy = 0.0
-    float default_MaxCapacity = 0.0
-    float default_FirstStageScale = 25.0
-    float default_SecondStageScale = 50.0
-    float default_ThirthStageScale = 75.0
-    float default_BurstScale = 100.0
-    float default_Stretch = 1.0
-    float default_MultiplierScalePorcentage = 10.0
-    float default_BellyScalingStart = 0.0
-    float default_BellyMultiplier = 0.300
-    float default_BellyScaleOffset = 1.0
-    float default_BreastScalingStart = 0.0
-    float default_BreastMultiplier = 0.030
-    float default_BreastScaleOffset = 1.0
-    float default_ButtScalingStart = 0.0
-    float default_ButtMultiplier = 0.030
-    float default_ButtScaleOffset = 1.0
-    int default_BellyScalingVar = 1
-    int default_BreastScalingVar = 1
-    int default_ButtScalingVar = 1
-    int default_StorageMode = 0
+            float Property synergyLevel Auto Hidden
+            {Increases over time. digesting souls or breaking filled soulgems accelerate charge}
 
-;/// Enumerators[] ///;
+            float Property maxSynergy Auto Hidden
+            {Increase with SynergyLevel while and only in digest mode}
+
+            int Property storageMode Auto Hidden ;TODO: The mode can be changed at soul stone once per day or at end of previous mode.
+            {What happening with unclaimed stored souls (0-2)}
+
+            int[] Property numberOfSouls Auto Hidden
+            {Number of stored souls, ordered by soul size (0-4) = (petty-grand)}
+
+            float Property maxCapacity Auto Hidden ;Unused
+            {The max amount of souls charge which can be hold inside caster}
+
+            float Property bellySize Auto Hidden ;Unused
+            {The current belly size (set by this mod)}
+
+            float Property maxBellySize Auto Hidden ;Unused
+            {The current belly size at 100% capacity}
+
+            float Property breastSize Auto Hidden ;Unused
+            {The current breast size (set by this mod)}
+
+            float Property maxBreastSize Auto Hidden ;Unused
+            {The current max breast size (based on maxBellySize)}
+
+            float Property burstChance Auto Hidden ;Unused
+            {The chance for bursting are checked every time belly size increases}
+
+        ; Storage
+            ;TODO: Settings related to storage
+
+            bool Property enableCapacityModifiers Auto Hidden ;Unused
+            {Apply Buffs/Debuffs based on fulles stage}
+
+            bool Property enableCapacityEffects Auto Hidden ;Unused
+            {Apply effects based on fulles stage}
+
+            float Property firstStageScale Auto Hidden ;Unused
+            {% of capacity usage considered small (0-100)}
+
+            float Property secondStageScale Auto Hidden ;Unused
+            {% of capacity usage considered medium (0-100)}
+
+            float Property thirthStageScale Auto Hidden ;Unused
+            {% of capacity usage considered high (0-100)}
+
+            bool Property allowDangerousScale Auto Hidden ;Unused
+            {Trespassing max capacity can kill}
+
+            float Property burstScale Auto Hidden ;Unused
+            {% above max capacity where burst chance reach 100% (0-100)}
+
+            float Property stretch Auto Hidden ;Unused
+            {If at ThirthStage, increase max capacity by this value over time (set 0 to disable)}
+
+        ; Visual
+            ;TODO: Settings related to effects and scale proportions
+
+            bool Property sheLikesIt Auto Hidden ;Unused
+            {Scaling triggers specials dialogs and buffs}
+
+            bool Property sheLovesIt Auto Hidden ;Unused
+            {Scaling triggers pleasure effects like arousal and moan sounds (require SLFramework and SLAroused)}
+
+            bool Property applyAnimations Auto Hidden ;Unused
+            {Include animations when applying effects or/and dialogues}
+
+            ; Belly Scaling
+                ;TODO: Belly scales with storage usage at both storage modes
+
+                bool Property enableBellyScaling Auto Hidden ;Unused
+                {Toggle belly scaling}
+
+                float Property bellyMinSize Auto Hidden ;Unused
+                {Belly size will be scaled above this}
+
+                float Property bellyBaseMaxSize Auto Hidden ;Unused
+                {The size of belly at 100% capacity without stretches}
+
+                float Property bellyStretch Auto Hidden ;Unused
+                {The value to add to bellyMaxSize for each stretch}
+
+                float Property bellyMultiplier Auto Hidden ;TODO: recheck
+                {Multiply belly scale by this value}
+
+            ; Breast Scaling
+                ;TODO: Breast scales over time while carrying souls at both storage modes
+
+                bool Property enableBreastScaling Auto Hidden ;Unused
+                {Toggle breast scaling}
+
+                float Property breastMinSize Auto Hidden ;Unused
+                {Breast size will be scaled above this}
+
+                float Property bellyToBreastMaxSize Auto Hidden ;Unused
+                {Scale of maxBellySize to use as maxBreastSize}
+
+                float Property breastIncrementValue Auto Hidden ;Unused
+                {Value to add to breast scale over time while carrying souls}
+
+                float Property breastDecrementValue Auto Hidden ;Unused
+                {Value to subtract from breast scale over time while not carrying souls}
+
+                float Property breastMultiplier Auto Hidden ;TODO: recheck
+                {Multiply breast scale by this value}
+
+            ; Butt Scaling
+                ;TODO: implement butt scaling?
+        
+        ; System
+            ;TODO: Misc settings
+
+            bool Property dbg Auto Hidden
+            {Toggle debug notifications}
+
+            int Property Version = 25 AutoReadOnly ;TODO: <- Change before tests
+            {Mod version}
+
+            string Property VersionString = "0.1.25" AutoReadOnly ;TODO: <- Change before tests
+            {Mod version (string)}
+
+;/// Variables ///;
+    bool confirmReset = false
+
+    ; Settings Default Values
+        ; Stats
+            float default_synergyLevel = 0.0
+            float default_maxSynergy = 0.0
+            int default_storageMode = 0
+            float default_maxCapacity = 30.0
+
+        ; Storage
+            bool default_enableCapacityModifiers = true
+            bool default_enableCapacityEffects = true
+            float default_firstStageScale = 25.0
+            float default_secondStageScale = 50.0
+            float default_thirthStageScale = 75.0
+            bool default_allowDangerousScale = true
+            float default_burstScale = 100.0
+            float default_stretch = 1.0
+
+        ; Visual
+            bool default_sheLikesIt = true
+            bool default_sheLovesIt = true
+            bool default_applyAnimations = true
+
+            ; Belly Scaling
+                bool default_enableBellyScaling = false
+                float default_bellyMinSize = 1.00
+                float default_bellyBaseMaxSize = 3.00
+                float default_bellyStretch = 0.08
+                float default_bellyMultiplier = 1.00
+
+            ; Breast Scaling
+                bool default_enableBreastScaling = false
+                float default_breastMinSize = 1.00
+                float default_bellyToBreastMaxSize = 0.112
+                float default_breastIncrementValue = 0.010
+                float default_breastDecrementValue = 0.050
+                float default_breastMultiplier = 1.00
+
+        ; System
+            bool default_dbg = false
+
+;/// Menu Entries ///;
     string[] StorageModes
-    string[] ScalingVars
 
     ; Creation
-    Function SetEnums()
+    Function SetEntries()
         StorageModes = new string[3]
             StorageModes[0] = "Disabled"
             StorageModes[1] = "Digest"
             StorageModes[2] = "Gestation"
-        ScalingVars = new string[6]
-            ; Values for Scaling vars are:
-            ScalingVars[0] = "Disabled" ; disable this node from scaling
-            ScalingVars[1] = "Soul charge level" ; use soul charge level as scaling var for this node
-            ScalingVars[2] = "Synergy level" ; use synergy level as scaling var for this node
-            ScalingVars[3] = "Mode progress" ; use special var based on synergy gained by digestion or used by gestation
-            ScalingVars[4] = "Max charge level" ; use max capacity of soul charge level as scaling var for this node
-            ScalingVars[5] = "Max synergy level" ; use max acumulated synergy as scaling var for this node
     EndFunction
 
 ;/// Functions ///;
     ; Returns mod version string
     string Function GetVersionString()
-        return "0.1.25" ;TODO: <- Change before tests
+        return VersionString
     EndFunction
 
     ; Cuts decimals after dot and return the result as string
