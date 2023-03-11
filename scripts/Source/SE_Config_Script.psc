@@ -347,7 +347,7 @@ import StringUtil
             SetCursorPosition(0)
             SetCursorFillMode(TOP_TO_BOTTOM)
             AddTextOptionST("stats_Synergy", "Synergy", FormatFloat(synergyLevel, 1) + "/" + FormatFloat(maxSynergy, 1))
-            ;AddTextOptionST("stats_ChargeLevel", "Charge Level", Storage.GetTotalChargeLevel()) ;TODO: Missing state
+            AddTextOptionST("stats_CapacityUsage", "Capacity Usage", FormatFloat(Storage.GetCapacityUsage(), 1) + "%")
 
             ;Stored Souls
             SetCursorPosition(1)
@@ -520,6 +520,26 @@ import StringUtil
             EndEvent
         EndState
 
+        State stats_CapacityUsage
+            string Function Description()
+                string descriptionA = "Stored soul charges: " + FormatFloat(Storage.GetTotalChargeLevel(), 1)
+                string descriptionB = "\nMax Capacity: " + FormatFloat(maxCapacity, 1)
+
+                return descriptionA + descriptionB
+            EndFunction
+
+            Event OnSelectST()
+                Debug.MessageBox(Description())
+            EndEvent
+
+            Event OnDefaultST()
+                ; Nothing
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("% of soul charge capacity utilized")
+            EndEvent
+        EndState
 
         State stats_Mode
             string Function Description()
