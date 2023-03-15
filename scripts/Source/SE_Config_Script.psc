@@ -3,6 +3,50 @@ Scriptname SE_Config_Script extends SKI_ConfigBase
 
 import StringUtil
 
+;/// Variables ///;
+    bool confirmReset = false
+
+    ; Settings Default Values
+        ; Stats
+            float default_synergyLevel = 0.0
+            float default_maxSynergy = 0.0
+            int default_storageMode = 0
+            float default_maxCapacity = 30.0
+            int default_numberOfStretches = 0
+
+        ; Storage
+            bool default_enableCapacityModifiers = true
+            bool default_enableCapacityEffects = true
+            float default_firstStageScale = 25.0
+            float default_secondStageScale = 50.0
+            float default_thirthStageScale = 75.0
+            bool default_allowDangerousScale = true
+            float default_burstScale = 100.0
+            float default_stretch = 1.0
+
+        ; Visual
+            bool default_sheLikesIt = true
+            bool default_sheLovesIt = true
+            bool default_applyAnimations = true
+
+            ; Belly Scaling
+                bool default_enableBellyScaling = false
+                float default_bellyMinSize = 1.00
+                float default_bellyBaseMaxSize = 3.00
+                float default_bellyStretch = 0.08
+                float default_bellyMultiplier = 1.00
+
+            ; Breast Scaling
+                bool default_enableBreastScaling = false
+                float default_breastMinSize = 1.00
+                float default_bellyToBreastMaxSize = 0.112
+                float default_breastIncrementValue = 0.010
+                float default_breastDecrementValue = 0.050
+                float default_breastMultiplier = 1.00
+
+        ; System
+            bool default_dbg = false
+
 ;/// Properties ///;
     SE_StorageManager_Script Property Storage Auto
     SE_ScaleManager_Script Property Scale Auto
@@ -12,35 +56,11 @@ import StringUtil
         ; Stats
             ;TODO: Absorb Stats and skills (most read only)
 
-            float Property synergyLevel Auto Hidden
-            {Increases over time. digesting souls or breaking filled soulgems accelerate charge}
-
-            float Property maxSynergy Auto Hidden
-            {Increase with SynergyLevel while and only in digest mode}
-
-            int Property storageMode Auto Hidden ;TODO: The mode can be changed at soul stone once per day or at end of previous mode.
-            {What happening with unclaimed stored souls (0-2)}
-
-            int[] Property numberOfSouls Auto Hidden
-            {Number of stored souls, ordered by soul size (0-4) = (petty-grand)}
-
-            float Property maxCapacity Auto Hidden ;Unused
-            {The max amount of souls charge which can be hold inside caster}
-
-            float Property bellySize Auto Hidden ;Unused
-            {The current belly size (set by this mod)}
-
-            float Property maxBellySize Auto Hidden ;Unused
-            {The current belly size at 100% capacity}
-
-            float Property breastSize Auto Hidden ;Unused
-            {The current breast size (set by this mod)}
-
-            float Property maxBreastSize Auto Hidden ;Unused
-            {The current max breast size (based on maxBellySize)}
-
             float Property burstChance Auto Hidden ;Unused
             {The chance for bursting are checked every time belly size increases}
+
+            int Property numberOfStretches Auto Hidden ;Unused
+            {The number of stretches increases over time at 100% capacity usage or more}
 
         ; Storage
             ;TODO: Settings related to storage
@@ -129,54 +149,76 @@ import StringUtil
             bool Property dbg Auto Hidden
             {Toggle debug notifications}
 
-            int Property Version = 25 AutoReadOnly ;TODO: <- Change before tests
+            int Property Version = 26 AutoReadOnly ;TODO: <- Change before tests
             {Mod version}
 
-            string Property VersionString = "0.1.25" AutoReadOnly ;TODO: <- Change before tests
+            string Property VersionString = "0.1.26" AutoReadOnly ;TODO: <- Change before tests
             {Mod version (string)}
+    
+    ;Full Settings
+        ;Stats
+            float Property synergyLevel Hidden
+            {Increases over time. digesting souls or breaking filled soulgems accelerate charge}
+                float Function Get()
+                    return Storage.synergyLevel
+                EndFunction
+            EndProperty
 
-;/// Variables ///;
-    bool confirmReset = false
+            float Property maxSynergy Hidden
+            {Increase with SynergyLevel while and only in digest mode}
+                float Function Get()
+                    return Storage.maxSynergy
+                EndFunction
+            EndProperty
 
-    ; Settings Default Values
-        ; Stats
-            float default_synergyLevel = 0.0
-            float default_maxSynergy = 0.0
-            int default_storageMode = 0
-            float default_maxCapacity = 30.0
+            float Property maxCapacity Hidden ;Unused
+            {The max amount of souls charge which can be hold inside caster}
+                float Function Get()
+                    return default_maxCapacity + (numberOfStretches * stretch)
+                EndFunction
+            EndProperty
 
-        ; Storage
-            bool default_enableCapacityModifiers = true
-            bool default_enableCapacityEffects = true
-            float default_firstStageScale = 25.0
-            float default_secondStageScale = 50.0
-            float default_thirthStageScale = 75.0
-            bool default_allowDangerousScale = true
-            float default_burstScale = 100.0
-            float default_stretch = 1.0
+            int Property storageMode Hidden
+            {What happening with unclaimed stored souls (0-2)}
+                int Function Get()
+                    return Storage.storageMode
+                EndFunction
+            EndProperty
 
-        ; Visual
-            bool default_sheLikesIt = true
-            bool default_sheLovesIt = true
-            bool default_applyAnimations = true
+            int[] Property numberOfSouls Hidden
+            {Number of stored souls, ordered by soul size (0-4) = (petty-grand)}
+                int[] Function Get()
+                    return Storage.numberOfSouls
+                EndFunction
+            EndProperty
 
-            ; Belly Scaling
-                bool default_enableBellyScaling = false
-                float default_bellyMinSize = 1.00
-                float default_bellyBaseMaxSize = 3.00
-                float default_bellyStretch = 0.08
-                float default_bellyMultiplier = 1.00
+            float Property bellySize Hidden ;Unused
+            {The current belly size (set by this mod)}
+                float Function Get()
+                    return Scale.bellySize
+                EndFunction
+            EndProperty
 
-            ; Breast Scaling
-                bool default_enableBreastScaling = false
-                float default_breastMinSize = 1.00
-                float default_bellyToBreastMaxSize = 0.112
-                float default_breastIncrementValue = 0.010
-                float default_breastDecrementValue = 0.050
-                float default_breastMultiplier = 1.00
+            float Property maxBellySize Hidden ;Unused
+            {The current belly size at 100% capacity}
+                float Function Get()
+                    return bellyBaseMaxSize + (numberOfStretches * bellyStretch)
+                EndFunction
+            EndProperty
 
-        ; System
-            bool default_dbg = false
+            float Property breastSize Hidden ;Unused
+            {The current breast size (set by this mod)}
+                float Function Get()
+                    return Scale.breastSize
+                EndFunction
+            EndProperty
+
+            float Property maxBreastSize Hidden ;Unused
+            {The current max breast size (based on maxBellySize)}
+                float Function Get()
+                    return bellyToBreastMaxSize * maxBellySize
+                EndFunction
+            EndProperty
 
 ;/// Menu Entries ///;
     string[] StorageModes
@@ -267,16 +309,11 @@ import StringUtil
     ; Reset all stats and progress
     Function ResetStats()
         ;TODO: Remove spells and powers from player
-        synergyLevel = default_synergyLevel
-        maxSynergy = default_maxSynergy
-        numberOfSouls = new int[5]
-        numberOfSouls[0] = 0
-        numberOfSouls[1] = 0
-        numberOfSouls[2] = 0
-        numberOfSouls[3] = 0
-        numberOfSouls[4] = 0
-        storageMode = default_storageMode
-        maxCapacity = default_maxCapacity
+        Storage.synergyLevel = default_synergyLevel
+        Storage.maxSynergy = default_maxSynergy
+        Storage.numberOfSouls = new int[5]
+        Storage.storageMode = default_storageMode
+        numberOfStretches = default_numberOfStretches
     EndFunction
 
     ; Enable/Greyout scaling node options (Belly or Breast)

@@ -8,10 +8,19 @@ Scriptname SE_MainQuest_Script extends Quest
     Faction Property CreatureFaction Auto
     MagicEffect Property SoulTrapFFActor Auto
     Actor Property PlayerRef Auto
+    GlobalVariable Property GameDaysPassed Auto
 
 ;/// Variables ///;
+float lastUpdate ; Number of days were the last update event are made
 
 ;/// Functions ///;
+
+    ; Returns number of updates 'till last check
+    float Function GetUpdates()
+        float daysPassed = GameDaysPassed.GetValue() - lastUpdate
+        lastUpdate = GameDaysPassed.GetValue()
+        return daysPassed * 24
+    endFunction
 
     ; Return Soul size of target actor
     int Function GetSoulSize(Actor target)
@@ -114,6 +123,31 @@ Scriptname SE_MainQuest_Script extends Quest
     EndFunction
 
 ;/// Events ///;
+
+    ; Called at Main Quest startup
+    Event OnInit()
+        lastUpdate = GameDaysPassed.GetValue()
+        RegisterForSingleUpdate(1.0)
+    EndEvent
+
+    ; Called each in-game hour if this mod is active, no matter if are carrying souls or not.
+    Event OnUpdateGameTime()
+        If (Config.dbg)
+            Debug.Notification("SEater: OnUpdateGameTime(Main)")
+        EndIf
+
+        OnModUpdate(GetUpdates())
+        RegisterForSingleUpdate(1.0)
+    EndEvent
+
+    ; Called every in-game hour while this mod is active, no matter if are carrying souls or not.
+    Event OnModUpdate(float timePast)
+        If (Config.dbg)
+            Debug.Notification("SEater: OnModUpdate(Main)")
+        EndIf
+
+        Scale.OnModUpdate(timePast)
+    EndEvent
     
     ; Called when a new soul are absorbed successfully
     event OnSoulAbsorbed(int absorbedSoulSize)
@@ -129,4 +163,22 @@ Scriptname SE_MainQuest_Script extends Quest
     ; Called after successfully dispel a soul to a soul gem
     Event OnSoulExpeled(int expeledSoulSize)
         ;TODO: Need Implementation
+    EndEvent
+
+    ; Called when belly size increases
+    Event OnGrowth()
+        if(Config.dbg)
+            Debug.Notification("SEater: OnGrowth(Main)")
+        endif
+
+        Scale.OnGrowth()
+    EndEvent
+
+    ; Called when belly size decreases
+    Event OnShrink()
+        if(Config.dbg)
+            Debug.Notification("SEater: OnShrink(Main)")
+        endif
+
+        Scale.OnShrink()
     EndEvent

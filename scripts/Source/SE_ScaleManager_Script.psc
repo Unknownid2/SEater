@@ -1,197 +1,162 @@
 Scriptname SE_ScaleManager_Script extends SE_MainQuest_Script
 {Inflate/Deflate and other effects related to scale}
 
-;/// Properties ///;
+import SLIF_Main
 
 ;/// Variables ///;
-float bellyMultiplier
-float breastMultiplier
-float buttMultiplier
+bool inflateBreasts
+float currentBellySize
+float currentBreastSize
+float normalBreastSize ; The size of breasts without multiplication
+
+;/// Properties ///;
+float Property bellySize Hidden
+    float Function Get()
+        return currentBellySize
+    EndFunction
+
+    Function Set(float value)
+        ;TODO: Scaling methods
+        If (value > Config.bellyMinSize)
+            currentBellySize = UpdateBelly(value)
+        Else
+            currentBellySize = Config.bellyMinSize
+            If (IsRegistered(PlayerRef, Config.ModName))
+                UnregisterNode(PlayerRef, "slif_belly", Config.ModName)
+
+                if(Config.dbg)
+                    Debug.Notification("SEater: Belly scale disabled or bellow min")
+                    Debug.Notification("belly node unregistered.")
+                endif
+            EndIf
+        EndIf
+    EndFunction
+EndProperty
+
+float Property breastSize Hidden
+    float Function Get()
+        return currentBreastSize
+    EndFunction
+
+    Function Set(float value)
+        If (value > Config.breastMinSize)
+            currentBreastSize = UpdateBreast(value)
+        Else
+            currentBreastSize = Config.breastMinSize
+            If (IsRegistered(PlayerRef, Config.ModName))
+                UnregisterNode(PlayerRef, "slif_breast", Config.ModName)
+
+                if(Config.dbg)
+                    Debug.Notification("SEater: Breast scale disabled or bellow min")
+                    Debug.Notification("breast node unregistered.")
+                endif
+            EndIf
+        EndIf
+    EndFunction
+EndProperty
 
 ;/// Functions ///;
 
-    ; Update nodes scaling with their respective scaling vars
+    ; Check and update node scales
     Function UpdateScale()
         if(Config.dbg)
-            Debug.Notification("SEater: Updating scales...")
+            Debug.Notification("SEater: Checking size values...")
         endif
 
-        ;TODO: Scaling methods
-        if(Config.bellyScalingVar == 1) ; Soul charge level
-            UpdateBelly(Storage.GetTotalChargeLevel())
-        elseif(Config.bellyScalingVar == 2) ; Synergy level
-            UpdateBelly(Config.synergyLevel)
-        elseif(Config.bellyScalingVar == 3) ; Mode progress
-            ;TODO: Digest/Gestation progress
-        elseif(Config.bellyScalingVar == 4) ; Max charge level
-            UpdateBelly(Config.maxCapacity)
-        elseif(Config.bellyScalingVar == 5) ; Max synergy level
-            UpdateBelly(Config.maxSynergy)
+        If (Config.enableBellyScaling)
+            float capacityUsage = Storage.GetCapacityUsage()
+            float newValue = 0.0
+            If (capacityUsage > 0)
+                newValue = capacityUsage / 100
+                newValue *= Config.maxBellySize
+                newValue *= Config.bellyMultiplier
+                newValue += Config.bellyMinSize
+                bellySize = newValue
+            Else
+                bellySize = 0.00
+            EndIf
         Else
-            UpdateBelly(-1) ; For unregistering this node
-        endIf
-        
-        if(Config.breastScalingVar == 1) ; Soul charge level
-            UpdateBreast(Storage.GetTotalChargeLevel())
+            bellySize = 0.00
+        EndIf
 
-        elseif(Config.breastScalingVar == 2) ; Synergy level
-            UpdateBreast(Config.synergyLevel)
-        elseif(Config.breastScalingVar == 3) ; Mode progress
-            ;TODO: Digest/Gestation progress
-        elseif(Config.breastScalingVar == 4) ; Max charge level
-            UpdateBreast(Config.maxCapacity)
-        elseif(Config.breastScalingVar == 5) ; Max synergy level
-            UpdateBreast(Config.maxSynergy)
-        Else
-            UpdateBreast(-1) ; For unregistering this node
-        endIf
-
-        if(Config.buttScalingVar == 1) ; Soul charge level
-            UpdateButt(Storage.GetTotalChargeLevel())
-        elseif(Config.buttScalingVar == 2) ; Synergy level
-            UpdateButt(Config.synergyLevel)
-        elseif(Config.buttScalingVar == 3) ; Mode progress
-            ;TODO: Digest/Gestation progress
-        elseif(Config.buttScalingVar == 4) ; Max charge level
-            UpdateButt(Config.maxCapacity)
-
-        elseif(Config.buttScalingVar == 5) ; Max synergy level
-            UpdateButt(Config.maxSynergy)
-        Else
-            UpdateButt(-1) ; For unregistering this node
-        endIf
+        inflateBreasts = Storage.GetNumberOfSouls() > 0 && Config.enableBreastScaling
     EndFunction
 
-    ; Updates belly node by passed value
-    Function UpdateBelly(float referenceValue)
-        if(referenceValue < 0)
-            SLIF_Main.unregisterNode(PlayerRef, "slif_belly", Config.ModName)
+    ; Updates belly node within slif, then returns the new value
+    float Function UpdateBelly(float newSize)
+        float increment
+        If (newSize > currentBellySize)
+            parent.OnGrowth()
+            increment = (newSize - currentBellySize) * 0.1
+        ElseIf (newSize < currentBellySize)
+            parent.OnShrink()
+            increment = (currentBellySize - newSize) * 0.1
+        EndIf
 
-            if(Config.dbg)
-                Debug.Notification("initial ref value bellow 0: belly node unregistered")
-            endif
-        else
-            if(Config.dbg)
-                Debug.Notification("Updating belly node, initial ref: " + referenceValue)
-            endif
+        Inflate(PlayerRef, Config.ModName, "slif_belly", newSize, -1, -1, "", -1.0, -1.0, -1.0, increment)
 
-            bellyMultiplier = Config.bellyMultiplier
-
-            if(Config.scaleBellyMultiplier)
-                int index = 0
-                While (index < Storage.GetNumberOfSouls())
-                    bellyMultiplier *= (Config.multiplierScalePorcentage - 100) * -0.01
-                    index += 1
-                EndWhile
-            EndIf
-
-            referenceValue -= Config.bellyScalingStart
-            referenceValue *= bellyMultiplier
-            referenceValue += Config.bellyScaleOffset
-
-            if(Config.dbg)
-                Debug.Notification("Result ref: " + referenceValue)
-            endif
-
-            if(referenceValue < 0)
-                referenceValue = 0 ; can't be below 0
-
-                if(Config.dbg)
-                    Debug.Notification("ref value fixed to 0")
-                endif
-            endif
-
-            SLIF_Main.Inflate(PlayerRef, Config.ModName, "slif_belly", referenceValue)
+        if(Config.dbg)
+            Debug.Notification("SEater: Belly Updated")
         endif
+
+        return newSize
     EndFunction
 
-    ; Updates breasts node by passed value
-    Function UpdateBreast(float referenceValue)
-        if(referenceValue < 0)
-            SLIF_Main.unregisterNode(PlayerRef, "slif_breast", Config.ModName)
+    ; Updates breast nodes withing slif, then returns the new value
+    float Function UpdateBreast(float newSize)
+        Inflate(PlayerRef, Config.ModName, "slif_breast", newSize)
 
-            if(Config.dbg)
-                Debug.Notification("initial ref value bellow 0: breast node unregistered")
-            endif
-        else
-            if(Config.dbg)
-                Debug.Notification("Updating breast node, initial ref: " + referenceValue)
-            endif
-
-            breastMultiplier = Config.breastMultiplier
-
-            if(Config.scaleBreastMultiplier)
-                
-                int index = 0
-                While (index < Storage.GetNumberOfSouls())
-                    breastMultiplier *= (Config.multiplierScalePorcentage - 100) * -0.01
-                    index += 1
-                EndWhile
-            EndIf
-
-            referenceValue -= Config.breastScalingStart
-            referenceValue *= breastMultiplier
-            referenceValue += Config.breastScaleOffset
-
-            if(Config.dbg)
-                Debug.Notification("Result ref: " + referenceValue)
-            endif
-        
-            if(referenceValue < 0)
-                referenceValue = 0 ; can't be below 0
-
-                if(Config.dbg)
-                    Debug.Notification("ref value fixed to 0")
-                endif
-            endif
-
-            SLIF_Main.Inflate(PlayerRef, Config.ModName, "slif_breast", referenceValue)
+        if(Config.dbg)
+            Debug.Notification("SEater: Breast Updated")
         endif
-    EndFunction
 
-    ; Updates butt node by passed value
-    Function UpdateButt(float referenceValue)
-        if(referenceValue < 0)
-            SLIF_Main.unregisterNode(PlayerRef, "slif_butt", Config.ModName)
-
-            if(Config.dbg)
-                Debug.Notification("initial ref value bellow 0: butt node unregistered")
-            endif
-        else
-            if(Config.dbg)
-                Debug.Notification("Updating butt node, initial ref: " + referenceValue)
-            endif
-
-            buttMultiplier = Config.buttMultiplier
-
-            if(Config.scaleButtMultiplier)
-                
-                int index = 0
-                While (index < Storage.GetNumberOfSouls())
-                    buttMultiplier *= (Config.multiplierScalePorcentage - 100) * -0.01
-                    index += 1
-                EndWhile
-            EndIf
-
-            referenceValue -= Config.buttScalingStart
-            referenceValue *= buttMultiplier
-            referenceValue += Config.buttScaleOffset
-
-            if(Config.dbg)
-                Debug.Notification("Result ref: " + referenceValue)
-            endif
-        
-            if(referenceValue < 0)
-                referenceValue = 0 ; can't be below 0
-
-                if(Config.dbg)
-                    Debug.Notification("ref value fixed to 0")
-                endif
-            endif
-
-            SLIF_Main.Inflate(PlayerRef, Config.ModName, "slif_butt", referenceValue)
-        endif
+        return newSize
     EndFunction
 
 ;/// Events ///;
-    ;/.../;
+    Event OnModUpdate(float timePast)
+        If (Config.dbg)
+            Debug.Notification("SEater: OnModUpdate(Scale)")
+        EndIf
+
+        float newValue = 0.0
+
+        If (inflateBreasts)
+            If (breastSize < Config.maxBreastSize)
+                newValue = Config.breastIncrementValue
+                newValue *= timePast
+                newValue += normalBreastSize ; Use the value without multiplier instead
+                normalBreastSize = newValue ; Then update before applying multiplier
+                newValue *= Config.breastMultiplier
+                newValue += Config.breastMinSize
+                breastSize = newValue
+            Else
+                breastSize = Config.maxBreastSize
+            EndIf
+        Else
+            ;TODO: Deflation/Shrink
+            If (breastSize > Config.breastMinSize)
+                newValue = Config.breastDecrementValue
+                newValue *= timePast
+                newValue = normalBreastSize - newValue ; Use the value without multiplier instead
+                normalBreastSize = newValue ; Then update before applying multiplier
+                newValue *= Config.breastMultiplier
+                newValue += Config.breastMinSize
+                breastSize = newValue
+            Else
+                breastSize = Config.breastMinSize
+            EndIf
+        EndIf
+    EndEvent
+
+    Event OnGrowth()
+        if(Config.dbg)
+            Debug.Notification("SEater: OnGrowth(Scale)")
+        endif
+    EndEvent
+
+    Event OnShrink()
+        if(Config.dbg)
+            Debug.Notification("SEater: OnShrink(Scale)")
+        endif
+    EndEvent

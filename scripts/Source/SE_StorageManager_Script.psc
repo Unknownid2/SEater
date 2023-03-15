@@ -4,6 +4,12 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
 ;/// Properties ///;
     MagicEffect Property StorageEffect Auto
     Spell Property StorageSpell Auto
+    float Property synergyLevel Auto Hidden
+    float Property maxSynergy Auto Hidden
+
+    ;TODO: The mode can be changed at soul stone once per day or at end of previous mode.
+    int Property storageMode Auto Hidden
+    int[] Property numberOfSouls Auto
 
 ;/// Variables ///;
     float targetSynergy ; Used to track gestation at Gestate()
@@ -15,8 +21,8 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
         int totalNumberOfSouls = 0
 
         int index = 0
-        While (index < Config.numberOfSouls.Length)
-            totalNumberOfSouls += Config.numberOfSouls[index]
+        While (index < numberOfSouls.Length)
+            totalNumberOfSouls += numberOfSouls[index]
             index += 1
         EndWhile
 
@@ -27,7 +33,7 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
     int Function GetWeakest()
 
         int index = 0
-        While (index < Config.numberOfSouls.Length && Config.numberOfSouls[index] == 0)
+        While (index < numberOfSouls.Length && numberOfSouls[index] == 0)
             index += 1
         EndWhile
 
@@ -45,7 +51,7 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
     ; Return the strongest stored soul (or 0 if empty)
     int Function GetStrongest()
         int index = 4
-        While (index >= 0 && Config.numberOfSouls[index] == 0)
+        While (index >= 0 && numberOfSouls[index] == 0)
             index -= 1
         EndWhile
 
@@ -60,8 +66,8 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
     float Function GetTotalChargeLevel()
         float totalChargeLevel = 0
         int index = 0
-        While (index < Config.numberOfSouls.Length)
-            totalChargeLevel += Config.numberOfSouls[index] * GetSoulChargeBySize(index + 1)
+        While (index < numberOfSouls.Length)
+            totalChargeLevel += numberOfSouls[index] * GetSoulChargeBySize(index + 1)
             index += 1
         EndWhile
 
@@ -81,12 +87,12 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
 
     ; Add a single soul of given size inside caster
     Function AddSoul(int soulSize)
-        Config.numberOfSouls[soulSize - 1] = Config.numberOfSouls[soulSize - 1] + 1
+        numberOfSouls[soulSize - 1] = numberOfSouls[soulSize - 1] + 1
     endFunction
 
     ; Remove a single soul of given size from caster
     Function RemoveSoul(int soulSize)
-        Config.numberOfSouls[soulSize - 1] = Config.numberOfSouls[soulSize - 1] - 1
+        numberOfSouls[soulSize - 1] = numberOfSouls[soulSize - 1] - 1
     EndFunction
 
     ; Digest weakest soul, rechargin synergy. The remains of the soul returns to player in small sizes
@@ -104,7 +110,7 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
                 AddSoul(targetSoul)
             EndWhile
             
-            Config.synergyLevel += 2.5
+            synergyLevel += 2.5
             if(Config.dbg)
                 Debug.Notification("SEater: Digest proceeds")
             endIf
@@ -118,16 +124,15 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
         int targetSoul = GetWeakest()
         if(targetSoul > 0)
             float targetSoulCharge = GetSoulChargeBySize(targetSoul)
-            float synergy = Config.synergyLevel
             targetSynergy += 2.5
             if(targetSynergy >= targetSoulCharge)
-                if(synergy >= targetSynergy || synergy >= 10.00 && targetSoul < 5)
+                if(synergyLevel >= targetSynergy || synergyLevel >= 10.00 && targetSoul < 5)
                     RemoveSoul(targetSoul)
                     AddSoul(targetSoul + 1)
                     if(targetSoul == 4)
-                        synergy -= 10.00
+                        synergyLevel -= 10.00
                     else
-                        synergy -= targetSoulCharge
+                        synergyLevel -= targetSoulCharge
                     endIf
                     
                     if(Config.dbg)
@@ -145,13 +150,18 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
             elseif(Config.dbg)
                 Debug.Notification("SEater: Gestation hold")
             endIf
-
-            Config.synergyLevel = synergy
         elseif(Config.dbg)
             Debug.Notification("SEater: Failed to gestate, there no souls to grow.")
         endIf
 
         return false
+    EndFunction
+
+    ; Try stretch
+    Function Stretch()
+        If (GetCapacityUsage() >= 100.0)
+            Config.numberOfStretches += 1
+        EndIf
     EndFunction
 
 ;/// Events ///;
@@ -179,20 +189,22 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
             Debug.Notification("Processing " + updateLoops + " Updates")
         endif
 
-        If (Config.storageMode == 1)
+        If (storageMode == 1)
             while(updateLoops > 1)
+                Stretch()
                 Digest()
                 updateLoops -= 1
             EndWhile
 
             Scale.UpdateScale()
 
-            if(Config.synergyLevel > Config.maxSynergy)
-                Config.maxSynergy = Config.synergyLevel
+            if(synergyLevel > maxSynergy)
+                maxSynergy = synergyLevel
             endIf
-        elseif (Config.storageMode == 2)
+        elseif (storageMode == 2)
             bool inLabor
             while(updateLoops > 1)
+                Stretch()
                 inLabor = Gestate()
                 updateLoops -= 1
             EndWhile

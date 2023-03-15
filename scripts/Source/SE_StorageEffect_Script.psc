@@ -1,5 +1,6 @@
 Scriptname SE_StorageEffect_Script extends ActiveMagicEffect 
 {Hook for Invoking Soul events}
+;TODO: Change behaviour to represent StorageMode instead
 
     ;/// Properties ///;
     GlobalVariable Property GameDaysPassed Auto
