@@ -574,7 +574,7 @@ import StringUtil
             EndEvent
 
             Event OnHighlightST()
-                SetInfoText("% of soul charge capacity utilized")
+                SetInfoText("Soul charge capacity usage %")
             EndEvent
         EndState
 
