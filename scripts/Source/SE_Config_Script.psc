@@ -595,7 +595,15 @@ import StringUtil
             EndFunction
 
             Event OnSelectST()
-                Debug.MessageBox(Description())
+                Debug.MessageBox(Description() + "\nCheat: enable debug mode to change manually")
+
+                If (dbg)
+                    Storage.storageMode += 1
+
+                    If (storageMode > 2)
+                        Storage.storageMode = 0
+                    EndIf
+                EndIf
             EndEvent
 
             Event OnDefaultST()
