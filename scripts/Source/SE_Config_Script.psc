@@ -59,7 +59,7 @@ import StringUtil
             float Property burstChance Auto Hidden ;Unused
             {The chance for bursting are checked every time belly size increases}
 
-            int Property numberOfStretches Auto Hidden ;TODO: Missing MCM option
+            int Property numberOfStretches Auto Hidden
             {The number of stretches increases over time at 100% capacity usage or more}
 
         ; Storage
@@ -87,7 +87,7 @@ import StringUtil
             {% above max capacity where burst chance reach 100% (0-100)}
 
             float Property stretch Auto Hidden ;TODO: Missing MCM option
-            {If at ThirthStage, increase max capacity by this value over time (set 0 to disable)}
+            {increase max capacity by this value over time while equal or above 100% usage (set 0 to disable)}
 
         ; Visual
             ;TODO: Settings related to effects and scale proportions
@@ -231,6 +231,35 @@ import StringUtil
             StorageModes[2] = "Gestation"
     EndFunction
 
+;/// Options States ///;
+    string stats_Synergy = "Stats_Synergy"
+    string stats_CapacityUsage = "Stats_CapacityUsage"
+    string stats_Stretches = "Stats_Stretches"
+    string stats_Mode = "Stats_Mode"
+    string stats_TotalNumberOfSouls = "Stats_TotalNumberOfSouls"
+    string stats_NumberOfPetty = "Stats_NumberOfPetty"
+    string stats_NumberOfLesser = "Stats_NumberOfLesser"
+    string stats_NumberOfCommon = "Stats_NumberOfCommon"
+    string stats_NumberOfGreater = "Stats_NumberOfGreater"
+    string stats_NumberOfGrand = "Stats_NumberOfGrand"
+
+    string visual_Belly_Enable = "Visual_Belly_Enable"
+    string visual_Belly_MinSize = "Visual_Belly_MinSize"
+    string visual_Belly_BaseMaxSize = "Visual_Belly_BaseMaxSize"
+    string visual_Belly_StretchValue = "Visual_Belly_StretchValue"
+    string visual_Belly_Multiplier = "Visual_Belly_Multiplier"
+    string visual_Breast_Enable = "Visual_Breast_Enable"
+    string visual_Breast_MinSize = "Visual_Breast_MinSize"
+    string visual_Breast_MaxSizeScale = "Visual_Breast_MaxSizeScale"
+    string visual_Breast_Increment = "Visual_Breast_Increment"
+    string visual_Breast_Decrement = "Visual_Breast_Decrement"
+    string visual_Breast_Multiplier = "Visual_Breast_Multiplier"
+
+    string system_DebugMode = "System_DebugMode"
+    string system_Version = "System_Version"
+    string system_ResetSettings = "System_ResetSettings"
+    string system_ResetStats = "System_ResetStats"
+
 ;/// Functions ///;
     ; Returns mod version string
     string Function GetVersionString()
@@ -320,29 +349,29 @@ import StringUtil
     Function ToggleScalingOptions(string node, bool enable)
         If (node == "Belly")
             If (enable)
-                SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Belly_MinSize")
-                SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Belly_BaseMaxSize")
-                SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Belly_StretchValue")
-                SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Belly_Multiplier")
+                SetOptionFlagsST(OPTION_FLAG_NONE, false, visual_Belly_MinSize)
+                SetOptionFlagsST(OPTION_FLAG_NONE, false, visual_Belly_BaseMaxSize)
+                SetOptionFlagsST(OPTION_FLAG_NONE, false, visual_Belly_StretchValue)
+                SetOptionFlagsST(OPTION_FLAG_NONE, false, visual_Belly_Multiplier)
             else
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Belly_MinSize")
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Belly_BaseMaxSize")
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Belly_StretchValue")
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Belly_Multiplier")
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, visual_Belly_MinSize)
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, visual_Belly_BaseMaxSize)
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, visual_Belly_StretchValue)
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, visual_Belly_Multiplier)
             EndIf
         Else
             If (enable)
-                SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Breast_MinSize")
-                SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Breast_MaxSizeScale")
-                SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Breast_Increment")
-                SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Breast_Decrement")
-                SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Breast_Multiplier")
+                SetOptionFlagsST(OPTION_FLAG_NONE, false, visual_Breast_MinSize)
+                SetOptionFlagsST(OPTION_FLAG_NONE, false, visual_Breast_MaxSizeScale)
+                SetOptionFlagsST(OPTION_FLAG_NONE, false, visual_Breast_Increment)
+                SetOptionFlagsST(OPTION_FLAG_NONE, false, visual_Breast_Decrement)
+                SetOptionFlagsST(OPTION_FLAG_NONE, false, visual_Breast_Multiplier)
             else
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_MinSize")
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_MaxSizeScale")
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_Increment")
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_Decrement")
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_Multiplier")
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, visual_Breast_MinSize)
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, visual_Breast_MaxSizeScale)
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, visual_Breast_Increment)
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, visual_Breast_Decrement)
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, visual_Breast_Multiplier)
             EndIf
         EndIf
     EndFunction
@@ -383,23 +412,25 @@ import StringUtil
         if(a_page == "Stats")
             SetCursorPosition(0)
             SetCursorFillMode(TOP_TO_BOTTOM)
-            AddTextOptionST("stats_Synergy", "Synergy", FormatFloat(synergyLevel, 1) + "/" + FormatFloat(maxSynergy, 1))
-            AddTextOptionST("stats_CapacityUsage", "Capacity Usage", FormatFloat(Storage.GetCapacityUsage(), 1) + "%")
+            AddTextOptionST(stats_Synergy, "Synergy", FormatFloat(synergyLevel, 1) + "/" + FormatFloat(maxSynergy, 1))
+            AddTextOptionST(stats_CapacityUsage, "Capacity Usage", FormatFloat(Storage.GetCapacityUsage(), 1) + "%")
+            AddTextOptionST(stats_Stretches, "Stretches", numberOfStretches) ;TODO: Missing state
 
             ;Stored Souls
             SetCursorPosition(1)
-            AddTextOptionST("stats_Mode", "Mode", StorageModes[storageMode])
+            AddTextOptionST(stats_Mode, "Mode", StorageModes[storageMode])
             AddHeaderOption("Stored Souls")
-            AddTextOptionST("stats_TotalNumberOfSouls", "Total number of souls", Storage.GetNumberOfSouls())
-            AddTextOptionST("stats_NumberOfPetty", "Number of petty souls", numberOfSouls[0])
-            AddTextOptionST("stats_NumberOfLesser", "Number of lesser souls", numberOfSouls[1])
-            AddTextOptionST("stats_NumberOfCommon", "Number of common souls", numberOfSouls[2])
-            AddTextOptionST("stats_NumberOfGreater", "Number of greater souls", numberOfSouls[3])
-            AddTextOptionST("stats_NumberOfGrand", "Number of grand souls", numberOfSouls[4])
+            AddTextOptionST(stats_TotalNumberOfSouls, "Total number of souls", Storage.GetNumberOfSouls())
+            AddTextOptionST(stats_NumberOfPetty, "Number of petty souls", numberOfSouls[0])
+            AddTextOptionST(stats_NumberOfLesser, "Number of lesser souls", numberOfSouls[1])
+            AddTextOptionST(stats_NumberOfCommon, "Number of common souls", numberOfSouls[2])
+            AddTextOptionST(stats_NumberOfGreater, "Number of greater souls", numberOfSouls[3])
+            AddTextOptionST(stats_NumberOfGrand, "Number of grand souls", numberOfSouls[4])
 
         elseif(a_page == "Storage")
             SetCursorPosition(0)
             SetCursorFillMode(LEFT_TO_RIGHT)
+            ;AddSliderOptionST("storage_CapacityIncreaseAmount", "Capacity increase amount", stretch, "{1}")
 
         elseif(a_page == "Visual")
             ToggleScalingOptions("Belly", enableBellyScaling)
@@ -410,32 +441,32 @@ import StringUtil
             ;Scaling
             SetCursorPosition(1)
             AddHeaderOption("Belly Scaling")
-            AddToggleOptionST("visual_Belly_Enable", "Enable", enableBellyScaling)
-            AddSliderOptionST("visual_Belly_MinSize", "Min size", bellyMinSize, "{2}")
-            AddSliderOptionST("visual_Belly_BaseMaxSize", "Base max size", bellyBaseMaxSize, "{2}")
-            AddSliderOptionST("visual_Belly_StretchValue", "Stretch value", bellyStretch, "{2}")
-            AddSliderOptionST("visual_Belly_Multiplier", "Multiplier", bellyMultiplier, "{2}")
+            AddToggleOptionST(visual_Belly_Enable, "Enable", enableBellyScaling)
+            AddSliderOptionST(visual_Belly_MinSize, "Min size", bellyMinSize, "{2}")
+            AddSliderOptionST(visual_Belly_BaseMaxSize, "Base max size", bellyBaseMaxSize, "{2}")
+            AddSliderOptionST(visual_Belly_StretchValue, "Stretch value", bellyStretch, "{2}")
+            AddSliderOptionST(visual_Belly_Multiplier, "Multiplier", bellyMultiplier, "{2}")
             AddEmptyOption()
 
             AddHeaderOption("Breast Scaling")
-            AddToggleOptionST("visual_Breast_Enable", "Enable", enableBreastScaling)
-            AddSliderOptionST("visual_Breast_MinSize", "Min size", breastMinSize, "{2}")
-            AddSliderOptionST("visual_Breast_MaxSizeScale", "Max size scale", bellyToBreastMaxSize, "{3}")
-            AddSliderOptionST("visual_Breast_Increment", "Increment", breastIncrementValue, "{3}")
-            AddSliderOptionST("visual_Breast_Decrement", "Decrement", breastDecrementValue, "{3}")
-            AddSliderOptionST("visual_Breast_Multiplier", "Multiplier", breastMultiplier, "{2}")
+            AddToggleOptionST(visual_Breast_Enable, "Enable", enableBreastScaling)
+            AddSliderOptionST(visual_Breast_MinSize, "Min size", breastMinSize, "{2}")
+            AddSliderOptionST(visual_Breast_MaxSizeScale, "Max size scale", bellyToBreastMaxSize, "{3}")
+            AddSliderOptionST(visual_Breast_Increment, "Increment", breastIncrementValue, "{3}")
+            AddSliderOptionST(visual_Breast_Decrement, "Decrement", breastDecrementValue, "{3}")
+            AddSliderOptionST(visual_Breast_Multiplier, "Multiplier", breastMultiplier, "{2}")
             AddEmptyOption()
 
         elseif(a_page == "System")
             confirmReset = false
             SetCursorPosition(1)
             SetCursorFillMode(TOP_TO_BOTTOM)
-            AddToggleOptionST("system_DebugMode", "Debug mode", dbg)
-            AddTextOptionST("system_Version", "Version", GetVersionString())
+            AddToggleOptionST(system_DebugMode, "Debug mode", dbg)
+            AddTextOptionST(system_Version, "Version", GetVersionString())
             
             SetCursorPosition(0)
-            AddTextOptionST("system_ResetSettings", "Reset settings", "")
-            AddTextOptionST("system_ResetStats", "Reset stats", "")
+            AddTextOptionST(system_ResetSettings, "Reset settings", "")
+            AddTextOptionST(system_ResetStats, "Reset stats", "")
         else
             ;TODO: Initial page
         endif
@@ -535,7 +566,7 @@ import StringUtil
 
 ;/// Options States ///;
     ;Stats
-        State stats_Synergy
+        State Stats_Synergy
             string Function Description()
                 string descriptionA = "Used to forge larger souls at gestation mode.\n"
                 string descriptionB = "Recharges over time while not carrying souls, "
@@ -557,7 +588,7 @@ import StringUtil
             EndEvent
         EndState
 
-        State stats_CapacityUsage
+        State Stats_CapacityUsage
             string Function Description()
                 string descriptionA = "Stored soul charges: " + FormatFloat(Storage.GetTotalChargeLevel(), 1)
                 string descriptionB = "\nMax Capacity: " + FormatFloat(maxCapacity, 1)
@@ -578,7 +609,7 @@ import StringUtil
             EndEvent
         EndState
 
-        State stats_Mode
+        State Stats_Mode
             string Function Description()
                 string descriptionA = "The state of storage. Define what happen with unclaimed stored souls.\n"
                 string descriptionB = ""
@@ -614,7 +645,7 @@ import StringUtil
             EndEvent
         EndState
 
-        State stats_TotalNumberOfSouls
+        State Stats_TotalNumberOfSouls
 
             Event OnSelectST()
                 Debug.MessageBox("Total number of stored souls")
@@ -629,7 +660,7 @@ import StringUtil
             EndEvent
         EndState
 
-        State stats_NumberOfPetty
+        State Stats_NumberOfPetty
 
             Event OnSelectST()
                 Debug.MessageBox("Total number of stored petty souls")
@@ -644,7 +675,7 @@ import StringUtil
             EndEvent
         EndState
 
-        State stats_NumberOfLesser
+        State Stats_NumberOfLesser
 
             Event OnSelectST()
                 Debug.MessageBox("Total number of stored lesser souls")
@@ -659,7 +690,7 @@ import StringUtil
             EndEvent
         EndState
 
-        State stats_NumberOfCommon
+        State Stats_NumberOfCommon
 
             Event OnSelectST()
                 Debug.MessageBox("Total number of stored common souls")
@@ -674,7 +705,7 @@ import StringUtil
             EndEvent
         EndState
 
-        State stats_NumberOfGreater
+        State Stats_NumberOfGreater
 
             Event OnSelectST()
                 Debug.MessageBox("Total number of stored greater souls")
@@ -689,7 +720,7 @@ import StringUtil
             EndEvent
         EndState
 
-        State stats_NumberOfGrand
+        State Stats_NumberOfGrand
 
             Event OnSelectST()
                 Debug.MessageBox("Total number of stored grand souls")
@@ -709,7 +740,7 @@ import StringUtil
 
     ;Visual
         ;//////////////////////////////////////////////// BELLY ///////////////////////////////////////////////////////;
-        State visual_Belly_Enable
+        State Visual_Belly_Enable
 
             Event OnSelectST()
                 enableBellyScaling = !enableBellyScaling
@@ -727,7 +758,7 @@ import StringUtil
             EndEvent
         EndState
 
-        State visual_Belly_MinSize
+        State Visual_Belly_MinSize
             Event OnSliderOpenST()
                 SetSliderDialogStartValue(bellyMinSize)
                 SetSliderDialogDefaultValue(default_bellyMinSize)
@@ -750,7 +781,7 @@ import StringUtil
             EndEvent
         EndState
 
-        State visual_Belly_BaseMaxSize
+        State Visual_Belly_BaseMaxSize
             Event OnSliderOpenST()
                 SetSliderDialogStartValue(bellyBaseMaxSize)
                 SetSliderDialogDefaultValue(default_bellyBaseMaxSize)
@@ -773,7 +804,7 @@ import StringUtil
             EndEvent
         EndState
 
-        State visual_Belly_StretchValue
+        State Visual_Belly_StretchValue
             Event OnSliderOpenST()
                 SetSliderDialogStartValue(bellyStretch)
                 SetSliderDialogDefaultValue(default_bellyStretch)
@@ -796,7 +827,7 @@ import StringUtil
             EndEvent
         EndState
 
-        State visual_Belly_Multiplier
+        State Visual_Belly_Multiplier
             Event OnSliderOpenST()
                 SetSliderDialogStartValue(bellyMultiplier)
                 SetSliderDialogDefaultValue(default_bellyMultiplier)
@@ -819,7 +850,7 @@ import StringUtil
             EndEvent
         EndState
         ;//////////////////////////////////////////////// BREAST ///////////////////////////////////////////////////////;
-        State visual_Breast_Enable
+        State Visual_Breast_Enable
             Event OnSelectST()
                 enableBreastScaling = !enableBreastScaling
                 ToggleScalingOptions("Breast", enableBreastScaling)
@@ -836,7 +867,7 @@ import StringUtil
             EndEvent
         EndState
 
-        State visual_Breast_MinSize
+        State Visual_Breast_MinSize
             Event OnSliderOpenST()
                 SetSliderDialogStartValue(breastMinSize)
                 SetSliderDialogDefaultValue(default_breastMinSize)
@@ -859,7 +890,7 @@ import StringUtil
             EndEvent
         EndState
 
-        State visual_Breast_MaxSizeScale
+        State Visual_Breast_MaxSizeScale
             Event OnSliderOpenST()
                 SetSliderDialogStartValue(bellyToBreastMaxSize)
                 SetSliderDialogDefaultValue(default_bellyToBreastMaxSize)
@@ -882,7 +913,7 @@ import StringUtil
             EndEvent
         EndState
 
-        State visual_Breast_Increment
+        State Visual_Breast_Increment
             Event OnSliderOpenST()
                 SetSliderDialogStartValue(breastIncrementValue)
                 SetSliderDialogDefaultValue(default_breastIncrementValue)
@@ -905,7 +936,7 @@ import StringUtil
             EndEvent
         EndState
 
-        State visual_Breast_Decrement
+        State Visual_Breast_Decrement
             Event OnSliderOpenST()
                 SetSliderDialogStartValue(breastDecrementValue)
                 SetSliderDialogDefaultValue(default_breastDecrementValue)
@@ -928,7 +959,7 @@ import StringUtil
             EndEvent
         EndState
 
-        State visual_Breast_Multiplier
+        State Visual_Breast_Multiplier
             Event OnSliderOpenST()
                 SetSliderDialogStartValue(breastMultiplier)
                 SetSliderDialogDefaultValue(default_breastMultiplier)
@@ -952,7 +983,7 @@ import StringUtil
         EndState
 
     ;System
-        State system_DebugMode
+        State System_DebugMode
             Event OnSelectST()
                 {Called when a non-interactive state option has been selected.}
                 dbg = !dbg
@@ -971,7 +1002,7 @@ import StringUtil
             EndEvent
         EndState
 
-        State system_Version
+        State System_Version
             Event OnSelectST()
                 ; Nothing
             EndEvent
@@ -985,7 +1016,7 @@ import StringUtil
             EndEvent
         EndState
 
-        State system_ResetSettings
+        State System_ResetSettings
             Event OnSelectST()
                 If (confirmReset)
                     ResetSettings()
@@ -1006,7 +1037,7 @@ import StringUtil
             EndEvent
         EndState
 
-        State system_ResetStats
+        State System_ResetStats
             Event OnSelectST()
                 If (confirmReset)
                     ResetStats()
