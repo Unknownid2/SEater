@@ -234,11 +234,11 @@ import StringUtil
 ;/// Options States ///;
     string stats_Synergy = "Stats_Synergy"
     string stats_CapacityUsage = "Stats_CapacityUsage"
-    string stats_BellySize = "Stats_BellySize" ;TODO: Missing state
-    string stats_MaxBellySize = "Stats_MaxBellySize" ;TODO: Missing state
-    string stats_BreastSize = "Stats_BreastSize" ;TODO: Missing state
-    string stats_MaxBreastSize = "Stats_MaxBreastSize" ;TODO: Missing state
-    string stats_Stretches = "Stats_Stretches" ;TODO: Missing state
+    string stats_BellySize = "Stats_BellySize"
+    string stats_MaxBellySize = "Stats_MaxBellySize"
+    string stats_BreastSize = "Stats_BreastSize"
+    string stats_MaxBreastSize = "Stats_MaxBreastSize"
+    string stats_Stretches = "Stats_Stretches"
     string stats_Mode = "Stats_Mode"
     string stats_TotalNumberOfSouls = "Stats_TotalNumberOfSouls"
     string stats_NumberOfPetty = "Stats_NumberOfPetty"
@@ -247,7 +247,7 @@ import StringUtil
     string stats_NumberOfGreater = "Stats_NumberOfGreater"
     string stats_NumberOfGrand = "Stats_NumberOfGrand"
 
-    string storage_CapacityIncreaseAmount = "Storage_CapacityIncreaseAmount" ;TODO: Missing state
+    string storage_CapacityIncreaseAmount = "Storage_CapacityIncreaseAmount"
 
     string visual_Belly_Enable = "Visual_Belly_Enable"
     string visual_Belly_MinSize = "Visual_Belly_MinSize"
@@ -619,6 +619,76 @@ import StringUtil
             EndEvent
         EndState
 
+        State Stats_BellySize
+            Event OnSelectST()
+                Debug.MessageBox("The current belly size (set by this mod* Doesn't represent final size!).")
+            EndEvent
+
+            Event OnDefaultST()
+                ; Nothing
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("The current belly size (set by this mod* Doesn't represent final size!).")
+            EndEvent
+        EndState
+
+        State Stats_MaxBellySize
+            Event OnSelectST()
+                Debug.MessageBox("The maximum belly size player can reach.\nGoing too far from this value can be fatal!")
+            EndEvent
+
+            Event OnDefaultST()
+                ; Nothing
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("The maximum belly size player can reach.\nGoing too far from this value can be fatal!")
+            EndEvent
+        EndState
+
+        State Stats_BreastSize
+            Event OnSelectST()
+                Debug.MessageBox("The current breast size (set by this mod* Doesn't represent final size!).")
+            EndEvent
+
+            Event OnDefaultST()
+                ; Nothing
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("The current breast size (set by this mod* Doesn't represent final size!).")
+            EndEvent
+        EndState
+
+        State Stats_MaxBreastSize
+            Event OnSelectST()
+                Debug.MessageBox("The maximum breast size player can reach.\nIt increases based on maximum belly size.")
+            EndEvent
+
+            Event OnDefaultST()
+                ; Nothing
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("The maximum breast size player can reach.\nIt increases based on maximum belly size.")
+            EndEvent
+        EndState
+
+        State Stats_Stretches
+            Event OnSelectST()
+                Debug.MessageBox("The number of times maximum capacity has increased.")
+            EndEvent
+
+            Event OnDefaultST()
+                ; Nothing
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("The number of times maximum capacity has increased.")
+            EndEvent
+        EndState
+
         State Stats_Mode
             string Function Description()
                 string descriptionA = "The state of storage. Define what happen with unclaimed stored souls.\n"
@@ -746,7 +816,28 @@ import StringUtil
         EndState
 
     ;Storage
-        ;/.../;
+        State Storage_CapacityIncreaseAmount
+            Event OnSliderOpenST()
+                SetSliderDialogStartValue(stretch)
+                SetSliderDialogDefaultValue(default_stretch)
+                SetSliderDialogRange(0.0, 30.0)
+                SetSliderDialogInterval(0.1)
+            EndEvent
+
+            Event OnSliderAcceptST(float value)
+                stretch = value
+                SetSliderOptionValueST(stretch, "{1}")
+            EndEvent
+
+            Event OnDefaultST()
+                stretch = default_stretch
+                SetSliderOptionValueST(stretch, "{1}")
+            EndEvent
+
+            Event OnHighlightST()
+                SetInfoText("At 100% Capacity usage or more, maximum soul charges capacity will increase by this value.")
+            EndEvent
+        EndState
 
     ;Visual
         ;//////////////////////////////////////////////// BELLY ///////////////////////////////////////////////////////;
