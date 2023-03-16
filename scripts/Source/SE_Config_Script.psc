@@ -320,29 +320,29 @@ import StringUtil
     Function ToggleScalingOptions(string node, bool enable)
         If (node == "Belly")
             If (enable)
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Belly_MinSize")
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Belly_BaseMaxSize")
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Belly_StretchValue")
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Belly_Multiplier")
-            else
                 SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Belly_MinSize")
                 SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Belly_BaseMaxSize")
                 SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Belly_StretchValue")
                 SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Belly_Multiplier")
+            else
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Belly_MinSize")
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Belly_BaseMaxSize")
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Belly_StretchValue")
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Belly_Multiplier")
             EndIf
         Else
             If (enable)
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_MinSize")
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_MaxSizeScale")
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_Increment")
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_Decrement")
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_Multiplier")
-            else
                 SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Breast_MinSize")
                 SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Breast_MaxSizeScale")
                 SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Breast_Increment")
                 SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Breast_Decrement")
                 SetOptionFlagsST(OPTION_FLAG_NONE, false, "visual_Breast_Multiplier")
+            else
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_MinSize")
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_MaxSizeScale")
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_Increment")
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_Decrement")
+                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, "visual_Breast_Multiplier")
             EndIf
         EndIf
     EndFunction
@@ -705,6 +705,7 @@ import StringUtil
 
             Event OnSelectST()
                 enableBellyScaling = !enableBellyScaling
+                ToggleScalingOptions("Belly", enableBellyScaling)
                 SetToggleOptionValueST(enableBellyScaling)
             EndEvent
 
@@ -813,6 +814,7 @@ import StringUtil
         State visual_Breast_Enable
             Event OnSelectST()
                 enableBreastScaling = !enableBreastScaling
+                ToggleScalingOptions("Breast", enableBreastScaling)
                 SetToggleOptionValueST(enableBreastScaling)
             EndEvent
 
