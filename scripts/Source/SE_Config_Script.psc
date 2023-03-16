@@ -59,7 +59,7 @@ import StringUtil
             float Property burstChance Auto Hidden ;Unused
             {The chance for bursting are checked every time belly size increases}
 
-            int Property numberOfStretches Auto Hidden ;Unused
+            int Property numberOfStretches Auto Hidden ;TODO: Missing MCM option
             {The number of stretches increases over time at 100% capacity usage or more}
 
         ; Storage
@@ -86,7 +86,7 @@ import StringUtil
             float Property burstScale Auto Hidden ;Unused
             {% above max capacity where burst chance reach 100% (0-100)}
 
-            float Property stretch Auto Hidden ;Unused
+            float Property stretch Auto Hidden ;TODO: Missing MCM option
             {If at ThirthStage, increase max capacity by this value over time (set 0 to disable)}
 
         ; Visual
@@ -104,40 +104,40 @@ import StringUtil
             ; Belly Scaling
                 ;TODO: Belly scales with storage usage at both storage modes
 
-                bool Property enableBellyScaling Auto Hidden ;Unused
+                bool Property enableBellyScaling Auto Hidden
                 {Toggle belly scaling}
 
-                float Property bellyMinSize Auto Hidden ;Unused
+                float Property bellyMinSize Auto Hidden
                 {Belly size will be scaled above this}
 
-                float Property bellyBaseMaxSize Auto Hidden ;Unused
+                float Property bellyBaseMaxSize Auto Hidden
                 {The size of belly at 100% capacity without stretches}
 
-                float Property bellyStretch Auto Hidden ;Unused
+                float Property bellyStretch Auto Hidden
                 {The value to add to bellyMaxSize for each stretch}
 
-                float Property bellyMultiplier Auto Hidden ;TODO: recheck
+                float Property bellyMultiplier Auto Hidden
                 {Multiply belly scale by this value}
 
             ; Breast Scaling
-                ;TODO: Breast scales over time while carrying souls at both storage modes
+                ; Breast scales over time while carrying souls at both storage modes
 
-                bool Property enableBreastScaling Auto Hidden ;Unused
+                bool Property enableBreastScaling Auto Hidden
                 {Toggle breast scaling}
 
-                float Property breastMinSize Auto Hidden ;Unused
+                float Property breastMinSize Auto Hidden
                 {Breast size will be scaled above this}
 
-                float Property bellyToBreastMaxSize Auto Hidden ;Unused
+                float Property bellyToBreastMaxSize Auto Hidden
                 {Scale of maxBellySize to use as maxBreastSize}
 
-                float Property breastIncrementValue Auto Hidden ;Unused
+                float Property breastIncrementValue Auto Hidden
                 {Value to add to breast scale over time while carrying souls}
 
-                float Property breastDecrementValue Auto Hidden ;Unused
+                float Property breastDecrementValue Auto Hidden
                 {Value to subtract from breast scale over time while not carrying souls}
 
-                float Property breastMultiplier Auto Hidden ;TODO: recheck
+                float Property breastMultiplier Auto Hidden
                 {Multiply breast scale by this value}
 
             ; Butt Scaling
@@ -157,7 +157,7 @@ import StringUtil
     
     ;Full Settings
         ;Stats
-            float Property synergyLevel Hidden
+            float Property synergyLevel Hidden ;TODO: "Increases over time" part
             {Increases over time. digesting souls or breaking filled soulgems accelerate charge}
                 float Function Get()
                     return Storage.synergyLevel
@@ -171,14 +171,14 @@ import StringUtil
                 EndFunction
             EndProperty
 
-            float Property maxCapacity Hidden ;Unused
-            {The max amount of souls charge which can be hold inside caster}
+            float Property maxCapacity Hidden
+            {The max amount of souls charge which can be hold inside caster belly}
                 float Function Get()
                     return default_maxCapacity + (numberOfStretches * stretch)
                 EndFunction
             EndProperty
 
-            int Property storageMode Hidden
+            int Property storageMode Hidden ;TODO: Use storage effect instead.
             {What happening with unclaimed stored souls (0-2)}
                 int Function Get()
                     return Storage.storageMode
@@ -192,28 +192,28 @@ import StringUtil
                 EndFunction
             EndProperty
 
-            float Property bellySize Hidden ;Unused
+            float Property bellySize Hidden ;TODO: Missing MCM option
             {The current belly size (set by this mod)}
                 float Function Get()
                     return Scale.bellySize
                 EndFunction
             EndProperty
 
-            float Property maxBellySize Hidden ;Unused
+            float Property maxBellySize Hidden ;TODO: Missing MCM option
             {The current belly size at 100% capacity}
                 float Function Get()
                     return bellyBaseMaxSize + (numberOfStretches * bellyStretch)
                 EndFunction
             EndProperty
 
-            float Property breastSize Hidden ;Unused
+            float Property breastSize Hidden ;TODO: Missing MCM option
             {The current breast size (set by this mod)}
                 float Function Get()
                     return Scale.breastSize
                 EndFunction
             EndProperty
 
-            float Property maxBreastSize Hidden ;Unused
+            float Property maxBreastSize Hidden ;TODO: Missing MCM option
             {The current max breast size (based on maxBellySize)}
                 float Function Get()
                     return bellyToBreastMaxSize * maxBellySize
