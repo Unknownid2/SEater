@@ -86,7 +86,7 @@ import StringUtil
             float Property burstScale Auto Hidden ;Unused
             {% above max capacity where burst chance reach 100% (0-100)}
 
-            float Property stretch Auto Hidden ;TODO: Missing MCM option
+            float Property stretch Auto Hidden
             {increase max capacity by this value over time while equal or above 100% usage (set 0 to disable)}
 
         ; Visual
@@ -192,28 +192,28 @@ import StringUtil
                 EndFunction
             EndProperty
 
-            float Property bellySize Hidden ;TODO: Missing MCM option
+            float Property bellySize Hidden
             {The current belly size (set by this mod)}
                 float Function Get()
                     return Scale.bellySize
                 EndFunction
             EndProperty
 
-            float Property maxBellySize Hidden ;TODO: Missing MCM option
+            float Property maxBellySize Hidden
             {The current belly size at 100% capacity}
                 float Function Get()
                     return bellyBaseMaxSize + (numberOfStretches * bellyStretch)
                 EndFunction
             EndProperty
 
-            float Property breastSize Hidden ;TODO: Missing MCM option
+            float Property breastSize Hidden
             {The current breast size (set by this mod)}
                 float Function Get()
                     return Scale.breastSize
                 EndFunction
             EndProperty
 
-            float Property maxBreastSize Hidden ;TODO: Missing MCM option
+            float Property maxBreastSize Hidden
             {The current max breast size (based on maxBellySize)}
                 float Function Get()
                     return bellyToBreastMaxSize * maxBellySize
@@ -234,7 +234,11 @@ import StringUtil
 ;/// Options States ///;
     string stats_Synergy = "Stats_Synergy"
     string stats_CapacityUsage = "Stats_CapacityUsage"
-    string stats_Stretches = "Stats_Stretches"
+    string stats_BellySize = "Stats_BellySize" ;TODO: Missing state
+    string stats_MaxBellySize = "Stats_MaxBellySize" ;TODO: Missing state
+    string stats_BreastSize = "Stats_BreastSize" ;TODO: Missing state
+    string stats_MaxBreastSize = "Stats_MaxBreastSize" ;TODO: Missing state
+    string stats_Stretches = "Stats_Stretches" ;TODO: Missing state
     string stats_Mode = "Stats_Mode"
     string stats_TotalNumberOfSouls = "Stats_TotalNumberOfSouls"
     string stats_NumberOfPetty = "Stats_NumberOfPetty"
@@ -242,6 +246,8 @@ import StringUtil
     string stats_NumberOfCommon = "Stats_NumberOfCommon"
     string stats_NumberOfGreater = "Stats_NumberOfGreater"
     string stats_NumberOfGrand = "Stats_NumberOfGrand"
+
+    string storage_CapacityIncreaseAmount = "Storage_CapacityIncreaseAmount" ;TODO: Missing state
 
     string visual_Belly_Enable = "Visual_Belly_Enable"
     string visual_Belly_MinSize = "Visual_Belly_MinSize"
@@ -414,7 +420,11 @@ import StringUtil
             SetCursorFillMode(TOP_TO_BOTTOM)
             AddTextOptionST(stats_Synergy, "Synergy", FormatFloat(synergyLevel, 1) + "/" + FormatFloat(maxSynergy, 1))
             AddTextOptionST(stats_CapacityUsage, "Capacity Usage", FormatFloat(Storage.GetCapacityUsage(), 1) + "%")
-            AddTextOptionST(stats_Stretches, "Stretches", numberOfStretches) ;TODO: Missing state
+            AddTextOptionST(stats_BellySize, "Belly size", bellySize)
+            AddTextOptionST(stats_MaxBellySize, "Max belly size", maxBellySize)
+            AddTextOptionST(stats_BreastSize, "Breast size", breastSize)
+            AddTextOptionST(stats_MaxBreastSize, "Max breast size", maxBreastSize)
+            AddTextOptionST(stats_Stretches, "Stretches", numberOfStretches)
 
             ;Stored Souls
             SetCursorPosition(1)
@@ -430,7 +440,7 @@ import StringUtil
         elseif(a_page == "Storage")
             SetCursorPosition(0)
             SetCursorFillMode(LEFT_TO_RIGHT)
-            ;AddSliderOptionST("storage_CapacityIncreaseAmount", "Capacity increase amount", stretch, "{1}")
+            AddSliderOptionST(storage_CapacityIncreaseAmount, "Capacity increase amount", stretch, "{1}")
 
         elseif(a_page == "Visual")
             ToggleScalingOptions("Belly", enableBellyScaling)
