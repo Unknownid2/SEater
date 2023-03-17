@@ -7,7 +7,7 @@ import SLIF_Main
 bool inflateBreasts
 float currentBellySize
 float currentBreastSize
-float normalBreastSize ; The size of breasts without multiplication
+float normalBreastSize ; The size of breasts without minSize
 
 ;/// Properties ///;
 float Property bellySize Hidden
@@ -69,14 +69,13 @@ EndProperty
             If (capacityUsage > 0)
                 newValue = capacityUsage / 100
                 newValue *= Config.maxBellySize
-                newValue *= Config.bellyMultiplier
                 newValue += Config.bellyMinSize
                 bellySize = newValue
             Else
-                bellySize = 0.00
+                bellySize = Config.bellyMinSize
             EndIf
         Else
-            bellySize = 0.00
+            bellySize = -1.00
         EndIf
 
         inflateBreasts = Storage.GetNumberOfSouls() > 0 && Config.enableBreastScaling
@@ -93,7 +92,7 @@ EndProperty
             increment = (currentBellySize - newSize) * 0.1
         EndIf
 
-        Inflate(PlayerRef, Config.ModName, "slif_belly", newSize, -1, -1, "", -1.0, -1.0, -1.0, increment)
+        Inflate(PlayerRef, Config.ModName, "slif_belly", newSize, -1, -1, "", -1.0, -1.0, Config.bellyMultiplier, increment)
 
         if(Config.dbg)
             Debug.Notification("SEater: Belly Updated")
@@ -104,7 +103,7 @@ EndProperty
 
     ; Updates breast nodes withing slif, then returns the new value
     float Function UpdateBreast(float newSize)
-        Inflate(PlayerRef, Config.ModName, "slif_breast", newSize)
+        Inflate(PlayerRef, Config.ModName, "slif_breast", newSize, -1, -1, "", -1.0, -1.0, Config.breastMultiplier)
 
         if(Config.dbg)
             Debug.Notification("SEater: Breast Updated")
@@ -125,27 +124,27 @@ EndProperty
             If (breastSize < Config.maxBreastSize)
                 newValue = Config.breastIncrementValue
                 newValue *= timePast
-                newValue += normalBreastSize ; Use the value without multiplier instead
-                normalBreastSize = newValue ; Then update before applying multiplier
-                newValue *= Config.breastMultiplier
+                newValue += normalBreastSize ; Use the value without minSize instead
+                normalBreastSize = newValue ; Then update before applying minSize
                 newValue += Config.breastMinSize
                 breastSize = newValue
             Else
-                breastSize = Config.maxBreastSize
+                breastSize = Config.maxBreastSize + Config.breastMinSize
             EndIf
-        Else
+        ElseIf (Config.enableBreastScaling)
             ;TODO: Deflation/Shrink
             If (breastSize > Config.breastMinSize)
                 newValue = Config.breastDecrementValue
                 newValue *= timePast
-                newValue = normalBreastSize - newValue ; Use the value without multiplier instead
-                normalBreastSize = newValue ; Then update before applying multiplier
-                newValue *= Config.breastMultiplier
+                newValue = normalBreastSize - newValue ; Use the value without minSize instead
+                normalBreastSize = newValue ; Then update before applying minSize
                 newValue += Config.breastMinSize
                 breastSize = newValue
             Else
                 breastSize = Config.breastMinSize
             EndIf
+        Else
+            breastSize = -1.00
         EndIf
     EndEvent
 
