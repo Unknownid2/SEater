@@ -420,10 +420,10 @@ import StringUtil
             SetCursorFillMode(TOP_TO_BOTTOM)
             AddTextOptionST(stats_Synergy, "Synergy", FormatFloat(synergyLevel, 1) + "/" + FormatFloat(maxSynergy, 1))
             AddTextOptionST(stats_CapacityUsage, "Capacity Usage", FormatFloat(Storage.GetCapacityUsage(), 1) + "%")
-            AddTextOptionST(stats_BellySize, "Belly size", bellySize)
-            AddTextOptionST(stats_MaxBellySize, "Max belly size", maxBellySize)
-            AddTextOptionST(stats_BreastSize, "Breast size", breastSize)
-            AddTextOptionST(stats_MaxBreastSize, "Max breast size", maxBreastSize)
+            AddTextOptionST(stats_BellySize, "Belly size", FormatFloat(bellySize, 2))
+            AddTextOptionST(stats_MaxBellySize, "Max belly size", FormatFloat(maxBellySize, 2))
+            AddTextOptionST(stats_BreastSize, "Breast size", FormatFloat(breastSize, 2))
+            AddTextOptionST(stats_MaxBreastSize, "Max breast size", FormatFloat(maxBreastSize, 2))
             AddTextOptionST(stats_Stretches, "Stretches", numberOfStretches)
 
             ;Stored Souls
