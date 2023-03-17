@@ -424,9 +424,9 @@ import StringUtil
             AddTextOptionST(stats_Synergy, "Synergy", FormatFloat(synergyLevel, 1) + "/" + FormatFloat(maxSynergy, 1))
             AddTextOptionST(stats_CapacityUsage, "Capacity Usage", FormatFloat(Storage.GetCapacityUsage(), 1) + "%")
             AddTextOptionST(stats_BellySize, "Belly size", FormatFloat(bellySize, 2))
-            AddTextOptionST(stats_MaxBellySize, "Max belly size", FormatFloat(maxBellySize, 2))
+            AddTextOptionST(stats_MaxBellySize, "Max belly size", FormatFloat(maxBellySize + bellyMinSize, 2))
             AddTextOptionST(stats_BreastSize, "Breast size", FormatFloat(breastSize, 2))
-            AddTextOptionST(stats_MaxBreastSize, "Max breast size", FormatFloat(maxBreastSize, 2))
+            AddTextOptionST(stats_MaxBreastSize, "Max breast size", FormatFloat(maxBreastSize + breastMinSize, 2))
             AddTextOptionST(stats_Stretches, "Stretches", numberOfStretches)
 
             ;Stored Souls
@@ -907,7 +907,7 @@ import StringUtil
             EndEvent
 
             Event OnHighlightST()
-                SetInfoText("The size of belly at 100% capacity without stretches")
+                SetInfoText("The size of belly at 100% capacity without stretches (- Min. Size)")
             EndEvent
         EndState
 
@@ -1021,7 +1021,7 @@ import StringUtil
             EndEvent
 
             Event OnHighlightST()
-                SetInfoText("Multiplier of max belly size to use as max breast size (include stretches)")
+                SetInfoText("Multiplier of max belly size to use as max breast size (include stretches) (- Min. Size)")
             EndEvent
         EndState
 
