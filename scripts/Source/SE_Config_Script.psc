@@ -50,6 +50,40 @@ import StringUtil
 ;/// Properties ///;
     SE_StorageManager_Script Property Storage Auto
     SE_ScaleManager_Script Property Scale Auto
+    int Property bellyScalingOptionsFlag Hidden
+        int Function Get()
+            If (enableBellyScaling)
+                return OPTION_FLAG_NONE
+            Else
+                return OPTION_FLAG_DISABLED
+            EndIf
+        EndFunction
+
+        Function Set(int value)
+            SetOptionFlagsST(value, false, visual_Belly_MinSize)
+            SetOptionFlagsST(value, false, visual_Belly_BaseMaxSize)
+            SetOptionFlagsST(value, false, visual_Belly_StretchValue)
+            SetOptionFlagsST(value, false, visual_Belly_Multiplier)
+        EndFunction
+    EndProperty
+
+    int Property breastScalingOptionsFlag Hidden
+        int Function Get()
+            If (enableBreastScaling)
+                return OPTION_FLAG_NONE
+            Else
+                return OPTION_FLAG_DISABLED
+            EndIf
+        EndFunction
+
+        Function Set(int value)
+            SetOptionFlagsST(value, false, visual_Breast_MinSize)
+            SetOptionFlagsST(value, false, visual_Breast_MaxSizeScale)
+            SetOptionFlagsST(value, false, visual_Breast_Increment)
+            SetOptionFlagsST(value, false, visual_Breast_Decrement)
+            SetOptionFlagsST(value, false, visual_Breast_Multiplier)
+        EndFunction
+    EndProperty
 
     ;TODO: Check Properties usage
     ; Settings
@@ -351,37 +385,6 @@ import StringUtil
         numberOfStretches = default_numberOfStretches
     EndFunction
 
-    ; Enable/Greyout scaling node options (Belly or Breast)
-    Function ToggleScalingOptions(string node, bool enable)
-        If (node == "Belly")
-            If (enable)
-                SetOptionFlagsST(OPTION_FLAG_NONE, false, visual_Belly_MinSize)
-                SetOptionFlagsST(OPTION_FLAG_NONE, false, visual_Belly_BaseMaxSize)
-                SetOptionFlagsST(OPTION_FLAG_NONE, false, visual_Belly_StretchValue)
-                SetOptionFlagsST(OPTION_FLAG_NONE, false, visual_Belly_Multiplier)
-            else
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, visual_Belly_MinSize)
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, visual_Belly_BaseMaxSize)
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, visual_Belly_StretchValue)
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, visual_Belly_Multiplier)
-            EndIf
-        Else
-            If (enable)
-                SetOptionFlagsST(OPTION_FLAG_NONE, false, visual_Breast_MinSize)
-                SetOptionFlagsST(OPTION_FLAG_NONE, false, visual_Breast_MaxSizeScale)
-                SetOptionFlagsST(OPTION_FLAG_NONE, false, visual_Breast_Increment)
-                SetOptionFlagsST(OPTION_FLAG_NONE, false, visual_Breast_Decrement)
-                SetOptionFlagsST(OPTION_FLAG_NONE, false, visual_Breast_Multiplier)
-            else
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, visual_Breast_MinSize)
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, visual_Breast_MaxSizeScale)
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, visual_Breast_Increment)
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, visual_Breast_Decrement)
-                SetOptionFlagsST(OPTION_FLAG_DISABLED, false, visual_Breast_Multiplier)
-            EndIf
-        EndIf
-    EndFunction
-
 ;/// Events ///;
     ;TODO: MCM menu
 
@@ -443,8 +446,6 @@ import StringUtil
             AddSliderOptionST(storage_CapacityIncreaseAmount, "Capacity increase amount", stretch, "{1}")
 
         elseif(a_page == "Visual")
-            ToggleScalingOptions("Belly", enableBellyScaling)
-            ToggleScalingOptions("Breast", enableBreastScaling)
             SetCursorPosition(0)
             SetCursorFillMode(TOP_TO_BOTTOM)
 
@@ -452,19 +453,19 @@ import StringUtil
             SetCursorPosition(1)
             AddHeaderOption("Belly Scaling")
             AddToggleOptionST(visual_Belly_Enable, "Enable", enableBellyScaling)
-            AddSliderOptionST(visual_Belly_MinSize, "Min size", bellyMinSize, "{2}")
-            AddSliderOptionST(visual_Belly_BaseMaxSize, "Base max size", bellyBaseMaxSize, "{2}")
-            AddSliderOptionST(visual_Belly_StretchValue, "Stretch value", bellyStretch, "{2}")
-            AddSliderOptionST(visual_Belly_Multiplier, "Multiplier", bellyMultiplier, "{2}")
+            AddSliderOptionST(visual_Belly_MinSize, "Min size", bellyMinSize, "{2}", bellyScalingOptionsFlag)
+            AddSliderOptionST(visual_Belly_BaseMaxSize, "Base max size", bellyBaseMaxSize, "{2}", bellyScalingOptionsFlag)
+            AddSliderOptionST(visual_Belly_StretchValue, "Stretch value", bellyStretch, "{2}", bellyScalingOptionsFlag)
+            AddSliderOptionST(visual_Belly_Multiplier, "Multiplier", bellyMultiplier, "{2}", bellyScalingOptionsFlag)
             AddEmptyOption()
 
             AddHeaderOption("Breast Scaling")
             AddToggleOptionST(visual_Breast_Enable, "Enable", enableBreastScaling)
-            AddSliderOptionST(visual_Breast_MinSize, "Min size", breastMinSize, "{2}")
-            AddSliderOptionST(visual_Breast_MaxSizeScale, "Max size scale", bellyToBreastMaxSize, "{3}")
-            AddSliderOptionST(visual_Breast_Increment, "Increment", breastIncrementValue, "{3}")
-            AddSliderOptionST(visual_Breast_Decrement, "Decrement", breastDecrementValue, "{3}")
-            AddSliderOptionST(visual_Breast_Multiplier, "Multiplier", breastMultiplier, "{2}")
+            AddSliderOptionST(visual_Breast_MinSize, "Min size", breastMinSize, "{2}", breastScalingOptionsFlag)
+            AddSliderOptionST(visual_Breast_MaxSizeScale, "Max size scale", bellyToBreastMaxSize, "{3}", breastScalingOptionsFlag)
+            AddSliderOptionST(visual_Breast_Increment, "Increment", breastIncrementValue, "{3}", breastScalingOptionsFlag)
+            AddSliderOptionST(visual_Breast_Decrement, "Decrement", breastDecrementValue, "{3}", breastScalingOptionsFlag)
+            AddSliderOptionST(visual_Breast_Multiplier, "Multiplier", breastMultiplier, "{2}", breastScalingOptionsFlag)
             AddEmptyOption()
 
         elseif(a_page == "System")
@@ -845,8 +846,13 @@ import StringUtil
 
             Event OnSelectST()
                 enableBellyScaling = !enableBellyScaling
-                ToggleScalingOptions("Belly", enableBellyScaling)
                 SetToggleOptionValueST(enableBellyScaling)
+
+                If (enableBellyScaling)
+                    bellyScalingOptionsFlag = OPTION_FLAG_NONE
+                Else
+                    bellyScalingOptionsFlag = OPTION_FLAG_DISABLED
+                EndIf
             EndEvent
 
             Event OnDefaultST()
@@ -954,8 +960,13 @@ import StringUtil
         State Visual_Breast_Enable
             Event OnSelectST()
                 enableBreastScaling = !enableBreastScaling
-                ToggleScalingOptions("Breast", enableBreastScaling)
                 SetToggleOptionValueST(enableBreastScaling)
+
+                If (enableBreastScaling)
+                    breastScalingOptionsFlag = OPTION_FLAG_NONE
+                Else
+                    breastScalingOptionsFlag = OPTION_FLAG_DISABLED
+                EndIf
             EndEvent
 
             Event OnDefaultST()
