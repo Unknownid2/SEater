@@ -127,7 +127,7 @@ float lastUpdate ; Number of days were the last update event are made
     ; Called at Main Quest startup
     Event OnInit()
         lastUpdate = GameDaysPassed.GetValue()
-        RegisterForSingleUpdate(1.0)
+        RegisterForSingleUpdateGameTime(1.0)
     EndEvent
 
     ; Called each in-game hour if this mod is active, no matter if are carrying souls or not.
@@ -137,7 +137,7 @@ float lastUpdate ; Number of days were the last update event are made
         EndIf
 
         OnModUpdate(GetUpdates())
-        RegisterForSingleUpdate(1.0)
+        RegisterForSingleUpdateGameTime(1.0)
     EndEvent
 
     ; Called every in-game hour while this mod is active, no matter if are carrying souls or not.
