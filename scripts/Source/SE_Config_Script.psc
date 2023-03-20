@@ -185,10 +185,10 @@ import StringUtil
             bool Property dbg Auto Hidden
             {Toggle debug notifications}
 
-            int Property Version = 30 AutoReadOnly ;TODO: <- Change before tests
+            int Property Version = 31 AutoReadOnly ;TODO: <- Change before tests
             {Mod version}
 
-            string Property VersionString = "0.1.30" AutoReadOnly ;TODO: <- Change before tests
+            string Property VersionString = "0.1.31" AutoReadOnly ;TODO: <- Change before tests
             {Mod version (string)}
     
     ;Full Settings
