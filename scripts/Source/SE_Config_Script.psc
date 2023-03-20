@@ -50,6 +50,8 @@ import StringUtil
 ;/// Properties ///;
     SE_StorageManager_Script Property Storage Auto
     SE_ScaleManager_Script Property Scale Auto
+    SE_MainQuest_Script Property Main Auto
+
     int Property bellyScalingOptionsFlag Hidden
         int Function Get()
             If (enableBellyScaling)
@@ -412,6 +414,7 @@ import StringUtil
     Event OnVersionUpdate(int aVersion)
         {Called when aVersion update of this script has been detected}
         ;TODO: Update code (if needed)
+        Main.OnUpdateGameTime()
         Debug.Notification("SEater: Updated")
         Debug.Notification("Version = " + GetVersionString())
     EndEvent
