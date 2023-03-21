@@ -1,7 +1,7 @@
 Scriptname SE_AbsorbSoulEffect_Script extends ActiveMagicEffect 
 {Script for "Absorb Soul" and "Extract Soul" visual effects}
 
-    ;/// Properties ///;
+;/// Properties ///;
     SE_MainQuest_Script Property Main Auto
     SE_Config_Script Property Config Auto
 
@@ -26,12 +26,12 @@ Scriptname SE_AbsorbSoulEffect_Script extends ActiveMagicEffect
     bool Property Enchant Auto ;TODO: Enchantements
     {this effect comes from a enchanted weapon?}
 
-    ;/// Variables ///;
+;/// Variables ///;
     Actor trapedVictim
     Actor trapCaster
     bool deadAlready
 
-    ;/// Events ///;
+;/// Events ///;
 
     ; Event received when this effect is first started (OnInit may not have been run yet!)
     Event OnEffectStart(Actor target, Actor caster)
@@ -47,11 +47,16 @@ Scriptname SE_AbsorbSoulEffect_Script extends ActiveMagicEffect
         endif
     EndEvent
 
-    Event OnHit(ObjectReference akAggressor, Form akSource, Projectile akProjectile, bool abPowerAttack, bool abSneakAttack, \
-        bool abBashAttack, bool abHitBlocked)
-        if(akSource == Main.SoulTrapFFActor) ;TODO Check if it's work
+    Event OnHit(ObjectReference akAggressor, Form akSource, Projectile akProjectile, bool abPowerAttack, bool abSneakAttack, bool abBashAttack, bool abHitBlocked)
+        string hitBy = akSource.GetName()
+
+        If (Config.dbg)
+            Debug.Notification("SEater: target hit by " + hitBy)
+        EndIf
+
+        If (hitBy == "Soul Trap")
             Dispel()
-        endIf
+        EndIf
     EndEvent
 
     ; Event received when this effect is finished (effect may already be deleted, calling
@@ -62,11 +67,11 @@ Scriptname SE_AbsorbSoulEffect_Script extends ActiveMagicEffect
             Debug.Notification("SEater: OnEffectFinish")
         endif
 
-        if(trapedVictim)
+        if(trapedVictim) ;!= null
             if(deadAlready)
-                Debug.Notification("Failed to absorb. " + trapedVictim.GetDisplayName() + " is already dead")
+                Debug.Notification("Failed to absorb. " + trapedVictim.GetDisplayName() + " is already dead") ;Caste by a arrow projectile
             else
-                if(Main.AbsorbSoul(trapedVictim))
+                if(Main.AbsorbSoul(trapedVictim)) ; Absorb soul sucessfull
                     if(dbg)
                         Debug.Notification("SEater: Applying SoulTrap effects...")
                     endif

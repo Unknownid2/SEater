@@ -185,10 +185,10 @@ import StringUtil
             bool Property dbg Auto Hidden
             {Toggle debug notifications}
 
-            int Property Version = 31 AutoReadOnly ;TODO: <- Change before tests
+            int Property Version = 32 AutoReadOnly ;TODO: <- Change before tests
             {Mod version}
 
-            string Property VersionString = "0.1.31" AutoReadOnly ;TODO: <- Change before tests
+            string Property VersionString = "0.1.32" AutoReadOnly ;TODO: <- Change before tests
             {Mod version (string)}
     
     ;Full Settings
@@ -375,6 +375,8 @@ import StringUtil
 
         ;System
         dbg = default_dbg
+
+        Debug.Notification("SEater: Settings reset")
     EndFunction
 
     ; Reset all stats and progress
@@ -385,6 +387,8 @@ import StringUtil
         Storage.numberOfSouls = new int[5]
         Storage.storageMode = default_storageMode
         numberOfStretches = default_numberOfStretches
+        
+        Debug.Notification("SEater: Stats reset")
     EndFunction
 
 ;/// Events ///;

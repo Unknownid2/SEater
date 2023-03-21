@@ -161,6 +161,10 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
     Function Stretch()
         If (GetCapacityUsage() >= 100.0)
             Config.numberOfStretches += 1
+
+            If (Config.dbg)
+                Debug.Notification("Stretching belly...")
+            EndIf
         EndIf
     EndFunction
 
@@ -186,7 +190,7 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
     Event OnStorageUpdate(float updateLoops)
         if(Config.dbg)
             Debug.Notification("SEater: OnStorageUpdate")
-            Debug.Notification("Processing " + updateLoops + " Updates")
+            Debug.Notification("Processing " + updateLoops + " storage updates")
         endif
 
         If (storageMode == 1)
@@ -226,6 +230,7 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
         if(Config.dbg)
             Debug.Notification("SEater: OnSoulExpeled")
         endif
+        
         RemoveSoul(expeledSoulSize)
         Scale.UpdateScale()
     EndEvent

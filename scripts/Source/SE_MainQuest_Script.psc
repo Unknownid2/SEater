@@ -11,14 +11,15 @@ Scriptname SE_MainQuest_Script extends Quest
     GlobalVariable Property GameDaysPassed Auto
 
 ;/// Variables ///;
-float lastUpdate ; Number of days were the last update event are made
+    float lastUpdate ; Number of days were the last update event are made
 
 ;/// Functions ///;
 
-    ; Returns number of updates 'till last check
-    float Function GetUpdates()
+    ; Returns number of hours 'till last check
+    float Function GetElapsedTime()
         float daysPassed = GameDaysPassed.GetValue() - lastUpdate
         lastUpdate = GameDaysPassed.GetValue()
+
         return daysPassed * 24
     endFunction
 
@@ -131,12 +132,9 @@ float lastUpdate ; Number of days were the last update event are made
     EndEvent
 
     ; Called each in-game hour if this mod is active, no matter if are carrying souls or not.
+    ;/ ! DO NOT OVERRIDE THIS EVENT ! /;
     Event OnUpdateGameTime()
-        If (Config.dbg)
-            Debug.Notification("SEater: OnUpdateGameTime(Main)")
-        EndIf
-
-        OnModUpdate(GetUpdates())
+        OnModUpdate(GetElapsedTime())
         RegisterForSingleUpdateGameTime(1.0)
     EndEvent
 
@@ -144,9 +142,10 @@ float lastUpdate ; Number of days were the last update event are made
     Event OnModUpdate(float timePast)
         If (Config.dbg)
             Debug.Notification("SEater: OnModUpdate(Main)")
+            Debug.Notification("Processing " + timePast + " mod updates")
         EndIf
 
-        Scale.OnModUpdate(timePast)
+        ;Scale.OnModUpdate(timePast)
     EndEvent
     
     ; Called when a new soul are absorbed successfully

@@ -92,23 +92,24 @@ EndProperty
             increment = (currentBellySize - newSize) * 0.1
         EndIf
 
+        If (Config.dbg)
+            Debug.Notification("SEater: Updating belly")
+            Debug.Notification("Value = " + newSize)
+            Debug.Notification("Increment = " + increment)
+        EndIf
+
         Inflate(PlayerRef, Config.ModName, "slif_belly", newSize, -1, -1, "", -1.0, -1.0, Config.bellyMultiplier, increment)
-
-        if(Config.dbg)
-            Debug.Notification("SEater: Belly Updated")
-        endif
-
         return newSize
     EndFunction
 
     ; Updates breast nodes withing slif, then returns the new value
     float Function UpdateBreast(float newSize)
+        If (Config.dbg)
+            Debug.Notification("SEater: Updating breast")
+            Debug.Notification("Value = " + newSize)
+        EndIf
+
         Inflate(PlayerRef, Config.ModName, "slif_breast", newSize, -1, -1, "", -1.0, -1.0, Config.breastMultiplier)
-
-        if(Config.dbg)
-            Debug.Notification("SEater: Breast Updated")
-        endif
-
         return newSize
     EndFunction
 
@@ -121,7 +122,12 @@ EndProperty
         float newValue = 0.0
 
         If (inflateBreasts)
-            If (breastSize < Config.maxBreastSize)
+            If (Config.dbg)
+                Debug.Notification("SEater: breasts growing")
+            EndIf
+
+            ; Inflation/Growth
+            If (breastSize < Config.maxBreastSize + Config.breastMinSize) ; fixed: max scales are count above min size*
                 newValue = Config.breastIncrementValue
                 newValue *= timePast
                 newValue += normalBreastSize ; Use the value without minSize instead
@@ -129,10 +135,18 @@ EndProperty
                 newValue += Config.breastMinSize
                 breastSize = newValue
             Else
+                If (Config.dbg)
+                    Debug.Notification("SEater: breasts at max size!")
+                EndIf
+
                 breastSize = Config.maxBreastSize + Config.breastMinSize
             EndIf
         ElseIf (Config.enableBreastScaling)
-            ;TODO: Deflation/Shrink
+            If (Config.dbg)
+                Debug.Notification("SEater: breasts shrinking")
+            EndIf
+
+            ; Deflation/Shrinkage
             If (breastSize > Config.breastMinSize)
                 newValue = Config.breastDecrementValue
                 newValue *= timePast
@@ -141,6 +155,10 @@ EndProperty
                 newValue += Config.breastMinSize
                 breastSize = newValue
             Else
+                If (Config.dbg)
+                    Debug.Notification("SEater: breasts back to normal size.")
+                EndIf
+
                 breastSize = Config.breastMinSize
             EndIf
         Else
