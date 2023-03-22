@@ -4,56 +4,65 @@ Scriptname SE_ScaleManager_Script extends SE_MainQuest_Script
 import SLIF_Main
 
 ;/// Variables ///;
-bool inflateBreasts
-float currentBellySize
-float currentBreastSize
-float normalBreastSize ; The size of breasts without minSize
-
+    bool inflateBreasts
+    float normalBreastSize ; The size of breasts without minSize
+    float diffSize ; The difference between current belly size and new belly size
+    float targetSize ; The target belly size for slow interpolation
+    
 ;/// Properties ///;
-float Property bellySize Hidden
-    float Function Get()
-        return currentBellySize
-    EndFunction
+    float currentBellySize
+    float Property bellySize Hidden
+        float Function Get()
+            return currentBellySize
+        EndFunction
 
-    Function Set(float value)
-        ;TODO: Scaling methods
-        If (value > Config.bellyMinSize)
-            currentBellySize = UpdateBelly(value)
-        Else
-            currentBellySize = Config.bellyMinSize
-            If (IsRegistered(PlayerRef, Config.ModName))
-                UnregisterNode(PlayerRef, "slif_belly", Config.ModName)
+        Function Set(float value)
+            ;TODO: Scaling methods
+            If (value > Config.bellyMinSize)
+                If (value > currentBellySize)
+                    parent.OnGrowth()
+                ElseIf (value < currentBellySize)
+                    parent.OnShrink()
+                EndIf
 
-                if(Config.dbg)
-                    Debug.Notification("SEater: Belly scale disabled or bellow min")
-                    Debug.Notification("belly node unregistered.")
-                endif
+                targetSize = value
+                UpdateBelly()
+            Else
+                currentBellySize = Config.bellyMinSize
+                If (IsRegistered(PlayerRef, Config.ModName))
+                    UnregisterNode(PlayerRef, "slif_belly", Config.ModName)
+
+                    if(Config.dbg)
+                        Debug.Notification("SEater: Belly scale disabled or bellow min")
+                        Debug.Notification("belly node unregistered.")
+                    endif
+                EndIf
             EndIf
-        EndIf
-    EndFunction
-EndProperty
+        EndFunction
+    EndProperty
 
-float Property breastSize Hidden
-    float Function Get()
-        return currentBreastSize
-    EndFunction
+    float currentBreastSize
+    float Property breastSize Hidden
+        float Function Get()
+            return currentBreastSize
+        EndFunction
 
-    Function Set(float value)
-        If (value > Config.breastMinSize)
-            currentBreastSize = UpdateBreast(value)
-        Else
-            currentBreastSize = Config.breastMinSize
-            If (IsRegistered(PlayerRef, Config.ModName))
-                UnregisterNode(PlayerRef, "slif_breast", Config.ModName)
+        Function Set(float value)
+            If (value > Config.breastMinSize)
+                currentBreastSize = UpdateBreast(value)
+            Else
+                currentBreastSize = Config.breastMinSize
+                If (IsRegistered(PlayerRef, Config.ModName))
+                    UnregisterNode(PlayerRef, "slif_breast", Config.ModName)
 
-                if(Config.dbg)
-                    Debug.Notification("SEater: Breast scale disabled or bellow min")
-                    Debug.Notification("breast node unregistered.")
-                endif
+                    if(Config.dbg)
+                        Debug.Notification("SEater: Breast scale disabled or bellow min")
+                        Debug.Notification("breast node unregistered.")
+                    endif
+                EndIf
             EndIf
-        EndIf
-    EndFunction
-EndProperty
+        EndFunction
+    EndProperty
 
 ;/// Functions ///;
 
@@ -81,39 +90,46 @@ EndProperty
         inflateBreasts = Storage.GetNumberOfSouls() > 0 && Config.enableBreastScaling
     EndFunction
 
-    ; Updates belly node within slif, then returns the new value
-    float Function UpdateBelly(float newSize)
-        float increment
-        If (newSize > currentBellySize)
-            parent.OnGrowth()
-            increment = (newSize - currentBellySize) * 0.1
-        ElseIf (newSize < currentBellySize)
-            parent.OnShrink()
-            increment = (currentBellySize - newSize) * 0.1
+    ; Updates belly node within slif, then update currentBellySize
+    Function UpdateBelly()
+        diffSize = targetSize - currentBellySize
+
+        If (diffSize > 0.1)
+            currentBellySize += 0.1
+            RegisterForSingleUpdate(0.33)
+        ElseIf (diffSize < -0.1)
+            currentBellySize -= 0.1
+            RegisterForSingleUpdate(0.33)
+        Else
+            currentBellySize = targetSize
+
+            If (Config.dbg)
+                Debug.Notification("SEater: Belly updated")
+                Debug.Notification("Final size = " + targetSize)
+            EndIf
         EndIf
 
-        If (Config.dbg)
-            Debug.Notification("SEater: Updating belly")
-            Debug.Notification("Value = " + newSize)
-            Debug.Notification("Increment = " + increment)
-        EndIf
-
-        Inflate(PlayerRef, Config.ModName, "slif_belly", newSize, -1, -1, "", -1.0, -1.0, Config.bellyMultiplier, increment)
-        return newSize
+        Inflate(PlayerRef, Config.ModName, "slif_belly", currentBellySize * Config.bellyMultiplier)
     EndFunction
 
     ; Updates breast nodes withing slif, then returns the new value
     float Function UpdateBreast(float newSize)
         If (Config.dbg)
-            Debug.Notification("SEater: Updating breast")
+            Debug.Notification("SEater: Updating breasts")
             Debug.Notification("Value = " + newSize)
         EndIf
 
-        Inflate(PlayerRef, Config.ModName, "slif_breast", newSize, -1, -1, "", -1.0, -1.0, Config.breastMultiplier)
+        Inflate(PlayerRef, Config.ModName, "slif_breast", newSize * Config.breastMultiplier)
         return newSize
     EndFunction
 
 ;/// Events ///;
+    Event OnUpdate()
+        If (self != none)
+            UpdateBelly()
+        EndIf
+    EndEvent
+    
     Event OnTimerUpdate(float timePast)
         If (Config.dbg)
             Debug.Notification("SEater: TimerUpdate(Scale) + " + timePast)
