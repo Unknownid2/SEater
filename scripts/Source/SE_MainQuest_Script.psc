@@ -142,8 +142,10 @@ Scriptname SE_MainQuest_Script extends Quest
     ; Called each in-game hour if this mod is active, no matter if are carrying souls or not.
     ;/ ! DO NOT OVERRIDE THIS EVENT ! /;
     Event OnUpdateGameTime()
-        Self.OnTimerUpdate(GetElapsedTime())
-        RegisterForSingleUpdateGameTime(1.0)
+        If (self != none)
+            self.OnTimerUpdate(GetElapsedTime())
+            RegisterForSingleUpdateGameTime(1.0)
+        EndIf
     EndEvent
 
     ; Called every in-game hour while this mod is active, no matter if are carrying souls or not.
