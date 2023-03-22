@@ -62,8 +62,7 @@ Scriptname SE_AbsorbSoulEffect_Script extends ActiveMagicEffect
     ; Event received when this effect is finished (effect may already be deleted, calling
     ; functions on this effect will fail)
     Event OnEffectFinish(Actor target, Actor caster)
-        bool dbg = Config.dbg
-        if(dbg)
+        if(Config.dbg)
             Debug.Notification("SEater: OnEffectFinish")
         endif
 
@@ -72,7 +71,7 @@ Scriptname SE_AbsorbSoulEffect_Script extends ActiveMagicEffect
                 Debug.Notification("Failed to absorb. " + trapedVictim.GetDisplayName() + " is already dead") ;Caste by a arrow projectile
             else
                 if(Main.AbsorbSoul(trapedVictim)) ; Absorb soul sucessfull
-                    if(dbg)
+                    if(Config.dbg)
                         Debug.Notification("SEater: Applying SoulTrap effects...")
                     endif
 
@@ -82,7 +81,7 @@ Scriptname SE_AbsorbSoulEffect_Script extends ActiveMagicEffect
                     CasterVFX.Play(trapCaster,5.9,trapedVictim)
                     TargetFXS.Play(trapedVictim,2) ; Play Effect Shaders
                     CasterFXS.Play(trapCaster,3)
-                elseif(dbg)
+                elseif(Config.dbg)
                     Debug.Notification("SEater: Absorb soul check failed or came back false")
                 endif
             endif
