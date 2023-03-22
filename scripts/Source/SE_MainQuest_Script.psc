@@ -10,6 +10,14 @@ Scriptname SE_MainQuest_Script extends Quest
     Actor Property PlayerRef Auto
     GlobalVariable Property GameDaysPassed Auto
 
+;/// Enums ///;
+    string[] Property SoulSizes Auto
+        int Property SoulSizes_Petty = 1 AutoReadOnly Hidden
+        int Property SoulSizes_Lesser = 2 AutoReadOnly Hidden
+        int Property SoulSizes_Common = 3 AutoReadOnly Hidden
+        int Property SoulSizes_Greater = 4 AutoReadOnly Hidden
+        int Property SoulSizes_Grand = 5 AutoReadOnly Hidden
+
 ;/// Variables ///;
     float lastUpdate ; Number of days were the last update event are made
 
@@ -28,32 +36,32 @@ Scriptname SE_MainQuest_Script extends Quest
         int targetLevel = target.GetLevel()
         if(target.IsInFaction(CreatureFaction))
             if(targetLevel <= 3)
-                return 1
+                return SoulSizes_Petty
             elseif(targetLevel >= 4 && targetLevel <= 15)
-                return 2
+                return SoulSizes_Lesser
             elseif(targetLevel >= 16 && targetLevel <= 27)
-                return 3
+                return SoulSizes_Common
             elseif(targetLevel >= 28 && targetLevel <= 37)
-                return 4
+                return SoulSizes_Greater
             else
-                return 5
+                return SoulSizes_Grand
             endif
         
         else
-            return 5
+            return SoulSizes_Grand
         endIf
     endFunction
 
     ; Return Soul charge level of given soul size (30.00 = 3000)
     float Function GetSoulChargeBySize(int soulSize)
 
-        if(soulSize == 1)
+        if(soulSize == SoulSizes_Petty)
             return 2.50
-        elseif(soulSize == 2)
+        elseif(soulSize == SoulSizes_Lesser)
             return 5.00
-        elseif(soulSize == 3)
+        elseif(soulSize == SoulSizes_Common)
             return 10.00
-        elseif(soulSize == 4)
+        elseif(soulSize == SoulSizes_Greater)
             return 20.00
         else
             return 30.00
@@ -85,7 +93,7 @@ Scriptname SE_MainQuest_Script extends Quest
                         Debug.Notification("SEater: SoulSize = " + soulSize)
                     endIf
 
-                    ;FIXME: Call events on child scripts together in one line
+                    ;FIXME: Call events on child scripts together
                     OnSoulAbsorbed(soulSize)
                     return true
                 else
@@ -134,7 +142,7 @@ Scriptname SE_MainQuest_Script extends Quest
     ; Called each in-game hour if this mod is active, no matter if are carrying souls or not.
     ;/ ! DO NOT OVERRIDE THIS EVENT ! /;
     Event OnUpdateGameTime()
-        OnModUpdate(GetElapsedTime())
+        self.OnModUpdate(GetElapsedTime())
         RegisterForSingleUpdateGameTime(1.0)
     EndEvent
 
