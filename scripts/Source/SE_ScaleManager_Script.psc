@@ -114,9 +114,9 @@ EndProperty
     EndFunction
 
 ;/// Events ///;
-    Event OnModUpdate(float timePast)
+    Event OnTimerUpdate(float timePast)
         If (Config.dbg)
-            Debug.Notification("SEater: OnModUpdate(Scale)")
+            Debug.Notification("SEater: TimerUpdate(Scale) + " + timePast)
         EndIf
 
         float newValue = 0.0

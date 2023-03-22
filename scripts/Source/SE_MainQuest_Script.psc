@@ -142,18 +142,15 @@ Scriptname SE_MainQuest_Script extends Quest
     ; Called each in-game hour if this mod is active, no matter if are carrying souls or not.
     ;/ ! DO NOT OVERRIDE THIS EVENT ! /;
     Event OnUpdateGameTime()
-        self.OnModUpdate(GetElapsedTime())
+        Self.OnTimerUpdate(GetElapsedTime())
         RegisterForSingleUpdateGameTime(1.0)
     EndEvent
 
     ; Called every in-game hour while this mod is active, no matter if are carrying souls or not.
-    Event OnModUpdate(float timePast)
+    Event OnTimerUpdate(float timePast)
         If (Config.dbg)
-            Debug.Notification("SEater: OnModUpdate(Main)")
-            Debug.Notification("Processing " + timePast + " mod updates")
+            Debug.Notification("SEater: TimerUpdate(Main) + " + timePast)
         EndIf
-
-        ;Scale.OnModUpdate(timePast)
     EndEvent
     
     ; Called when a new soul are absorbed successfully

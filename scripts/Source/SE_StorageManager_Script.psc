@@ -170,6 +170,13 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
 
 ;/// Events ///;
 
+    ; Called every in-game hour while this mod is active, no matter if are carrying souls or not.
+    Event OnTimerUpdate(float timePast)
+        If (Config.dbg)
+            Debug.Notification("SEater: TimerUpdate(Storage) + " + timePast)
+        EndIf
+    EndEvent
+
     ; Called when a new soul are absorbed successfully
     Event OnSoulAbsorbed(int absorbedSoulSize)
 

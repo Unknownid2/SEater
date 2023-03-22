@@ -185,10 +185,10 @@ import StringUtil
             bool Property dbg Auto Hidden
             {Toggle debug notifications}
 
-            int Property Version = 32 AutoReadOnly ;TODO: <- Change before tests
+            int Property Version = 36 AutoReadOnly ;TODO: <- Change before tests
             {Mod version}
 
-            string Property VersionString = "0.1.32" AutoReadOnly ;TODO: <- Change before tests
+            string Property VersionString = "0.1.36" AutoReadOnly ;TODO: <- Change before tests
             {Mod version (string)}
     
     ;Full Settings
@@ -418,7 +418,6 @@ import StringUtil
     Event OnVersionUpdate(int aVersion)
         {Called when aVersion update of this script has been detected}
         ;TODO: Update code (if needed)
-        Main.OnUpdateGameTime()
         Debug.Notification("SEater: Updated")
         Debug.Notification("Version = " + GetVersionString())
     EndEvent
