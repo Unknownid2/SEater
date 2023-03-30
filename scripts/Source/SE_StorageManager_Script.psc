@@ -11,6 +11,12 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
     int Property storageMode Auto Hidden
     int[] Property numberOfSouls Auto
 
+;/// Entries ///;
+    string[] Property StorageModes Auto
+        int Property StorageModes_Disabled = 0 AutoReadOnly Hidden
+        int Property StorageModes_Digest = 1 AutoReadOnly Hidden
+        int Property StorageModes_Gestation = 2 AutoReadOnly Hidden
+
 ;/// Variables ///;
     float targetSynergy ; Used to track gestation at Gestate()
 

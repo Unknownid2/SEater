@@ -256,17 +256,6 @@ import StringUtil
                 EndFunction
             EndProperty
 
-;/// Menu Entries ///;
-    string[] StorageModes
-
-    ; Creation
-    Function SetEntries()
-        StorageModes = new string[3]
-            StorageModes[0] = "Disabled"
-            StorageModes[1] = "Digest"
-            StorageModes[2] = "Gestation"
-    EndFunction
-
 ;/// Options States ///;
     string stats_Synergy = "Stats_Synergy"
     string stats_CapacityUsage = "Stats_CapacityUsage"
@@ -402,7 +391,6 @@ import StringUtil
 
     ; Called when this config menu registered at the control panel
     Event OnConfigRegister()
-        SetEntries()
         Debug.Notification("SEater: Ready!")
     EndEvent
     
@@ -437,7 +425,7 @@ import StringUtil
 
             ;Stored Souls
             SetCursorPosition(1)
-            AddTextOptionST(stats_Mode, "Mode", StorageModes[storageMode])
+            AddTextOptionST(stats_Mode, "Mode", Storage.StorageModes[storageMode])
             AddHeaderOption("Stored Souls")
             AddTextOptionST(stats_TotalNumberOfSouls, "Total number of souls", Storage.GetNumberOfSouls())
             AddTextOptionST(stats_NumberOfPetty, "Number of petty souls", numberOfSouls[0])
