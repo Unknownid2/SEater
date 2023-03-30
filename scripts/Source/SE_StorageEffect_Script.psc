@@ -29,14 +29,14 @@ Scriptname SE_StorageEffect_Script extends ActiveMagicEffect
     ; Called each 3 in-game hours past while this effect is active
     event OnUpdateGameTime()
         ; First check
-        if(Storage.GetNumberOfSouls() == 0)
+        if(Storage.HasSouls() == false)
             Dispel()
         else
             Storage.OnStorageUpdate(TimePast())
             lastUpdate = GameDaysPassed.GetValue()
 
             ; Second check
-            if(Storage.GetNumberOfSouls() == 0)
+            if(Storage.HasSouls() == false)
                 Dispel()
             else
                 RegisterForSingleUpdateGameTime(3)
