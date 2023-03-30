@@ -118,33 +118,36 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
         numberOfSouls[soulSize - 1] = numberOfSouls[soulSize - 1] - 1
     EndFunction
 
-    ; Digest weakest soul, rechargin synergy. The remains of the soul returns to player in small sizes
-    Function Digest()
-        int targetSoul = GetWeakest()
+    ; Digest targetSoul and return it's synergy. The remains of the soul returns to player in small sizes
+    float Function Digest(int targetSoul)
         targetSynergy = 0 ; Resets if switch from gestation to digest!
-        if(targetSoul > 0)
+        if(targetSoul >= SoulSizes_Petty)
             RemoveSoul(targetSoul)
-            While (targetSoul > 1)
-                If(targetSoul == 5)
-                    RemoveSoul(3)
+            While (targetSoul > SoulSizes_Petty)
+                If(targetSoul == SoulSizes_Grand)
+                    RemoveSoul(SoulSizes_Common)
                 endIf
                 
                 targetSoul -= 1
                 AddSoul(targetSoul)
             EndWhile
             
-            synergyLevel += 2.5
             if(Config.dbg)
                 Debug.Notification("SEater: Digest proceeds")
             endIf
-        elseif(Config.dbg)
-            Debug.Notification("SEater: failed to digest. Player's womb is empty")
+
+            return 2.5
+        else
+            If (Config.dbg)
+                Debug.Notification("SEater: failed to digest. Player's womb is empty")
+            EndIf
+
+            return 0
         endIf
     EndFunction
 
     ; Grows up souls using synergy. Return true if results in labor
-    bool Function Gestate()
-        int targetSoul = GetWeakest()
+    bool Function Gestate(int targetSoul)
         if(targetSoul > 0)
             float targetSoulCharge = GetSoulChargeBySize(targetSoul)
             targetSynergy += 2.5
@@ -223,35 +226,44 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
             Debug.Notification("Processing " + updateLoops + " storage updates")
         endif
 
-        If (storageMode == 1)
-            while(updateLoops > 1)
-                Stretch()
-                Digest()
-                updateLoops -= 1
-            EndWhile
+        bool inLabor
 
+        While (updateLoops > 1)
+            Stretch()
+
+            If (storageMode == StorageModes_Digest)
+                synergyLevel += Digest(GetWeakest())
+
+                If (synergyLevel > maxSynergy)
+                    maxSynergy = synergyLevel
+                EndIf
+
+                If (HasSouls() == false)
+                    storageMode = StorageModes_Gestation
+                EndIf
+            ElseIf (storageMode == StorageModes_Gestation)
+                If (Gestate(GetWeakest()))
+                    inLabor = true ; storageMode will come back to disabled or digest after labor
+                    updateLoops = 0
+                EndIf
+            Else
+                updateLoops = 0
+            EndIf
+
+            updateLoops -= 1
+        EndWhile
+
+        If (storageMode != StorageModes_Disabled)
             Scale.UpdateScale()
+        EndIf
 
-            if(synergyLevel > maxSynergy)
-                maxSynergy = synergyLevel
-            endIf
-        elseif (storageMode == 2)
-            bool inLabor
-            while(updateLoops > 1)
-                Stretch()
-                inLabor = Gestate()
-                updateLoops -= 1
-            EndWhile
-
-            Scale.UpdateScale()
-
-            if(inLabor)
-                ;TODO: Gestation Finish (birth all souls)
-                if(Config.dbg)
-                    Debug.Notification("SEater: Not enough synergy, advancing to labor...")
-                    Debug.Notification("Not Implemented yet!")
-                endif    
-            endIf
+        If (inLabor)
+            ;TODO: Gestation Finish (birth all souls)
+            ;TODO: Cast spell to handle labor effects
+            If (Config.dbg)
+                Debug.Notification("SEater: No enough synergy, advancing to labor...")
+                Debug.Notification("Not Implemented yet!")
+            EndIf
         EndIf
     EndEvent
 
