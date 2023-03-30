@@ -10,7 +10,7 @@ Scriptname SE_MainQuest_Script extends Quest
     Actor Property PlayerRef Auto
     GlobalVariable Property GameDaysPassed Auto
 
-;/// Enums ///;
+;/// Entries ///;
     string[] Property SoulSizes Auto
         int Property SoulSizes_Petty = 1 AutoReadOnly Hidden
         int Property SoulSizes_Lesser = 2 AutoReadOnly Hidden
