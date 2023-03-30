@@ -22,17 +22,34 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
 
 ;/// Functions ///;
 
-    ; Return total number of stored souls
-    int Function GetNumberOfSouls()
-        int totalNumberOfSouls = 0
-
+    ; Return true if has any soul remaining
+    bool Function HasSouls()
         int index = 0
         While (index < numberOfSouls.Length)
-            totalNumberOfSouls += numberOfSouls[index]
+            If (numberOfSouls[index] > 0)
+                index = numberOfSouls.Length
+                return true
+            EndIf
+
             index += 1
         EndWhile
+        return false
+    EndFunction
 
-        return totalNumberOfSouls
+    ; Return total number of stored souls
+    int Function GetNumberOfSouls()
+        If (HasSouls())
+            int totalNumberOfSouls = 0
+            int index = 0
+            While (index < numberOfSouls.Length)
+                totalNumberOfSouls += numberOfSouls[index]
+                index += 1
+            EndWhile
+
+            return totalNumberOfSouls
+        Else
+            return 0
+        EndIf
     endFunction
 
     ; Return the weakest stored soul (or 0 if empty)
