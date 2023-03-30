@@ -87,7 +87,7 @@ import SLIF_Main
             bellySize = -1.00
         EndIf
 
-        inflateBreasts = Storage.GetNumberOfSouls() > 0 && Config.enableBreastScaling
+        inflateBreasts = Storage.HasSouls() && Config.enableBreastScaling
     EndFunction
 
     ; Updates belly node within slif, then update currentBellySize
