@@ -194,6 +194,23 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
         EndIf
     EndFunction
 
+    ; Calculate the remaining time for completion of digestion (or -1 if not at digest mode)
+    float Function GetDigestionTime()
+        float remainingDigestionTime = -1.0
+
+        If (storageMode == StorageModes_Digest)
+            float totalChargeLevel = GetTotalChargeLevel()
+
+            If (totalChargeLevel > 0)
+                remainingDigestionTime = (totalChargeLevel / 2.5) * 3.0
+            Else
+                remainingDigestionTime = 0.0
+            EndIf
+        EndIf
+
+        return remainingDigestionTime
+    EndFunction
+
 ;/// Events ///;
 
     ; Called every in-game hour while this mod is active, no matter if are carrying souls or not.
