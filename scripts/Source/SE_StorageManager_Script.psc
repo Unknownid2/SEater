@@ -152,14 +152,14 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
 
     ; Grows up souls using synergy. Return true if results in labor
     bool Function Gestate(int targetSoul)
-        if(targetSoul > 0)
+        if(targetSoul >= SoulSizes_Petty)
             float targetSoulCharge = GetSoulChargeBySize(targetSoul)
             targetSynergy += 2.5
             if(targetSynergy >= targetSoulCharge)
                 if(synergyLevel >= targetSynergy || synergyLevel >= 10.00 && targetSoul < 5)
                     RemoveSoul(targetSoul)
                     AddSoul(targetSoul + 1)
-                    if(targetSoul == 4)
+                    if(targetSoul == SoulSizes_Greater)
                         synergyLevel -= 10.00
                     else
                         synergyLevel -= targetSoulCharge
