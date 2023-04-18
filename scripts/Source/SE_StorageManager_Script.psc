@@ -260,7 +260,7 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
 
         bool inLabor
 
-        While (updateLoops > 1)
+        While (updateLoops >= 1)
             Stretch()
 
             If (storageMode == StorageModes_Digest)
@@ -272,6 +272,7 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
 
                 If (HasSouls() == false)
                     storageMode = StorageModes_Gestation
+                    updateLoops = 0
                 EndIf
             ElseIf (storageMode == StorageModes_Gestation)
                 If (Gestate(GetWeakest()))
