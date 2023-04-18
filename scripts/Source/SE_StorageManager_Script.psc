@@ -87,14 +87,18 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
 
     ; Return total stored soul charge level
     float Function GetTotalChargeLevel()
-        float totalChargeLevel = 0
-        int index = 0
-        While (index < numberOfSouls.Length)
-            totalChargeLevel += numberOfSouls[index] * GetSoulChargeBySize(index + 1)
-            index += 1
-        EndWhile
+        If (HasSouls())
+            float totalChargeLevel = 0
+            int index = 0
+            While (index < numberOfSouls.Length)
+                totalChargeLevel += numberOfSouls[index] * GetSoulChargeBySize(index + 1)
+                index += 1
+            EndWhile
 
-        return totalChargeLevel
+            return totalChargeLevel
+        Else
+            return 0.0
+        EndIf
     endFunction
 
     ; Returns capacity usage (0-100)
