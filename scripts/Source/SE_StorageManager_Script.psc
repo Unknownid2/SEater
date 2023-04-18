@@ -198,22 +198,33 @@ Scriptname SE_StorageManager_Script extends SE_MainQuest_Script
         EndIf
     EndFunction
 
-    ; Calculate the remaining time for completion of digestion (or -1 if not at digest mode)
-    float Function GetDigestionTime()
-        float remainingDigestionTime = -1.0
+    ;TODO: Calculate the estimated time for completion of digestion (or -1 if not at digest mode)
+    ;float Function GetDigestionTime()
+    ;    float estDigestionTime = -1.0
+    ;
+    ;    If (storageMode == StorageModes_Digest)
+    ;        float totalChargeLevel = GetTotalChargeLevel()
+    ;
+    ;        If (totalChargeLevel > 0)
+    ;            estDigestionTime = (totalChargeLevel / 2.5) * 3.0
+    ;        Else
+    ;            estDigestionTime = 0.0
+    ;        EndIf
+    ;    EndIf
+    ;
+    ;    return estDigestionTime
+    ;EndFunction
 
-        If (storageMode == StorageModes_Digest)
-            float totalChargeLevel = GetTotalChargeLevel()
-
-            If (totalChargeLevel > 0)
-                remainingDigestionTime = (totalChargeLevel / 2.5) * 3.0
-            Else
-                remainingDigestionTime = 0.0
-            EndIf
-        EndIf
-
-        return remainingDigestionTime
-    EndFunction
+    ;TODO: Calculate the estimated time for completion of gestation (or -1 if not at gestation mode)
+    ;float Function GetGestationTime()
+    ;    float estGestationTime = -1.0
+    ;
+    ;    If (storageMode == StorageModes_Gestation)
+    ;        float synergyRemain = synergyLevel / 2.5
+    ;    EndIf
+    ;
+    ;    return estGestationTime
+    ;EndFunction
 
 ;/// Events ///;
 
