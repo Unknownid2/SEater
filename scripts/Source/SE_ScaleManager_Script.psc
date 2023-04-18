@@ -4,8 +4,7 @@ Scriptname SE_ScaleManager_Script extends SE_MainQuest_Script
 import SLIF_Main
 
 ;/// Variables ///;
-    bool inflateBreasts
-    float normalBreastSize ; The size of breasts without minSize
+    float rawBreastSize ; The size of breasts without minSize
     float diffSize ; The difference between current belly size and new belly size
     float targetSize ; The target belly size for slow interpolation
     
@@ -87,7 +86,11 @@ import SLIF_Main
             bellySize = -1.00
         EndIf
 
-        inflateBreasts = Storage.HasSouls() && Config.enableBreastScaling
+        If (Config.enableBreastScaling)
+            breastSize = rawBreastSize + Config.breastMinSize
+        Else
+            breastSize = -1.0 ; Unregister
+        EndIf
     EndFunction
 
     ; Updates belly node within slif, then update currentBellySize
@@ -135,50 +138,45 @@ import SLIF_Main
             Debug.Notification("SEater: TimerUpdate(Scale) + " + timePast)
         EndIf
 
-        float newValue = 0.0
-
-        If (inflateBreasts)
-            If (Config.dbg)
-                Debug.Notification("SEater: breasts growing")
-            EndIf
-
+        ;FIXME: This doesn't work well after waiting/sleep
+        If (Storage.HasSouls())
             ; Inflation/Growth
-            If (breastSize < Config.maxBreastSize + Config.breastMinSize) ; fixed: max scales are count above min size*
-                newValue = Config.breastIncrementValue
-                newValue *= timePast
-                newValue += normalBreastSize ; Use the value without minSize instead
-                normalBreastSize = newValue ; Then update before applying minSize
-                newValue += Config.breastMinSize
-                breastSize = newValue
-            Else
-                If (Config.dbg)
-                    Debug.Notification("SEater: breasts at max size!")
-                EndIf
-
-                breastSize = Config.maxBreastSize + Config.breastMinSize
-            EndIf
-        ElseIf (Config.enableBreastScaling)
             If (Config.dbg)
-                Debug.Notification("SEater: breasts shrinking")
+                Debug.Notification("SEater: Breasts growing")
             EndIf
 
-            ; Deflation/Shrinkage
-            If (breastSize > Config.breastMinSize)
-                newValue = Config.breastDecrementValue
-                newValue *= timePast
-                newValue = normalBreastSize - newValue ; Use the value without minSize instead
-                normalBreastSize = newValue ; Then update before applying minSize
-                newValue += Config.breastMinSize
-                breastSize = newValue
+            If (rawBreastSize < Config.maxBreastSize)
+                float growthRate = Config.breastIncrementValue * timePast
+                rawBreastSize += growthRate
             Else
                 If (Config.dbg)
-                    Debug.Notification("SEater: breasts back to normal size.")
+                    Debug.Notification("SEater: Breasts at max size!")
                 EndIf
 
-                breastSize = Config.breastMinSize
+                rawBreastSize = Config.maxBreastSize ; for caping size in case of adjusts mid size
             EndIf
         Else
-            breastSize = -1.00
+            ; Deflation/Shrinkage
+            If (Config.dbg)
+                Debug.Notification("SEater: Breasts shrinking")
+            EndIf
+
+            If (rawBreastSize > 0.0)
+                float shrinkRate = Config.breastDecrementValue * timePast
+                rawBreastSize -= shrinkRate
+            Else
+                If (Config.dbg)
+                    Debug.Notification("SEater: Breasts at normal size.")
+                EndIf
+
+                rawBreastSize = 0.0
+            EndIf
+        EndIf
+        
+        If (Config.enableBreastScaling)
+            breastSize = rawBreastSize + Config.breastMinSize
+        Else
+            breastSize = -1.0 ; Unregister
         EndIf
     EndEvent
 
